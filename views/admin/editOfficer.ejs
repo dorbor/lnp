@@ -1,0 +1,146 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+
+<br><br>
+		<div class="container">
+		    <div class="row my-2">
+		        <div class="col-lg-8 order-lg-2">
+		            <ul class="nav nav-tabs">
+		                
+		                
+		                <li class="nav-item">
+		                    <a href="" data-target="#edit" data-toggle="tab" class="nav-link active">Edit Officer</a>
+		                </li>
+		    
+		            </ul>
+		            <div class="tab-content py-4">
+		            	<div class="tab-pane active" id="edit">
+		            		<% foundOfficer.forEach(officer => { %> 
+		                    <form action="/addOfficer" method="POST">
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label" >First name</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" value="<%= officer.value.firstName %>" name="firstName">
+		                            </div>
+								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Middle name</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" value="<%= officer.value.middleName %>" name="middleName">
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Last name</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" value="<%= officer.value.lastName %>" name="lastName">
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Email</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="email" value="<%= officer.value.lastName %>" name="email">
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label"> Gender</label>
+		                            <div class="col-lg-9">
+		                                <select name="gender" id="" class="form-control">
+											<option value="<%= officer.value.gender %>"><%= officer.value.gender %></option>
+											<option value="male">Male</option>
+											<option value="female">Female</option>
+										</select>
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Officer ID#</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="number" name="id" value="<%= officer.value.id %>" required>
+		                            </div>
+								</div>
+								<!-- <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Officer Photo</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="file" name="image"  >
+		                            </div>
+		                        </div> -->
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Department</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" name="department" value="<%= officer.value.department %>" required>
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Office</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" name="office" value="<%= officer.value.lastName %>" required>
+		                            </div>
+								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Position</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" name="position" value="<%= officer.value.position %>" required>
+		                            </div>
+								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Large Tax</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" name="division" value="<%= officer.value.division %>" required>
+		                            </div>
+								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Section</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" name="section" value="<%= officer.value.section %>" required>
+		                            </div>
+		                        </div>
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Status</label>
+		                            <div class="col-lg-9">
+		                                <select id="user_time_zone" class="form-control" size="0" class="form-control" name="status">
+		                                    <option value="<%= officer.value.status %>"><%= officer.value.status %></option>
+		                                    <option value="active">Active</option>
+		                                    <option value="not-active">Not Active</option>
+		                                  
+		                                </select>
+		                            </div>
+		                        </div>
+		                        
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label"></label>
+		                            <div class="col-lg-4">
+		                                <form action="/deleteOfficer" method="">
+		                                	<input type="hidden"  value="<%= officer.key %>">
+		                                <input type="submit" class="btn btn-primary" value="Delete">
+		                                </form>
+		                            </div>
+		                            <div class="col-lg-5">
+		                                <input type="hidden"  value="<%= officer.key %>">
+		                                <input type="submit" class="btn btn-primary" value="Upload Officer" style="float: right;">
+		                            </div>
+		                        </div>
+		                    </form>
+		                    <% }); %>
+		                </div>
+		           
+		                
+		            </div>
+		        </div>
+		        <div class="col-lg-4 order-lg-1 text-center">
+		            <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+		            <h6 class="mt-2">Upload a different photo</h6>
+		            <label class="custom-file">
+		                <input type="file" id="file" class="custom-file-input">
+		                <span class="custom-file-control">Choose file</span>
+		            </label>
+		        </div>
+		    </div>
+		</div>
+
+<!-- Bottom component -->
+ <%- include('hub/bottom'); -%>
