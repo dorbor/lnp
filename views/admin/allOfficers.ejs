@@ -9,34 +9,29 @@
 
         
            <br>
-                  
-                            <table class="table table-hover table-dark" id="example">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <% officers.forEach(officer => { %> 
-                                    <tr>
-                                        <th scope="row"><%= officer.value.id %></th>
-                                        <td><%= officer.value.firstName %> <%= officer.value.lastName %></td>
-                                        <td><%= officer.value.position %></td>
-                                        <td><%= officer.value.email %></td>
-                                        <td><%= officer.value.gender %></td>
-                                        <td><%= officer.value.status %></td>
-                                        <td><a href="/admin/editOfficer/<%= officer.key %>"><i class="fas fa-edit"></i></a></td>
-                                    </tr>
-                                    
-                                <% }); %>
-                                </tbody>
-                            </table>
-                
-                <!-- </div> -->
-            <!-- </div> -->
+            <table class="table table-hover table-dark" id="example">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% officers.forEach(officer => { %> 
+                    <tr>
+                        <th scope="row"><%= officer.id %></th>
+                        <td><%= officer.firstName %> <%= officer.lastName %></td>
+                        <td><%= officer.position %></td>
+                        <td><%= officer.email %></td>
+                        <td><%= officer.gender %></td>
+                        <td><%= officer.status %></td>
+                        <td><a href="/admin/editOfficer/<%= officer._id %>"><i class="fas fa-edit"></i></a></td>
+                    </tr>rs
+                <% }); %>
+                </tbody>
+            </table>
         </div>
 
     

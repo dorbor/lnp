@@ -21,37 +21,37 @@
 		            </ul>
 		            <div class="tab-content py-4">
 		            	<div class="tab-pane active" id="edit">
-		            		<% foundOfficer.forEach(officer => { %> 
+		            		<% //foundOfficer.forEach(officer => { %> 
 		                    <form action="/addOfficer" method="POST">
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label" >First name</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" value="<%= officer.value.firstName %>" name="firstName">
+		                                <input class="form-control" type="text" value="<%= officer.firstName %>" name="firstName">
 		                            </div>
 								</div>
 								<div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Middle name</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" value="<%= officer.value.middleName %>" name="middleName">
+		                                <input class="form-control" type="text" value="<%= officer.middleName %>" name="middleName">
 		                            </div>
 		                        </div>
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Last name</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" value="<%= officer.value.lastName %>" name="lastName">
+		                                <input class="form-control" type="text" value="<%= officer.lastName %>" name="lastName">
 		                            </div>
 		                        </div>
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Email</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="email" value="<%= officer.value.lastName %>" name="email">
+		                                <input class="form-control" type="email" value="<%= officer.lastName %>" name="email">
 		                            </div>
 		                        </div>
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label"> Gender</label>
 		                            <div class="col-lg-9">
 		                                <select name="gender" id="" class="form-control">
-											<option value="<%= officer.value.gender %>"><%= officer.value.gender %></option>
+											<option value="<%= officer.gender %>"><%= officer.gender %></option>
 											<option value="male">Male</option>
 											<option value="female">Female</option>
 										</select>
@@ -60,7 +60,7 @@
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Officer ID#</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="number" name="id" value="<%= officer.value.id %>" required>
+		                                <input class="form-control" type="number" name="id" value="<%= officer.id %>" required>
 		                            </div>
 								</div>
 								<!-- <div class="form-group row">
@@ -72,38 +72,38 @@
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Department</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" name="department" value="<%= officer.value.department %>" required>
+		                                <input class="form-control" type="text" name="department" value="<%= officer.department %>" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Office</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" name="office" value="<%= officer.value.lastName %>" required>
+		                                <input class="form-control" type="text" name="office" value="<%= officer.lastName %>" required>
 		                            </div>
 								</div>
 								<div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Position</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" name="position" value="<%= officer.value.position %>" required>
+		                                <input class="form-control" type="text" name="position" value="<%= officer.position %>" required>
 		                            </div>
 								</div>
 								<div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Large Tax</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" name="division" value="<%= officer.value.division %>" required>
+		                                <input class="form-control" type="text" name="division" value="<%= officer.division %>" required>
 		                            </div>
 								</div>
 								<div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Section</label>
 		                            <div class="col-lg-9">
-		                                <input class="form-control" type="text" name="section" value="<%= officer.value.section %>" required>
+		                                <input class="form-control" type="text" name="section" value="<%= officer.section %>" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Status</label>
 		                            <div class="col-lg-9">
 		                                <select id="user_time_zone" class="form-control" size="0" class="form-control" name="status">
-		                                    <option value="<%= officer.value.status %>"><%= officer.value.status %></option>
+		                                    <option value="<%= officer.status %>"><%= officer.status %></option>
 		                                    <option value="active">Active</option>
 		                                    <option value="not-active">Not Active</option>
 		                                  
@@ -115,17 +115,17 @@
 		                            <label class="col-lg-3 col-form-label form-control-label"></label>
 		                            <div class="col-lg-4">
 		                                <form action="/deleteOfficer" method="">
-		                                	<input type="hidden"  value="<%= officer.key %>">
+		                                	<input type="hidden"  value="<%= officer._id %>">
 		                                <input type="submit" class="btn btn-primary" value="Delete">
 		                                </form>
 		                            </div>
 		                            <div class="col-lg-5">
-		                                <input type="hidden"  value="<%= officer.key %>">
+		                                <input type="hidden"  value="<%= officer._id %>">
 		                                <input type="submit" class="btn btn-primary" value="Upload Officer" style="float: right;">
 		                            </div>
 		                        </div>
 		                    </form>
-		                    <% }); %>
+		                    <% //}); %>
 		                </div>
 		           
 		                
