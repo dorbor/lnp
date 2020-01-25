@@ -18,6 +18,8 @@ nbproject/private
 // Node / Bower
 node_modules/
 bower_components/
+.DS_Store
+/*.env
 
 // Plugins
 /plugins/*/*.md
@@ -32,7 +34,4 @@ docs_html/
 .jekyll-cache/
 .jekyll-metadata
 
-// ETC
-TODO
-test.html
-ad.js
+
