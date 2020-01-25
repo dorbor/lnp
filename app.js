@@ -6,7 +6,22 @@ const expressSession = require("express-session");
 const expressValidator = require("express-validator");
 const mongoose = require('mongoose');
 const multer = require('multer');
-const upload = multer({dest: 'images/'});
+const storage = multer({
+  destination: (req, file, cb) => {
+    cb(null, './images/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({
+    destination: (req, file, cb) => {
+    cb(null, './images/');
+  }, 
+  filename: (req, file, cb) => {
+    cb(req.file.originalname);
+  }
+});
 
 const app = express();
 
@@ -20,7 +35,7 @@ app.use('/admin/editOfficer', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
 app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 
-mongoose.connect('mongodb://localhost:27017/findOfficer', { useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://dorbor:Dorbor123@cluster0-8idgt.mongodb.net/findofficer", { useUnifiedTopology: true });
 
 var db = mongoose.connection;
 
@@ -29,6 +44,7 @@ const officerSchema = {
   id: String,
   firstName: String,
   lastName: String,
+  image: String,
   middleName: String,
   email: String,
   gender: String,
@@ -74,13 +90,14 @@ app.get("/admin/addOfficer", (req, res) => {
 });
 
 app.post("/admin/addOfficer", upload.single('officerImage'), (req, res) => {
-    console.log(req.file);
+    console.log(req.file.originalname);
     const setOfficr = new Officer({
       id: req.body.id,
       agency: 'LRA',
       firstName: req.body.firstName,
       middleName: req.body.middleName,
       lastName: req.body.lastName,
+      image: req.file.originalname,
       email: req.body.email,
       gender: req.body.gender,
       department: req.body.department,
@@ -126,7 +143,7 @@ app.get("/admin/editOfficer/:id", (req, res) => {
       if(err){
         console.log(err);
       }else{
-        //show an existing list
+        //show an existing listm
         res.render('admin/editOfficer', { officer: foundOff });
       }
   });
