@@ -231,7 +231,7 @@ app.get("/admin/editOfficer/:id", (req, res) => {
 
 //  apis section
 
-///request for all articles ///////////
+///request for all officers ///////////
 app.route('/api/officers')
 .get((req, res) => {
   Officer.find((err, foundOff) => {
