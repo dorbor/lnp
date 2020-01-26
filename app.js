@@ -332,7 +332,11 @@ app.route('/api/officers')
       res.send(err);
     }
   });
-})
+});
+
+/////request for all articles ///////////
+app.route('/api/comment')
+
 .post((req, res) => {
   const comment = new Comment ({
     type: req.body.type,
@@ -354,23 +358,6 @@ app.route('/api/officers')
     }
   });
 });
-
-///request for all articles ///////////
-// app.route('/api/comment')
-// .post((req, res) => {
-//   const newArticle = new Article ({
-//     title: req.body.title,
-//     content: req.body.content,
-//   });
-
-//   newArticle.save((err) => {
-//     if(!err){
-//       res.send('Successfully added a new article');
-//     }else{
-//       res.send(err);
-//     }
-//   });
-// });
 
 app.route('/api/officers/:id')
 
