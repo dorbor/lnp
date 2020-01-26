@@ -32,8 +32,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static((__dirname, 'public')));
 app.use('/admin', express.static((__dirname, 'public')));
 app.use('/admin/editOfficer', express.static((__dirname, 'public')));
+app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
-app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
+app.use(expressSession({
+  secret: 'max', 
+  saveUninitialized: false, 
+  resave: false
+}));
 
 mongoose.connect("mongodb+srv://dorbor:Dorbor123@cluster0-8idgt.mongodb.net/findofficer", { useUnifiedTopology: true });
 
@@ -76,8 +81,7 @@ app.get("/admin", (req, res) =>{
               });
     }
   });
-  //console.log(newOfficer);
-    //res.render('admin/index');
+
 }); 
 
 
@@ -218,7 +222,93 @@ app.get("/admin/editOfficer/:id", (req, res) => {
  
 // });
 
+// users section
+const userSchema = {
+  agency: String,
+  fullName: String,
+  email: String,
+  password: String,
+  status: String
+};
 
+const User =  mongoose.model('User', userSchema);
+
+app.get("/admin/addUser", (req, res) => {
+  res.render('admin/addUser');
+});
+
+app.post("/admin/addUser", upload.single('image'), (req, res) => {
+  //console.log(req.file.originalname);
+  const setUser = new User({
+    agency: 'LRA',
+    fullName: req.body.fullName,
+    email: req.body.email,
+    password: req.body.password,
+    image: req.file.originalname,
+    status: req.body.status,
+  });
+
+
+  setUser.save((err) => {
+    if(err){
+      console.log(err);
+    }else{
+      console.log('User saved');
+    }
+  });
+
+res.redirect("/admin/allUsers");
+
+});
+
+
+app.get("/admin/allUsers", (req, res) => {
+
+  User.find({}, (err, user) => {
+    if(err){
+      console.log(err);
+    }else{
+      var leng = user.length;
+      res.render('admin/allUsers', {
+                users: user,
+                userCount: leng
+              });
+    }
+  });
+
+});
+
+app.get("/admin/editUser/:id", (req, res) => {
+const id = req.params.id;
+User.findOne({_id: id}, (err, foundUser) => {
+    if(err){
+      console.log(err);
+    }else{
+      //show an existing listm
+      res.render('admin/editUser', { user: foundUser });
+    }
+});
+});
+
+
+
+
+
+app.get("/login", (req, res) => {
+  const email = req.body.email;
+  const pass = req.body.password;
+  User.findOne({email: email}, (err, foundUser) => {
+      if(err){
+        console.log(err);
+      }else{
+        if(foundUser){
+          if(foundUser.password === pass){
+            redirect('admin/index');
+          }
+        }
+      }
+  });
+  });
 
 
 
@@ -259,6 +349,19 @@ app.route('/api/officers')
 //     }
 //   });
 // });
+
+app.route('/api/officers/:id')
+
+.get((req, res) => {
+  
+  Officer.findOne({id: req.params.id}, (err, foundOfficer) => {
+    if(foundOfficer){
+      res.send(foundOfficer);
+    }else{
+      res.send('No matched found');
+    }
+  });
+});
 
 // eslint-disable-next-line no-magic-numbers
 

@@ -1,0 +1,85 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+
+
+		<div class="container">
+		    <div class="row my-2">
+		        <div class="col-lg-8 order-lg-2">
+		            <ul class="nav nav-tabs">
+		                <li class="nav-item">
+		                    <a href="" data-target="#edit" data-toggle="tab" class="nav-link active">Add User</a>
+		                </li>
+		            </ul>
+		            <div class="tab-content py-4">
+		            	<div class="tab-pane active" id="edit">
+		                    <form action="/admin/addUser" method="POST" enctype="multipart/form-data">
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label" >Full Name</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="text" value="<%= user.fullName %>" name="fullName">
+		                            </div>
+								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Email</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="email" value="<%= user.email %>" name="email">
+		                            </div>
+                                </div>
+                                
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Password</label>
+		                            <div class="col-lg-9">
+		                                <input class="form-control" type="password" value="<%= user.password %>" name="password">
+		                            </div>
+		                        </div>
+		        
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">User Photo</label>
+		                            <div class="col-lg-9">
+		                                <input type="file" class="form-control" name="image">
+		                            </div>
+		                        </div>
+		                       
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Status</label>
+		                            <div class="col-lg-9">
+		                                <select id="user_time_zone" class="form-control" size="0" class="form-control" name="status">
+		                                    <option value="<%= user.status %>"><%= user.status %></option>
+		                                    <option value="active">Active</option>
+		                                    <option value="not-active">Not Active</option>
+		                                </select>
+		                            </div>
+		                        </div>
+		                        
+		                        <div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label"></label>
+		                            <div class="col-lg-9">
+		                                <!-- <input type="reset" class="btn btn-secondary" value="Cancel"> -->
+		                                <input type="submit" class="btn btn-primary" value="Save Changes">
+		                            </div>
+		                        </div>
+		                    </form>
+		                </div>
+		           
+		                
+		            </div>
+		        </div>
+		        <div class="col-lg-4 order-lg-1 text-center">
+		            <!-- <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+		            <h6 class="mt-2">Upload a different photo</h6>
+		            <label class="custom-file">
+		                <input type="file" id="file" class="custom-file-input">
+		                <span class="custom-file-control">Choose file</span>
+		            </label> -->
+		        </div>
+		    </div>
+		</div>
+
+<!-- Bottom component -->
+ <%- include('hub/bottom'); -%>
