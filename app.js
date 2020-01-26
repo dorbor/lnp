@@ -61,6 +61,7 @@ const officerSchema = {
 };
 
 const Officer =  mongoose.model('Officer', officerSchema);
+const Comment =  mongoose.model('Comment', officerSchema);
 
 
 app.get("/", (req, res) =>{
@@ -327,6 +328,27 @@ app.route('/api/officers')
   Officer.find((err, foundOff) => {
     if(!err){
       res.send(foundOff);
+    }else{
+      res.send(err);
+    }
+  });
+})
+.post((req, res) => {
+  const comment = new Comment ({
+    type: req.body.type,
+    agency: req.body.agency,
+    fullName: req.body.fullName,
+    number: req.body.number,
+    email: req.body.email,
+    content: req.body.content,
+    county: req.body.county,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
+  });
+
+  comment.save((err) => {
+    if(!err){
+      res.send(' send Successfully');
     }else{
       res.send(err);
     }
