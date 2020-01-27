@@ -198,31 +198,41 @@ app.get("/admin/applauds", (req, res) => {
   
 });
 
-// app.get("/admin/map/:id", (req, res) => {
-//   const id = req.params.id;
-//   comments.doc(id).get()
-//   .then(doc => {
-//     var foundComment = [];
-//     var location = {};
-//     if (!doc.exists) {
-//       console.log('No such document!');
-//     } else {
-//       //console.log('Document data:', doc.data());
-//       foundComment.push({
-//                   key: doc.id,
-//                   value: doc.data(),
-//                 });
-//       var long = doc.data().location.longitude;
-//       var lat = doc.data().location.latitute;
-//       res.render('admin/map', {foundComment: foundComment, long: long, lat: lat});
-//     }
-//   })
-//   .catch(err => {
-//     console.log('Error getting document', err);
-//   });
+app.get("/admin/map/:id", (req, res) => {
+  const id = req.params.id;
+
+  Comment.findOne({_id: id}, (err, foundCom) => {
+    if(err){
+      console.log(err);
+    }else{
+      //show an existing listm
+      res.render('admin/map', { comment: foundCom });
+    }
+});
+
+  // comments.doc(id).get()
+  // .then(doc => {
+  //   var foundComment = [];
+  //   var location = {};
+  //   if (!doc.exists) {
+  //     console.log('No such document!');
+  //   } else {
+  //     //console.log('Document data:', doc.data());
+  //     foundComment.push({
+  //                 key: doc.id,
+  //                 value: doc.data(),
+  //               });
+  //     var long = doc.data().location.longitude;
+  //     var lat = doc.data().location.latitute;
+  //     res.render('admin/map', {foundComment: foundComment, long: long, lat: lat});
+  //   }
+  // })
+  // .catch(err => {
+  //   console.log('Error getting document', err);
+  // });
   
  
-// });
+});
 
 // users section
 const userSchema = {

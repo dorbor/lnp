@@ -9,9 +9,9 @@
            <br>
            	
             <div class="card" >
-            	<% foundComment.forEach(comment => { %>
-            	<h1 class="card-title display-2 text-center">  Author: <%= comment.value.fullName %> | Phone Number <%= comment.value.number %></h1>
-            	<% }); %>
+            	<% //comment.forEach(com => { %>
+            	<h1 class="card-title display-2 text-center">  Author: <%= comment.fullName %> | Phone Number <%= comment.number %> | <%= comment.latitude %> | <%= comment.longitude %>  </h1>
+            	<% //}); %>
 			  <div class="card-body">
 			    <div id="map"></div>
 			  </div>
@@ -21,7 +21,7 @@
 <script>
   function initMap() {
     // Map options
-      var myLocation = {zoom:18, center: {lat:<%= lat %>,lng:<%= long %>}}
+      var myLocation = {zoom:18, center: {lat:<%= comment.latitude %>,lng:<%= comment.longitude %>}}
       
       // New map
       var map = new google.maps.Map(document.getElementById('map'), myLocation);
@@ -30,7 +30,10 @@
       
       //Add marker
       var marker = new google.maps.Marker({
-        position:{lat: <%= lat %>,lng:<%= long %>},
+        position:{
+          lat: <%= comment.latitude %>,
+          lng:<%= comment.longitude %>
+        },
         map:map,
         icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
       });

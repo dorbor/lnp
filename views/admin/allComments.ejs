@@ -24,7 +24,7 @@
                 <% comments.forEach(comment => { %> 
                         <% if (comment.type == 'Complain') { %>
                             <tr>
-                                <th scope="row"><%= comment.id %></th>
+                                <th scope="row"><%= comment.officerId %></th>
                                 <td><%= comment.fullName %></td>
                                 <td><%= comment.email %></td>
                                 <td><%= comment.number %></td>
