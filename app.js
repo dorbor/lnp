@@ -60,8 +60,21 @@ const officerSchema = {
   status: String,
 };
 
+const commentSchema = {
+  officerId: String,
+  type: String,
+  agency: String,
+  fullName: String,
+  number: String,
+  email: String,
+  content: String,
+  county: String,
+  latitude: String,
+  longitude: String,
+};
+
 const Officer =  mongoose.model('Officer', officerSchema);
-const Comment =  mongoose.model('Comment', officerSchema);
+const Comment =  mongoose.model('Comment', commentSchema);
 
 
 app.get("/", (req, res) =>{
@@ -155,47 +168,35 @@ app.get("/admin/editOfficer/:id", (req, res) => {
 });
 
 
-// // apploud and complain section 
+// apploud and complain section 
 
-// app.get("/admin/allComments", (req, res) => {
+app.get("/admin/allComments", (req, res) => {
   
-//   comments.get()
-//   .then(snapshot => {
-//     var newComments = []; 
-//     snapshot.forEach(doc => {
-//       newComments.push({
-//                   key: doc.id,
-//                   value: doc.data(),
-//                 });
-//       console.log(newComments);
-//     });
-//     res.render('admin/allComments', {comments: newComments});
-//   })
-//   .catch(err => {
-//     console.log('Error getting documents', err);
-//   });
+  Comment.find({}, (err, co) => {
+    if(err){
+      console.log(err);
+    }else{
+      res.render('admin/allComments', {
+                comments: co
+              });
+    }
+  });
   
-// });
+});
 
-// app.get("/admin/applauds", (req, res) => {
+app.get("/admin/applauds", (req, res) => {
   
-//   comments.get()
-//   .then(snapshot => {
-//     var newComments = [];
-//     snapshot.forEach(doc => {
-//       newComments.push({
-//                   key: doc.id,
-//                   value: doc.data(),
-//                 });
-//       console.log(newComments);
-//     });
-//     res.render('admin/applauds', {comments: newComments});
-//   })
-//   .catch(err => {
-//     console.log('Error getting documents', err);
-//   });
+  Comment.find({}, (err, co) => {
+    if(err){
+      console.log(err);
+    }else{
+      res.render('admin/applauds', {
+                comments: co
+              });
+    }
+  });
   
-// });
+});
 
 // app.get("/admin/map/:id", (req, res) => {
 //   const id = req.params.id;
@@ -339,6 +340,7 @@ app.route('/api/comment')
 
 .post((req, res) => {
   const comment = new Comment ({
+    officerId: req.body.officerId,
     type: req.body.type,
     agency: req.body.agency,
     fullName: req.body.fullName,
