@@ -1,0 +1,60 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+<style type="text/css">#map{width: 100%;height: 600px;}</style>
+           <br>
+           	
+            <div class="card" >
+			  <div class="card-body">
+			    <div id="map"></div>
+			  </div>
+			</div>
+
+
+<script>
+  function initMap() {
+
+      var options = {
+        zoom:12,
+        center:{lat: 6.3168233, lng:-10.8072546 }
+      }
+      var map = new google.maps.Map(document.getElementById('map'), options);
+      
+        addMarker({
+            coords:{lat: 6.3168233,lng:-10.8072546},
+            iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            content: '<h2> test </h2>'
+        });
+        addMarker({coords:{lat:6.2951471, lng:-10.7610525}});
+
+      function addMarker(props){
+        var marker = new google.maps.Marker({
+          position:props.coords,
+          map:map,
+        });
+        if(props.iconImage){
+            marker.setIcon(props.iconImage);
+        }
+        if(props.content){
+          var infoWindow = new google.maps.InfoWindow({
+            content:props.content
+          });
+
+          marker.addListener('click', function(){
+            infoWindow.open(map, marker);
+          });
+        }
+
+    }
+
+  }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClE7RtHQ-zWz_qNaWZ8stMI7cpDAahyM8&callback=initMap">
+    </script>
+<!-- Bottom component -->
+<%- include('hub/bottom'); -%>

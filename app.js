@@ -1,10 +1,12 @@
 //jshint esversion:7
+
 const express = require('express');
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const expressSession = require("express-session");
 const expressValidator = require("express-validator");
 const mongoose = require('mongoose');
+const request = require('request');
 const multer = require('multer');
 const storage = multer({
   destination: (req, file, cb) => {
@@ -22,6 +24,8 @@ const upload = multer({
     cb(req.file.originalname);
   }
 });
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const app = express();
 
@@ -72,7 +76,7 @@ const commentSchema = {
   latitude: String,
   longitude: String,
 };
-
+const officerUrl = 'https://findofficer.herokuapp.com/api/officers';
 const Officer =  mongoose.model('Officer', officerSchema);
 const Comment =  mongoose.model('Comment', commentSchema);
 
@@ -83,6 +87,15 @@ app.get("/", (req, res) =>{
 
 
 app.get("/admin", (req, res) =>{
+
+  // var test = request.get("http://httpbin.org/ip", (error, response, body) => {
+  //   if(error) {
+  //       return console.dir(error);
+  //   }
+  //   return body;
+    
+  // });
+  // console.log(test.body);
   
   Officer.find({}, (err, off) => {
     if(err){
@@ -198,39 +211,32 @@ app.get("/admin/applauds", (req, res) => {
   
 });
 
+
+
+// google map routes 
 app.get("/admin/map/:id", (req, res) => {
   const id = req.params.id;
 
-  Comment.findOne({_id: id}, (err, foundCom) => {
-    if(err){
-      console.log(err);
-    }else{
-      //show an existing listm
-      res.render('admin/map', { comment: foundCom });
-    }
+    Comment.findOne({_id: id}, (err, foundCom) => {
+      if(err){
+        console.log(err);
+      }else{
+        //show an existing listm
+        res.render('admin/map', { comment: foundCom });
+      }
+  });
+ 
 });
 
-  // comments.doc(id).get()
-  // .then(doc => {
-  //   var foundComment = [];
-  //   var location = {};
-  //   if (!doc.exists) {
-  //     console.log('No such document!');
-  //   } else {
-  //     //console.log('Document data:', doc.data());
-  //     foundComment.push({
-  //                 key: doc.id,
-  //                 value: doc.data(),
-  //               });
-  //     var long = doc.data().location.longitude;
-  //     var lat = doc.data().location.latitute;
-  //     res.render('admin/map', {foundComment: foundComment, long: long, lat: lat});
-  //   }
-  // })
-  // .catch(err => {
-  //   console.log('Error getting document', err);
-  // });
-  
+app.get("/admin/map", (req, res) => {
+ 
+    Comment.findOne((err, foundCom) => {
+      if(err){
+        console.log(err);
+      }else{
+        res.render('admin/completeMap', { comments: foundCom });
+      }
+  });
  
 });
 
@@ -250,26 +256,25 @@ app.get("/admin/addUser", (req, res) => {
 });
 
 app.post("/admin/addUser", upload.single('image'), (req, res) => {
-  //console.log(req.file.originalname);
-  const setUser = new User({
-    agency: 'LRA',
-    fullName: req.body.fullName,
-    email: req.body.email,
-    password: req.body.password,
-    image: req.file.originalname,
-    status: req.body.status,
-  });
-
-
-  setUser.save((err) => {
-    if(err){
-      console.log(err);
-    }else{
-      console.log('User saved');
-    }
-  });
-
-res.redirect("/admin/allUsers");
+  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+    // Store hash in your password DB.
+  
+    const setUser = new User({
+      agency: 'LRA',
+      fullName: req.body.fullName,
+      email: req.body.email,
+      password: hash,
+      status: req.body.status,
+    });
+  
+    setUser.save((err) => {
+      if(err){
+        console.log(err);
+      }else{
+        res.redirect("/admin/allUsers");
+      }
+    });
+});
 
 });
 
@@ -306,21 +311,28 @@ User.findOne({_id: id}, (err, foundUser) => {
 
 
 
-app.get("/login", (req, res) => {
-  const email = req.body.email;
+app.post("/login", (req, res) => {
+  const postEmail = req.body.email;
   const pass = req.body.password;
-  User.findOne({email: email}, (err, foundUser) => {
+  User.findOne({email: postEmail}, (err, foundUser) => {
       if(err){
         console.log(err);
+      }else if(!foundUser){
+        res.render('index', {message: 'Sorry, user not found'});
       }else{
         if(foundUser){
-          if(foundUser.password === pass){
-            redirect('admin/index');
-          }
+          bcrypt.compare(pass, foundUser.password, function(err, result) {
+            if(result == true){
+              res.redirect('/admin');
+            }else{
+              res.render('index', {message: 'Sorry Email/Password is incorrect'});
+            }
+           });
         }
       }
   });
-  });
+  
+});
 
 
 
