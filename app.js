@@ -3,19 +3,14 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const expressSession = require("express-session");
-const expressValidator = require("express-validator");
+const session = require("express-session");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const flash = require('connect-flash');
+const {userAuthenticated} = require('./helper/auth');
 const mongoose = require('mongoose');
-const request = require('request');
 const multer = require('multer');
-const storage = multer({
-  destination: (req, file, cb) => {
-    cb(null, './images/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  }
-});
+
 const upload = multer({
     destination: (req, file, cb) => {
     cb(null, './images/');
@@ -24,6 +19,7 @@ const upload = multer({
     cb(req.file.originalname);
   }
 });
+mongoose.Promise = global.Promise;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -38,12 +34,15 @@ app.use('/admin', express.static((__dirname, 'public')));
 app.use('/admin/editOfficer', express.static((__dirname, 'public')));
 app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
-app.use(expressSession({
+app.use(session({
   secret: 'max', 
   saveUninitialized: false, 
   resave: false
 }));
 
+
+app.use(passport.initialize());
+app.use(passport.session());
 mongoose.connect("mongodb+srv://dorbor:Dorbor123@cluster0-8idgt.mongodb.net/findofficer", { useUnifiedTopology: true });
 
 var db = mongoose.connection;
@@ -76,37 +75,28 @@ const commentSchema = {
   latitude: String,
   longitude: String,
 };
-const officerUrl = 'https://findofficer.herokuapp.com/api/officers';
 const Officer =  mongoose.model('Officer', officerSchema);
 const Comment =  mongoose.model('Comment', commentSchema);
 
+app.use( (req, res, next) => {
+  res.locals.user = req.user || null;
+  // req.locals.success_message = req.flash('success_message');
+  // req.locals.error_message = req.flash('error_message');
+  // req.locals.form_errors = req.flash('form_errors');
+  next();
+});
 
 app.get("/", (req, res) =>{
   res.render('index');
 });
 
 
-app.get("/admin", (req, res) =>{
+app.get("/admin", userAuthenticated, (req, res) =>{
 
-  // var test = request.get("http://httpbin.org/ip", (error, response, body) => {
-  //   if(error) {
-  //       return console.dir(error);
-  //   }
-  //   return body;
-    
-  // });
-  // console.log(test.body);
-  
-  Officer.find({}, (err, off) => {
-    if(err){
-      console.log(err);
-    }else{
-      var leng = off.length;
-      res.render('admin/index', {
-                officers: off,
-                offCount: leng
-              });
-    }
+  Officer.find({}).then(off => {
+    Comment.find({}).then(comments => {
+      res.render('admin/index', {officers: off, comments: comments});
+    });
   });
 
 }); 
@@ -116,11 +106,11 @@ app.get("/admin", (req, res) =>{
 
 
 
-app.get("/admin/addOfficer", (req, res) => {
+app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
   res.render('admin/addOfficer');
 });
 
-app.post("/admin/addOfficer", upload.single('officerImage'), (req, res) => {
+app.post("/admin/addOfficer", upload.single('officerImage'), userAuthenticated, (req, res) => {
     console.log(req.file.originalname);
     const setOfficr = new Officer({
       id: req.body.id,
@@ -152,7 +142,7 @@ app.post("/admin/addOfficer", upload.single('officerImage'), (req, res) => {
 });
 
 
-app.get("/admin/allOfficers", (req, res) => {
+app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
 
   Officer.find({}, (err, off) => {
     if(err){
@@ -168,7 +158,7 @@ app.get("/admin/allOfficers", (req, res) => {
   
 });
 
-app.get("/admin/editOfficer/:id", (req, res) => {
+app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
   Officer.findOne({_id: id}, (err, foundOff) => {
       if(err){
@@ -183,7 +173,7 @@ app.get("/admin/editOfficer/:id", (req, res) => {
 
 // apploud and complain section 
 
-app.get("/admin/allComments", (req, res) => {
+app.get("/admin/allComments", userAuthenticated, (req, res) => {
   
   Comment.find({}, (err, co) => {
     if(err){
@@ -197,7 +187,7 @@ app.get("/admin/allComments", (req, res) => {
   
 });
 
-app.get("/admin/applauds", (req, res) => {
+app.get("/admin/applauds", userAuthenticated, (req, res) => {
   
   Comment.find({}, (err, co) => {
     if(err){
@@ -307,32 +297,56 @@ User.findOne({_id: id}, (err, foundUser) => {
 });
 });
 
-
-
-
-
-app.post("/login", (req, res) => {
-  const postEmail = req.body.email;
-  const pass = req.body.password;
-  User.findOne({email: postEmail}, (err, foundUser) => {
+//Delete user method
+app.get("/admin/user/:id",  (req, res) => {
+  const id = req.params.id;
+  User.findByIdAndRemove({_id: id}, (err, foundUser) => {
       if(err){
         console.log(err);
-      }else if(!foundUser){
-        res.render('index', {message: 'Sorry, user not found'});
       }else{
-        if(foundUser){
-          bcrypt.compare(pass, foundUser.password, function(err, result) {
-            if(result == true){
-              res.redirect('/admin');
-            }else{
-              res.render('index', {message: 'Sorry Email/Password is incorrect'});
-            }
-           });
-        }
+        //show an existing listm
+        res.redirect('/admin/allUsers');
       }
   });
-  
 });
+
+
+passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done) => {
+  User.findOne({ email: email }).then(user => {
+    if (!user) return done(null, false, { message: 'Incorrect username.' });
+    
+    bcrypt.compare(password, user.password, (err, matched) =>{
+      if(err) return err;
+      if(matched){
+        return done(null, user);
+      }else{
+        return done(null, false, {message: 'Incorrect Password'});
+      }
+    });
+  });
+}));
+
+passport.serializeUser((user, done)=>{
+  done(null, user.id);
+});
+passport.deserializeUser((id, done)=>{
+  User.findById(id, (err, user) =>{
+    done(err, user);
+  });
+});
+
+app.post("/login", (req, res, next)=>{
+  passport.authenticate('local', {
+    successRedirect:'/admin',
+    failureRedirect:'/',
+    // failureFlash: true
+  })(req, res, next);
+ });
+ 
+ app.get('/logout', (req, res) => {
+     req.logOut();
+     res.redirect('/');
+ });
 
 
 
