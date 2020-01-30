@@ -5,11 +5,10 @@
 
 <!-- left side bar component  -->
 <%- include('hub/sidebar'); -%>
-<style type="text/css">#map{width: 100%;height: 600px;}</style>
+    <style type="text/css">#map{width: 100%;height: 600px;}</style>
            <br>
            	
-            <div class="card" >
-            	<% //comment.forEach(com => { %>
+      <div class="card" >
             	<h1 class="card-title display-2 text-center">  Author: <%= comment.fullName %> | Phone Number <%= comment.number %> | <%= comment.latitude %> | <%= comment.longitude %>  </h1>
             	<% //}); %>
 			  <div class="card-body">

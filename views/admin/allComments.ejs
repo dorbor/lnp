@@ -10,7 +10,7 @@
         
            <br>
                   
-            <table class="table table-hover table-dark" id="dataTable">
+            <table class="table table-hover table-dark desplay" id="example">
                 <thead>
                 <tr>
                     <th scope="col">Officer Id</th>
@@ -22,16 +22,18 @@
                 </thead>
                 <tbody>
                 <% comments.forEach(comment => { %> 
-                            <tr>
-                                <th scope="row"><%= comment.officerId %></th>
-                                <td><%= comment.fullName %></td>
-                                <td><%= comment.email %></td>
-                                <td><%= comment.number %></td>
-                                <td><%= comment.county %></td>
-                                <td><%= comment.content %></td>
-                                <td><a href="/admin/details/<%= comment._id %>"><i class="fas fa-search"></i></a></td>
-                                <td><a href="/admin/map/<%= comment._id %>"><i class="fas fa-map"></i></a></td>
-                            </tr>
+                    <% if (comment.type == 'Complain') { %>
+                        <tr>
+                            <th scope="row"><%= comment.officerId %></th>
+                            <td><%= comment.fullName %></td>
+                            <td><%= comment.email %></td>
+                            <td><%= comment.number %></td>
+                            <td><%= comment.county %></td>
+                            <td><%= comment.content %></td>
+                            <td><a href="/admin/details/<%= comment._id %>"><i class="fas fa-search"></i></a></td>
+                            <td><a href="/admin/map/<%= comment._id %>"><i class="fas fa-map"></i></a></td>
+                        </tr>
+                    <% } %> 
                 <% }); %>
                 </tbody>
             </table>

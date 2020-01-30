@@ -34,6 +34,8 @@ app.use('/admin', express.static((__dirname, 'public')));
 app.use('/admin/editOfficer', express.static((__dirname, 'public')));
 app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
+app.use('/admin/details', express.static((__dirname, 'public')));
+
 app.use(session({
   secret: 'max', 
   saveUninitialized: false, 
@@ -91,11 +93,30 @@ app.get("/", (req, res) =>{
 });
 
 
-app.get("/admin", userAuthenticated, (req, res) =>{
+app.get("/admin", userAuthenticated,(req, res) =>{
 
   Officer.find({}).then(off => {
-    Comment.find({}).then(comments => {
-      res.render('admin/index', {officers: off, comments: comments});
+    Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/index', 
+      {
+        officers: off, 
+        comments: comments, 
+        complains: complains,
+        applauds: applauds
+      });
     });
   });
 
@@ -179,9 +200,7 @@ app.get("/admin/allComments", userAuthenticated, (req, res) => {
     if(err){
       console.log(err);
     }else{
-      res.render('admin/allComments', {
-                comments: co
-              });
+      res.render('admin/allComments', {comments: co });
     }
   });
   
@@ -201,10 +220,19 @@ app.get("/admin/applauds", userAuthenticated, (req, res) => {
   
 });
 
+// google map routes 
+app.get("/admin/details/:id", userAuthenticated,(req, res) => {
+  const id = req.params.id;
+    Comment.findOne({_id: id}).then(foundCom => {
+        res.render('admin/commentDetails', { comment: foundCom });
+  });
+});
+
+
 
 
 // google map routes 
-app.get("/admin/map/:id", (req, res) => {
+app.get("/admin/map/:id", userAuthenticated,(req, res) => {
   const id = req.params.id;
 
     Comment.findOne({_id: id}, (err, foundCom) => {
@@ -218,7 +246,7 @@ app.get("/admin/map/:id", (req, res) => {
  
 });
 
-app.get("/admin/map", (req, res) => {
+app.get("/admin/map", userAuthenticated,(req, res) => {
  
     Comment.findOne((err, foundCom) => {
       if(err){
@@ -241,11 +269,11 @@ const userSchema = {
 
 const User =  mongoose.model('User', userSchema);
 
-app.get("/admin/addUser", (req, res) => {
+app.get("/admin/addUser", userAuthenticated,(req, res) => {
   res.render('admin/addUser');
 });
 
-app.post("/admin/addUser", upload.single('image'), (req, res) => {
+app.post("/admin/addUser", upload.single('image'), userAuthenticated,(req, res) => {
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     // Store hash in your password DB.
   
@@ -269,7 +297,7 @@ app.post("/admin/addUser", upload.single('image'), (req, res) => {
 });
 
 
-app.get("/admin/allUsers", (req, res) => {
+app.get("/admin/allUsers", userAuthenticated,(req, res) => {
 
   User.find({}, (err, user) => {
     if(err){
@@ -285,7 +313,7 @@ app.get("/admin/allUsers", (req, res) => {
 
 });
 
-app.get("/admin/editUser/:id", (req, res) => {
+app.get("/admin/editUser/:id", userAuthenticated,(req, res) => {
 const id = req.params.id;
 User.findOne({_id: id}, (err, foundUser) => {
     if(err){
@@ -298,7 +326,7 @@ User.findOne({_id: id}, (err, foundUser) => {
 });
 
 //Delete user method
-app.get("/admin/user/:id",  (req, res) => {
+app.get("/admin/user/:id",  userAuthenticated,(req, res) => {
   const id = req.params.id;
   User.findByIdAndRemove({_id: id}, (err, foundUser) => {
       if(err){
