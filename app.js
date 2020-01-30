@@ -77,6 +77,17 @@ const commentSchema = {
   latitude: String,
   longitude: String,
 };
+
+// users section
+const userSchema = {
+  agency: String,
+  fullName: String,
+  email: String,
+  password: String,
+  status: String
+};
+
+const User =  mongoose.model('User', userSchema);
 const Officer =  mongoose.model('Officer', officerSchema);
 const Comment =  mongoose.model('Comment', commentSchema);
 
@@ -128,7 +139,28 @@ app.get("/admin", userAuthenticated,(req, res) =>{
 
 
 app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
-  res.render('admin/addOfficer');
+
+    Comment.find({agency: 'LRA'}).then(comments => {
+      var complains = [];
+      var applauds = [];
+      comments.forEach(com =>{
+          if(com.type == 'Complain'){
+            complains.push(com);
+          }
+      });
+      comments.forEach(com =>{
+        if(com.type == 'Applaud'){
+          applauds.push(com);
+        }
+      });
+
+    res.render('admin/addOfficer', 
+    {
+      comments: comments, 
+      complains: complains,
+      applauds: applauds
+    });
+  });
 });
 
 app.post("/admin/addOfficer", upload.single('officerImage'), userAuthenticated, (req, res) => {
@@ -158,36 +190,66 @@ app.post("/admin/addOfficer", upload.single('officerImage'), userAuthenticated, 
       }
     });
 
-  res.redirect("/");
+  res.redirect("/admin/allOfficers");
 
 });
 
 
 app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
 
-  Officer.find({}, (err, off) => {
-    if(err){
-      console.log(err);
-    }else{
-      var leng = off.length;
-      res.render('admin/allOfficers', {
-                officers: off,
-                offCount: leng
-              });
-    }
+  Officer.find({}).then(off => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/allOfficers', 
+      {
+        officers: off, 
+        comments: comments, 
+        complains: complains,
+        applauds: applauds
+      });
+    });
   });
   
 });
 
 app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Officer.findOne({_id: id}, (err, foundOff) => {
-      if(err){
-        console.log(err);
-      }else{
-        //show an existing listm
-        res.render('admin/editOfficer', { officer: foundOff });
-      }
+
+  Officer.findOne({_id: id}).then(foundOff => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/editOfficer', 
+      {
+        comments: comments, 
+        complains: complains,
+        applauds: applauds,
+        officer: foundOff 
+      });
+    });
   });
 });
 
@@ -196,26 +258,58 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
 app.get("/admin/allComments", userAuthenticated, (req, res) => {
   
-  Comment.find({}, (err, co) => {
-    if(err){
-      console.log(err);
-    }else{
-      res.render('admin/allComments', {comments: co });
-    }
+  Officer.find({}).then(off => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/allComments', 
+      {
+        officers: off, 
+        comments: comments, 
+        complains: complains,
+        applauds: applauds
+      });
+    });
   });
   
 });
 
 app.get("/admin/applauds", userAuthenticated, (req, res) => {
   
-  Comment.find({}, (err, co) => {
-    if(err){
-      console.log(err);
-    }else{
-      res.render('admin/applauds', {
-                comments: co
-              });
-    }
+  Officer.find({}).then(off => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/applauds', 
+      {
+        officers: off, 
+        comments: comments, 
+        complains: complains,
+        applauds: applauds
+      });
+    });
   });
   
 });
@@ -223,8 +317,32 @@ app.get("/admin/applauds", userAuthenticated, (req, res) => {
 // google map routes 
 app.get("/admin/details/:id", userAuthenticated,(req, res) => {
   const id = req.params.id;
-    Comment.findOne({_id: id}).then(foundCom => {
-        res.render('admin/commentDetails', { comment: foundCom });
+  Officer.find({}).then(off => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+      Comment.findOne({_id: id}).then(foundCom => {
+          var complains = [];
+          var applauds = [];
+          comments.forEach(com =>{
+              if(com.type == 'Complain'){
+                complains.push(com);
+              }
+          });
+          comments.forEach(com =>{
+            if(com.type == 'Applaud'){
+              applauds.push(com);
+            }
+          });
+
+        res.render('admin/commentDetails', 
+        {
+          officers: off, 
+          comments: comments, 
+          complains: complains,
+          applauds: applauds,
+          comment: foundCom
+        });
+      });
+    });
   });
 });
 
@@ -235,42 +353,86 @@ app.get("/admin/details/:id", userAuthenticated,(req, res) => {
 app.get("/admin/map/:id", userAuthenticated,(req, res) => {
   const id = req.params.id;
 
-    Comment.findOne({_id: id}, (err, foundCom) => {
-      if(err){
-        console.log(err);
-      }else{
-        //show an existing listm
-        res.render('admin/map', { comment: foundCom });
-      }
+  Officer.find({}).then(off => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+      Comment.findOne({_id: id}).then(foundCom => {
+          var complains = [];
+          var applauds = [];
+          comments.forEach(com =>{
+              if(com.type == 'Complain'){
+                complains.push(com);
+              }
+          });
+          comments.forEach(com =>{
+            if(com.type == 'Applaud'){
+              applauds.push(com);
+            }
+          });
+
+        res.render('admin/map', 
+        {
+          officers: off, 
+          comments: comments, 
+          complains: complains,
+          applauds: applauds,
+          comment: foundCom
+        });
+      });
+    });
   });
- 
 });
 
 app.get("/admin/map", userAuthenticated,(req, res) => {
  
-    Comment.findOne((err, foundCom) => {
-      if(err){
-        console.log(err);
-      }else{
-        res.render('admin/completeMap', { comments: foundCom });
-      }
+  Officer.find({}).then(off => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/completeMap', 
+      {
+        officers: off, 
+        comments: comments, 
+        complains: complains,
+        applauds: applauds
+      });
+    });
   });
  
 });
 
-// users section
-const userSchema = {
-  agency: String,
-  fullName: String,
-  email: String,
-  password: String,
-  status: String
-};
-
-const User =  mongoose.model('User', userSchema);
-
 app.get("/admin/addUser", userAuthenticated,(req, res) => {
-  res.render('admin/addUser');
+  Comment.find({agency: 'LRA'}).then(comments => {
+      var complains = [];
+      var applauds = [];
+      comments.forEach(com =>{
+          if(com.type == 'Complain'){
+            complains.push(com);
+          }
+      });
+      comments.forEach(com =>{
+        if(com.type == 'Applaud'){
+          applauds.push(com);
+        }
+      });
+
+    res.render('admin/addUser', 
+        {
+          comments: comments, 
+          complains: complains,
+          applauds: applauds
+        });
+  });
 });
 
 app.post("/admin/addUser", upload.single('image'), userAuthenticated,(req, res) => {
@@ -292,49 +454,76 @@ app.post("/admin/addUser", upload.single('image'), userAuthenticated,(req, res) 
         res.redirect("/admin/allUsers");
       }
     });
-});
+  });
 
 });
 
 
 app.get("/admin/allUsers", userAuthenticated,(req, res) => {
 
-  User.find({}, (err, user) => {
-    if(err){
-      console.log(err);
-    }else{
-      var leng = user.length;
-      res.render('admin/allUsers', {
-                users: user,
-                userCount: leng
-              });
-    }
+  User.find({}).then(user => {
+    Officer.find({}).then(off => {
+      Comment.find({agency: 'LRA'}).then(comments => {
+          var complains = [];
+          var applauds = [];
+          comments.forEach(com =>{
+              if(com.type == 'Complain'){
+                complains.push(com);
+              }
+          });
+          comments.forEach(com =>{
+            if(com.type == 'Applaud'){
+              applauds.push(com);
+            }
+          });
+  
+        res.render('admin/allUsers', 
+        {
+          officers: off, 
+          comments: comments, 
+          complains: complains,
+          applauds: applauds,
+          users: user
+        });
+      });
+    });
   });
 
 });
 
 app.get("/admin/editUser/:id", userAuthenticated,(req, res) => {
-const id = req.params.id;
-User.findOne({_id: id}, (err, foundUser) => {
-    if(err){
-      console.log(err);
-    }else{
-      //show an existing listm
-      res.render('admin/editUser', { user: foundUser });
-    }
-});
+  const id = req.params.id;
+  User.findOne({_id: id}).then(foundUser=> {
+        Comment.find({agency: 'LRA'}).then(comments => {
+          var complains = [];
+          var applauds = [];
+          comments.forEach(com =>{
+              if(com.type == 'Complain'){
+                complains.push(com);
+              }
+          });
+          comments.forEach(com =>{
+            if(com.type == 'Applaud'){
+              applauds.push(com);
+            }
+          });
+  
+        res.render('admin/editUser', 
+        {
+          comments: comments, 
+          complains: complains,
+          applauds: applauds,
+          foundUser: foundUser
+        });
+      });
+  });
 });
 
 //Delete user method
 app.get("/admin/user/:id",  userAuthenticated,(req, res) => {
   const id = req.params.id;
-  User.findByIdAndRemove({_id: id}, (err, foundUser) => {
-      if(err){
-        console.log(err);
-      }else{
-        //show an existing listm
-        res.redirect('/admin/allUsers');
-      }
+  User.findByIdAndRemove({_id: id}).then(foundUser => {
+      res.redirect('/admin/allUsers');
   });
 });
 
@@ -375,14 +564,6 @@ app.post("/login", (req, res, next)=>{
      req.logOut();
      res.redirect('/');
  });
-
-
-
-
-
-
-
-
 
 
 //  apis section
