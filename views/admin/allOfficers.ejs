@@ -13,9 +13,11 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,7 +27,7 @@
                         <td><%= officer.firstName %> <%= officer.lastName %></td>
                         <td><%= officer.position %></td>
                         <td><%= officer.email %></td>
-                        <td><%= officer.gender %></td>
+                        <td><img src="/images/officers/<%= officer.image %>" alt="" style="width: 50px"></td>
                         <td><%= officer.status %></td>
                         <td><a href="/admin/editOfficer/<%= officer._id %>"><i class="fas fa-edit"></i></a></td>
                     </tr>

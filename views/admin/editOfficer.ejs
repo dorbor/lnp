@@ -8,7 +8,7 @@
 <%- include('hub/sidebar'); -%>
 
 <br><br>
-		<div class="container">
+
 		    <div class="row my-2">
 		        <div class="col-lg-8 order-lg-2">
 		            <ul class="nav nav-tabs">
@@ -22,7 +22,7 @@
 		            <div class="tab-content py-4">
 		            	<div class="tab-pane active" id="edit">
 		            		<% //foundOfficer.forEach(officer => { %> 
-		                    <form action="/addOfficer" method="POST">
+		                    <form action="/admin/editOfficer/<%= officer._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
 		                        <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label" >First name</label>
 		                            <div class="col-lg-9">
@@ -63,6 +63,22 @@
 		                                <input class="form-control" type="number" name="id" value="<%= officer.id %>" required>
 		                            </div>
 								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">Officer Photo</label>
+		                            <div class="col-lg-9">
+		                                <input type="file" class="form-control" name="officerImage">
+		                            </div>
+								</div>
+								<div class="form-group row">
+		                            <label class="col-lg-3 col-form-label form-control-label">County of Assignment</label>
+		                            <div class="col-lg-9">
+		                                <select id="user_time_zone" class="form-control" size="0" class="form-control" name="assignment">
+		                                    <option value="">select Status</option>
+		                                    <option value="active">Active</option>
+		                                    <option value="not-active">Not Active</option>
+		                                </select>
+		                            </div>
+		                        </div>
 								<!-- <div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label">Officer Photo</label>
 		                            <div class="col-lg-9">
@@ -111,18 +127,17 @@
 		                            </div>
 		                        </div>
 		                        
-		                        <div class="form-group row">
+								
+								<div class="form-group row">
 		                            <label class="col-lg-3 col-form-label form-control-label"></label>
-		                            <div class="col-lg-4">
-		                                <form action="/deleteOfficer" method="">
-		                                	<input type="hidden"  value="<%= officer._id %>">
-		                                <input type="submit" class="btn btn-primary" value="Delete">
-		                                </form>
-		                            </div>
-		                            <div class="col-lg-5">
-		                                <input type="hidden"  value="<%= officer._id %>">
-		                                <input type="submit" class="btn btn-primary" value="Upload Officer" style="float: right;">
-		                            </div>
+		                            <div class="col-lg-5 col-xl-5">
+		                                <!-- <input type="reset" class="btn btn-secondary" value="Cancel"> -->
+		                                <input type="submit" class="btn btn-success btn-lg" value="Save Changes" style="float: left;">
+									</div>
+									
+									<div class="col-lg-4 col-xs-4">
+										<a href="/admin/deleteOfficer/<%= officer._id %>" class="btn btn-danger btn-lg" style="float: right;"> Delete </a>
+									</div>
 		                        </div>
 		                    </form>
 		                    <% //}); %>
@@ -132,15 +147,16 @@
 		            </div>
 		        </div>
 		        <div class="col-lg-4 order-lg-1 text-center">
-		            <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
-		            <h6 class="mt-2">Upload a different photo</h6>
-		            <label class="custom-file">
-		                <input type="file" id="file" class="custom-file-input">
-		                <span class="custom-file-control">Choose file</span>
-		            </label>
+					<% if(officer.image == ''){ %> 
+						<img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+					<h6 class="mt-2">Upload a different photo</h6>
+					<% }else{ %> 
+						<img src="/images/officers/<%= officer.image %>" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+					<% } %> 
+		            
 		        </div>
 		    </div>
-		</div>
+	
 
 <!-- Bottom component -->
  <%- include('hub/bottom'); -%>

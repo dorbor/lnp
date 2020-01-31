@@ -8,17 +8,12 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const {userAuthenticated} = require('./helper/auth');
+const {isEmpty} = require('./helper/uploadHelper');
 const mongoose = require('mongoose');
-const multer = require('multer');
+const upload = require('express-fileupload');
 
-const upload = multer({
-    destination: (req, file, cb) => {
-    cb(null, './images/');
-  }, 
-  filename: (req, file, cb) => {
-    cb(req.file.originalname);
-  }
-});
+
+
 mongoose.Promise = global.Promise;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -26,6 +21,7 @@ const saltRounds = 10;
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(upload());
 
 app.use(bodyParser.urlencoded({extended: true}));
 //app.use(expressValidator());
@@ -76,6 +72,8 @@ const commentSchema = {
   county: String,
   latitude: String,
   longitude: String,
+  date: String,
+  updatedBy: String,
 };
 
 // users section
@@ -83,11 +81,19 @@ const userSchema = {
   agency: String,
   fullName: String,
   email: String,
+  image: String,
   password: String,
-  status: String
+  status: String,
+};
+const categorySchema = {
+  agency: String,
+  name: String,
+  createdAt: String,
+  createdBy: String,
 };
 
 const User =  mongoose.model('User', userSchema);
+const Category =  mongoose.model('Category', categorySchema);
 const Officer =  mongoose.model('Officer', officerSchema);
 const Comment =  mongoose.model('Comment', commentSchema);
 
@@ -135,9 +141,6 @@ app.get("/admin", userAuthenticated,(req, res) =>{
 
 
 
-
-
-
 app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
 
     Comment.find({agency: 'LRA'}).then(comments => {
@@ -163,15 +166,26 @@ app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
   });
 });
 
-app.post("/admin/addOfficer", upload.single('officerImage'), userAuthenticated, (req, res) => {
-    console.log(req.file.originalname);
+app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
+  let fileName = 'placeHolder.png';
+  if(!isEmpty(req.files)){
+    const file = req.files.officerImage;
+     fileName = file.name;
+  
+    file.mv('./public/images/officers/'+ fileName, (err) => {
+      if(err) throw err;
+    });
+  
+  }
+  
+ 
     const setOfficr = new Officer({
       id: req.body.id,
       agency: 'LRA',
       firstName: req.body.firstName,
       middleName: req.body.middleName,
       lastName: req.body.lastName,
-      image: req.file.originalname,
+      image: fileName,
       email: req.body.email,
       gender: req.body.gender,
       department: req.body.department,
@@ -197,7 +211,7 @@ app.post("/admin/addOfficer", upload.single('officerImage'), userAuthenticated, 
 
 app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
 
-  Officer.find({}).then(off => {
+  Officer.find({agency: 'LRA'}).then(off => {
     Comment.find({agency: 'LRA'}).then(comments => {
         var complains = [];
         var applauds = [];
@@ -250,6 +264,77 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
         officer: foundOff 
       });
     });
+  });
+});
+
+///// update officer information
+app.put("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
+ 
+  if(!isEmpty(req.files)){
+    const file = req.files.officerImage;
+     fileName = file.name;
+  
+    file.mv('./public/images/officers/'+ fileName, (err) => {
+      if(err) throw err;
+    });
+  
+  }
+
+  Officer.findOne({_id: req.params.id}).then(foundOff => {
+    Comment.find({agency: 'LRA'}).then(comments => {
+        foundOff.id = req.body.id;
+        agency =  'LRA';
+        foundOff.firstName = req.body.firstName;
+        foundOff.middleName  = req.body.middleName;
+        foundOff.lastName = req.body.lastName;
+        if(!isEmpty(req.files)){
+          const file = req.files.officerImage;
+          let fileName = file.name;
+        
+          file.mv('./public/images/officers/'+ fileName, (err) => {
+            if(err) throw err;
+          });
+          foundOff.image = fileName;
+        }else{
+          foundOff.image = foundOff.image;
+        }
+        foundOff.email = req.body.email;
+        foundOff.gender = req.body.gender;
+        foundOff.department = req.body.department;
+        foundOff.division = req.body.division;
+        foundOff.position = req.body.position;
+        foundOff.section = req.body.section;
+        foundOff.status = req.body.status;
+        
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/allOfficers', 
+      {
+        comments: comments, 
+        complains: complains,
+        applauds: applauds,
+        officer: foundOff 
+      });
+    });
+  });
+});
+
+//Delete user method
+app.get("/admin/deleteOfficer/:id",  userAuthenticated,(req, res) => {
+  const id = req.params.id;
+  Officer.findByIdAndRemove({_id: id}).then(foundUser => {
+      res.redirect('/admin/allOfficers');
   });
 });
 
@@ -412,6 +497,7 @@ app.get("/admin/map", userAuthenticated,(req, res) => {
 });
 
 app.get("/admin/addUser", userAuthenticated,(req, res) => {
+  
   Comment.find({agency: 'LRA'}).then(comments => {
       var complains = [];
       var applauds = [];
@@ -435,7 +521,17 @@ app.get("/admin/addUser", userAuthenticated,(req, res) => {
   });
 });
 
-app.post("/admin/addUser", upload.single('image'), userAuthenticated,(req, res) => {
+app.post("/admin/addUser", userAuthenticated,(req, res) => {
+  let fileName = 'placeHolder.png';
+  if(!isEmpty(req.files)){
+    const file = req.files.userImage;
+     fileName = file.name;
+  
+    file.mv('./public/images/users/'+ fileName, (err) => {
+      if(err) throw err;
+    });
+  
+  }
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     // Store hash in your password DB.
   
@@ -443,6 +539,7 @@ app.post("/admin/addUser", upload.single('image'), userAuthenticated,(req, res) 
       agency: 'LRA',
       fullName: req.body.fullName,
       email: req.body.email,
+      image: fileName,
       password: hash,
       status: req.body.status,
     });
