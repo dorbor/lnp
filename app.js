@@ -173,7 +173,9 @@ app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
      fileName = file.name;
   
     file.mv('./public/images/officers/'+ fileName, (err) => {
-      if(err) throw err;
+      if(err) {
+        console.log(err); 
+      }
     });
   
   }
@@ -270,15 +272,17 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 ///// update officer information
 app.put("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
  
-  if(!isEmpty(req.files)){
-    const file = req.files.officerImage;
-     fileName = file.name;
+  // if(!isEmpty(req.files)){
+  //   const file = req.files.officerImage;
+  //    fileName = file.name;
   
-    file.mv('./public/images/officers/'+ fileName, (err) => {
-      if(err) throw err;
-    });
+  //   file.mv('./public/images/officers/'+ fileName, (err) => {
+  //     if(err) {
+  //    console.log(err); 
+  //    }
+  //   });
   
-  }
+  // }
 
   Officer.findOne({_id: req.params.id}).then(foundOff => {
     Comment.find({agency: 'LRA'}).then(comments => {
@@ -292,7 +296,9 @@ app.put("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
           let fileName = file.name;
         
           file.mv('./public/images/officers/'+ fileName, (err) => {
-            if(err) throw err;
+            if(err) {
+              console.log(err); 
+            }
           });
           foundOff.image = fileName;
         }else{
@@ -528,7 +534,9 @@ app.post("/admin/addUser", userAuthenticated,(req, res) => {
      fileName = file.name;
   
     file.mv('./public/images/users/'+ fileName, (err) => {
-      if(err) throw err;
+      if(err) {
+        console.log(err); 
+      }
     });
   
   }

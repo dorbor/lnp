@@ -8,6 +8,4 @@ module.exports = {
         }
         return true;
     }
-
-
 };
