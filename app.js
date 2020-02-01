@@ -41,8 +41,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-mongoose.connect("mongodb+srv://dorbor:Dorbor123@cluster0-8idgt.mongodb.net/findofficer", { useUnifiedTopology: true });
-
+mongoose.connect("mongodb+srv://dorbor:Dorbor123@cluster0-8idgt.mongodb.net/findofficer", { useNewUrlParser: true });
 var db = mongoose.connection;
 
 const officerSchema = {
@@ -270,19 +269,7 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 });
 
 ///// update officer information
-app.put("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
- 
-  // if(!isEmpty(req.files)){
-  //   const file = req.files.officerImage;
-  //    fileName = file.name;
-  
-  //   file.mv('./public/images/officers/'+ fileName, (err) => {
-  //     if(err) {
-  //    console.log(err); 
-  //    }
-  //   });
-  
-  // }
+app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
   Officer.findOne({_id: req.params.id}).then(foundOff => {
     Comment.find({agency: 'LRA'}).then(comments => {
@@ -325,13 +312,16 @@ app.put("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
           }
         });
 
-      res.render('admin/allOfficers', 
-      {
-        comments: comments, 
-        complains: complains,
-        applauds: applauds,
-        officer: foundOff 
-      });
+        foundOff.save((err) => {
+          if(err){
+            console.log(err);
+          }else{
+            console.log('Updated Seccessfully');
+          }
+        });
+
+      res.redirect('/admin/allOfficers');
+
     });
   });
 });
@@ -623,6 +613,45 @@ app.get("/admin/editUser/:id", userAuthenticated,(req, res) => {
       });
   });
 });
+
+// Edit user
+app.post("/admin/editUser/:id", userAuthenticated,(req, res) => {
+  const id = req.params.id;
+  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+    // Store hash in your password DB.
+    User.findOne({_id: id}).then(foundUser=> {
+      foundUser.agency = 'LRA';
+      foundUser.fullName = req.body.fullName;
+      foundUser.email = req.body.email;
+      if(!isEmpty(req.files)){
+        // let file = req.files.userImage;
+        // let fileName = file.name;
+      
+        // file.mv('./public/images/users/'+ fileName, (err) => {
+        //   if(err) {
+        //     console.log(err); 
+        //   }
+        // });
+        // foundUser.image = fileName;
+      }else{
+        foundUser.image = foundUser.image;
+      }
+      foundUser.password = hash;
+      foundUser.status = req.body.status;
+      
+      foundUser.save((err) => {
+        if(err){
+          console.log(err);
+        }else{
+          res.redirect("/admin/allUsers");
+        }
+      });
+    });
+  });
+
+
+});
+
 
 //Delete user method
 app.get("/admin/user/:id",  userAuthenticated,(req, res) => {
