@@ -8,11 +8,18 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const {userAuthenticated} = require('./helper/auth');
-const {isEmpty} = require('./helper/uploadHelper');
+// const {isEmpty} = require('./helper/uploadHelper');
 const mongoose = require('mongoose');
 const upload = require('express-fileupload');
 
-
+const isEmpty = (obj) => {
+  for(let key in obj){
+      if(obj.hasOwnProperty(key)){
+          return false;
+      }
+  }
+  return true;
+};
 
 mongoose.Promise = global.Promise;
 const bcrypt = require('bcrypt');
