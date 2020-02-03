@@ -64,13 +64,12 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-8">
-                    <p class="text-center">
+                    <!-- <p class="text-center">
                       <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                    </p>
+                    </p> -->
 
-                    <div class="chart">
-                      <!-- Sales Chart Canvas -->
-                      <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
+                    <div class="card">
+                      <canvas id="myChart" height="180px" style="height: 380px;"></canvas>
                     </div>
                     <!-- /.chart-responsive -->
                   </div>
@@ -220,5 +219,65 @@
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
+  <script>
+    let myChart = document.getElementById('myChart').getContext('2d');
+
+    // Global Options
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontColor = '#777';
+
+    let massPopChart = new Chart(myChart, {
+      type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+      data:{
+        labels:['Officers', 'Comments', 'Applauds', 'Complains'],
+        datasets:[{
+          label:'Data',
+          data:[
+            <%= officers.length %>,
+            <%= comments.length %>,
+            <%= applauds.length %>,
+            <%= complains.length %>
+          ],
+          //backgroundColor:'green',
+          backgroundColor:[
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(0, 255, 0, 0.6)',
+            'rgba(255, 0, 0, 0.6)'
+          ],
+          borderWidth:1,
+          borderColor:'#777',
+          hoverBorderWidth:3,
+          hoverBorderColor:'#000'
+        }]
+      },
+      options:{
+        title:{
+          display:true,
+          text:'RealTime Statistic',
+          fontSize:25
+        },
+        legend:{
+          display:true,
+          position:'right',
+          labels:{
+            fontColor:'#000'
+          }
+        },
+        layout:{
+          padding:{
+            left:50,
+            right:0,
+            bottom:0,
+            top:0
+          }
+        },
+        tooltips:{
+          enabled:true
+        }
+      }
+    });
+  </script>
   <!-- /.control-sidebar -->
   <%- include('hub/bottom'); -%>
