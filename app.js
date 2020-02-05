@@ -57,6 +57,7 @@ const officerSchema = {
   firstName: String,
   lastName: String,
   image: String,
+  assignment: String,
   middleName: String,
   email: String,
   gender: String,
@@ -194,6 +195,7 @@ app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
       middleName: req.body.middleName,
       lastName: req.body.lastName,
       image: fileName,
+      assignment: req.body.assignment,
       email: req.body.email,
       gender: req.body.gender,
       department: req.body.department,
@@ -285,6 +287,7 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
         foundOff.firstName = req.body.firstName;
         foundOff.middleName  = req.body.middleName;
         foundOff.lastName = req.body.lastName;
+        
         if(!isEmpty(req.files)){
           const file = req.files.officerImage;
           let fileName = file.name;
@@ -295,9 +298,11 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
             }
           });
           foundOff.image = fileName;
-        }else{
+          }else{
           foundOff.image = foundOff.image;
         }
+
+        foundOff.assignment = req.body.assignment;
         foundOff.email = req.body.email;
         foundOff.gender = req.body.gender;
         foundOff.department = req.body.department;
