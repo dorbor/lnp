@@ -38,7 +38,7 @@ app.use('/admin/editOfficer', express.static((__dirname, 'public')));
 app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
 app.use('/admin/details', express.static((__dirname, 'public')));
-app.use('/static', express.static(__dirname,'public/images/officers'));
+app.use('/static', express.static((__dirname,'public/images/officers')));
 
 app.use(session({
   secret: 'max', 
