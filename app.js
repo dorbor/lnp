@@ -38,6 +38,7 @@ app.use('/admin/editOfficer', express.static((__dirname, 'public')));
 app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
 app.use('/admin/details', express.static((__dirname, 'public')));
+app.use('/static', express.static((__dirname,'public/images/officers')));
 
 app.use(session({
   secret: 'max', 
@@ -715,14 +716,10 @@ app.post("/login", (req, res, next)=>{
 //  apis section
 
 ///request for all officers ///////////
-app.route('/api/officers')
+app.route('/api/lra/officers')
 .get((req, res) => {
-  Officer.find((err, foundOff) => {
-    if(!err){
+  Officer.find({agency: 'LRA'}).then(foundOff => {
       res.send(foundOff);
-    }else{
-      res.send(err);
-    }
   });
 });
 
