@@ -752,7 +752,7 @@ app.route('/api/comment')
   });
 });
 
-app.route('/api/officers/:id')
+app.route('/api/lra/officers/:id')
 
 .get((req, res) => {
   
