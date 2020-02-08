@@ -246,7 +246,6 @@ app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
       });
     });
   });
-  
 });
 
 app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
