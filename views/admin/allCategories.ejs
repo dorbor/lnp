@@ -1,0 +1,35 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+
+        
+           <br>
+           <h1 class="display-2">Categories</h1>
+           <table class="table table-hover table-dark desplay" id="example">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="row">Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% categories.forEach(cat => { %> 
+                    <tr>
+                        <td><%= cat.title %></td>
+                        <td><%= cat.desc %></td>
+                        <td><%= cat.created %></td>
+                        <!-- <td><a href="/admin/editCategory/<%= //cat._id %>"><i class="fas fa-edit"></i></a></td> -->
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+<!-- Bottom component -->
+<%- include('hub/bottom'); -%>

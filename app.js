@@ -79,6 +79,7 @@ const commentSchema = {
   content: String,
   county: String,
   latitude: String,
+  category: String,
   longitude: String,
   date: String,
   updatedBy: String,
@@ -95,9 +96,9 @@ const userSchema = {
 };
 const categorySchema = {
   agency: String,
-  name: String,
+  title: String,
+  desc: String,
   createdAt: String,
-  createdBy: String,
 };
 
 const User =  mongoose.model('User', userSchema);
@@ -144,13 +145,15 @@ app.get("/admin", userAuthenticated,(req, res) =>{
       });
     });
   });
-
 }); 
 
 
 
-app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
 
+
+//Categories section 
+
+app.get("/admin/addCategory",  (req, res) => {
     Comment.find({agency: 'LRA'}).then(comments => {
       var complains = [];
       var applauds = [];
@@ -165,7 +168,7 @@ app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
         }
       });
 
-    res.render('admin/addOfficer', 
+    res.render('admin/addCategory', 
     {
       comments: comments, 
       complains: complains,
@@ -173,6 +176,79 @@ app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
     });
   });
 });
+
+app.post("/admin/addCategory",  userAuthenticated, (req, res) => {
+
+    const setCategory = new Category({
+      agency: 'LRA',
+      title: req.body.title,
+      desc: req.body.desc,
+    });
+
+    setCategory.save((err) => {
+      if(err){
+        console.log(err);
+      }else{
+        console.log('Category save');
+      }
+    });
+  res.redirect("/admin/allCategories");
+});
+
+app.get("/admin/allCategories", userAuthenticated, (req, res) => {
+      Category.find({agency: 'LRA'}).then(cat => {
+        Comment.find({agency: 'LRA'}).then(comments => {
+          var complains = [];
+          var applauds = [];
+          comments.forEach(com =>{
+              if(com.type == 'Complain'){
+                complains.push(com);
+              }
+          });
+          comments.forEach(com =>{
+            if(com.type == 'Applaud'){
+              applauds.push(com);
+            }
+          });
+
+        res.render('admin/allCategories', 
+        {
+          comments: comments, 
+          complains: complains,
+          applauds: applauds,
+          categories: cat
+        });
+      });
+    });
+});
+
+///Category ends 
+
+app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
+
+  Comment.find({agency: 'LRA'}).then(comments => {
+    var complains = [];
+    var applauds = [];
+    comments.forEach(com =>{
+        if(com.type == 'Complain'){
+          complains.push(com);
+        }
+    });
+    comments.forEach(com =>{
+      if(com.type == 'Applaud'){
+        applauds.push(com);
+      }
+    });
+
+  res.render('admin/addOfficer', 
+  {
+    comments: comments, 
+    complains: complains,
+    applauds: applauds
+  });
+});
+});
+
 
 app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
   let fileName = 'placeHolder.png';
@@ -185,9 +261,7 @@ app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
         console.log(err); 
       }
     });
-  
   }
-  
  
     const setOfficr = new Officer({
       id: req.body.id,
@@ -216,7 +290,6 @@ app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
     });
 
   res.redirect("/admin/allOfficers");
-
 });
 
 
@@ -410,7 +483,7 @@ app.get("/admin/applauds", userAuthenticated, (req, res) => {
 // google map routes 
 app.get("/admin/details/:id", userAuthenticated,(req, res) => {
   const id = req.params.id;
-  Officer.find({}).then(off => {
+  Category.find({}).then(cat => {
     Comment.find({agency: 'LRA'}).then(comments => {
       Comment.findOne({_id: id}).then(foundCom => {
           var complains = [];
@@ -428,7 +501,7 @@ app.get("/admin/details/:id", userAuthenticated,(req, res) => {
 
         res.render('admin/commentDetails', 
         {
-          officers: off, 
+          categories: cat, 
           comments: comments, 
           complains: complains,
           applauds: applauds,
@@ -440,6 +513,19 @@ app.get("/admin/details/:id", userAuthenticated,(req, res) => {
 });
 
 
+//updating comments category
+app.post('/admin/comment/:id', function (req, res) {
+  var newCategory = req.body.category;
+  var id = req.params.id;
+  Comment.updateOne(
+    { _id : id },
+    {
+      $set: { category: newCategory },
+      $currentDate: { lastModified: true }
+    }
+ );
+  res.redirect("/admin/details/"+ id);
+});
 
 
 // google map routes 
