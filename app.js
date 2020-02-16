@@ -11,6 +11,8 @@ const {userAuthenticated} = require('./helper/auth');
 // const {isEmpty} = require('./helper/uploadHelper');
 const mongoose = require('mongoose');
 const upload = require('express-fileupload');
+const dateFormat = require('dateformat');
+const now = new Date();
 
 const isEmpty = (obj) => {
   for(let key in obj){
@@ -35,6 +37,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static((__dirname, 'public')));
 app.use('/admin', express.static((__dirname, 'public')));
 app.use('/admin/editOfficer', express.static((__dirname, 'public')));
+app.use('/admin/editPosition', express.static((__dirname, 'public')));
 app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
 app.use('/admin/details', express.static((__dirname, 'public')));
@@ -100,9 +103,14 @@ const categorySchema = {
   desc: String,
   createdAt: String,
 };
-
+const positionSchema = {
+  agency: String,
+  title: String,
+  date: String,
+};
 const User =  mongoose.model('User', userSchema);
 const Category =  mongoose.model('Category', categorySchema);
+const Position =  mongoose.model('Position', positionSchema);
 const Officer =  mongoose.model('Officer', officerSchema);
 const Comment =  mongoose.model('Comment', commentSchema);
 
@@ -121,10 +129,17 @@ app.get("/", (req, res) =>{
 
 app.get("/admin", userAuthenticated,(req, res) =>{
 
-  Officer.find({}).then(off => {
+  Officer.find({agency: 'LRA'}).then(off => {
     Comment.find({agency: 'LRA'}).then(comments => {
         var complains = [];
         var applauds = [];
+        var montserrado = [];
+        var bong = [];
+        var nimba = [];
+        var bomi = [];
+        var lofa = [];
+        var margibi = [];
+        var capemount = [];
         comments.forEach(com =>{
             if(com.type == 'Complain'){
               complains.push(com);
@@ -135,13 +150,41 @@ app.get("/admin", userAuthenticated,(req, res) =>{
             applauds.push(com);
           }
         });
+        off.forEach(offco =>{
+          if(offco.assignment == 'Montserrado'){
+            montserrado.push(offco);
+          }
+          if(offco.assignment == 'Bong'){
+            bong.push(offco);
+          }
+          if(offco.assignment == 'Bomi'){
+            bomi.push(offco);
+          }
+          if(offco.assignment == 'Nimba'){
+            nimba.push(offco);
+          }
+          if(offco.assignment == 'Lofa'){
+            lofa.push(offco);
+          }
+          if(offco.assignment == 'Margibi'){
+            margibi.push(offco);
+          }
+        });
+        
 
       res.render('admin/index', 
       {
         officers: off, 
         comments: comments, 
         complains: complains,
-        applauds: applauds
+        applauds: applauds,
+        // counties chart
+        montserrado: montserrado,
+        bomi: bomi,
+        nimba: nimba,
+        lofa: lofa,
+        margibi: margibi,
+
       });
     });
   });
@@ -153,7 +196,7 @@ app.get("/admin", userAuthenticated,(req, res) =>{
 
 //Categories section 
 
-app.get("/admin/addCategory",  (req, res) => {
+app.get("/admin/addCategory",  userAuthenticated, (req, res) => {
     Comment.find({agency: 'LRA'}).then(comments => {
       var complains = [];
       var applauds = [];
@@ -224,29 +267,148 @@ app.get("/admin/allCategories", userAuthenticated, (req, res) => {
 
 ///Category ends 
 
-app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
+//Position section 
 
+app.get("/admin/addPosition",  userAuthenticated, (req, res) => {
   Comment.find({agency: 'LRA'}).then(comments => {
-    var complains = [];
-    var applauds = [];
-    comments.forEach(com =>{
-        if(com.type == 'Complain'){
-          complains.push(com);
+      var complains = [];
+      var applauds = [];
+      comments.forEach(com =>{
+          if(com.type == 'Complain'){
+            complains.push(com);
+          }
+      });
+      comments.forEach(com =>{
+        if(com.type == 'Applaud'){
+          applauds.push(com);
         }
-    });
-    comments.forEach(com =>{
-      if(com.type == 'Applaud'){
-        applauds.push(com);
-      }
-    });
+      });
 
-  res.render('admin/addOfficer', 
-  {
-    comments: comments, 
-    complains: complains,
-    applauds: applauds
+      res.render('admin/addPosition', 
+      {
+        comments: comments, 
+        complains: complains,
+        applauds: applauds
+      });
   });
 });
+
+app.post("/admin/addPosition",  userAuthenticated, (req, res) => {
+
+    const setPosition = new Position({
+      agency: 'LRA',
+      title: req.body.title,
+      date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+    });
+
+    setPosition.save((err) => {
+      if(err){
+        console.log('Position save error' + err);
+      }
+    });
+  res.redirect("/admin/allPositions");
+  });
+
+  app.get("/admin/editPosition/:id",  userAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Comment.find({agency: 'LRA'}).then(comments => {
+      Position.findOne({agency: 'LRA', _id : id }).then(pos => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+  
+        res.render('admin/editPosition', 
+        {
+          comments: comments, 
+          complains: complains,
+          applauds: applauds, 
+          position: pos,
+        });
+      });
+    });
+  });
+
+  app.post("/admin/editPosition/:id",  userAuthenticated, (req, res) => {
+    const id = req.params.id;
+      Position.findOne({agency: 'LRA', _id : id }).then(pos => {
+        pos.agency = 'LRA';
+        pos.title = req.body.title;
+        pos.date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+        
+        pos.save((err) => {
+          if(err){
+            console.log(err);
+          }else{
+            res.redirect("/admin/allPositions");
+          }
+        });
+      });
+  });
+
+app.get("/admin/allPositions", userAuthenticated, (req, res) => {
+    Position.find({agency: 'LRA'}).then(pos => {
+      Comment.find({agency: 'LRA'}).then(comments => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+
+      res.render('admin/allPositions', 
+      {
+        comments: comments, 
+        complains: complains,
+        applauds: applauds,
+        positions: pos
+      });
+    });
+  });
+});
+
+///Position ends 
+
+app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
+
+    Comment.find({agency: 'LRA'}).then(comments => {
+      Position.find({agency: 'LRA'}).then(pos => {
+      var complains = [];
+      var applauds = [];
+      comments.forEach(com =>{
+          if(com.type == 'Complain'){
+            complains.push(com);
+          }
+      });
+      comments.forEach(com =>{
+        if(com.type == 'Applaud'){
+          applauds.push(com);
+        }
+      });
+
+    res.render('admin/addOfficer', 
+    {
+      comments: comments, 
+      complains: complains,
+      applauds: applauds,
+      positions: pos,
+    });
+  });
+  });
 });
 
 
@@ -326,6 +488,7 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
   Officer.findOne({_id: id}).then(foundOff => {
     Comment.find({agency: 'LRA'}).then(comments => {
+      Position.find({agency: 'LRA'}).then(pos => {
         var complains = [];
         var applauds = [];
         comments.forEach(com =>{
@@ -339,12 +502,14 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
           }
         });
 
-      res.render('admin/editOfficer', 
-      {
-        comments: comments, 
-        complains: complains,
-        applauds: applauds,
-        officer: foundOff 
+        res.render('admin/editOfficer', 
+        {
+          comments: comments, 
+          complains: complains,
+          applauds: applauds,
+          officer: foundOff,
+          positions: pos,
+        });
       });
     });
   });
@@ -515,14 +680,11 @@ app.get("/admin/details/:id", userAuthenticated,(req, res) => {
 
 //updating comments category
 app.post('/admin/comment/:id', function (req, res) {
-  var newCategory = req.body.category;
+  var newCategory = req.body;
   var id = req.params.id;
   Comment.updateOne(
     { _id : id },
-    {
-      $set: { category: newCategory },
-      $currentDate: { lastModified: true }
-    }
+    { $set: newCategory }
  );
   res.redirect("/admin/details/"+ id);
 });
@@ -722,15 +884,15 @@ app.post("/admin/editUser/:id", userAuthenticated,(req, res) => {
       foundUser.fullName = req.body.fullName;
       foundUser.email = req.body.email;
       if(!isEmpty(req.files)){
-        // let file = req.files.userImage;
-        // let fileName = file.name;
-      
-        // file.mv('./public/images/users/'+ fileName, (err) => {
-        //   if(err) {
-        //     console.log(err); 
-        //   }
-        // });
-        // foundUser.image = fileName;
+        const file = req.files.userImage;
+          let fileName = file.name;
+        
+          file.mv('./public/images/users/'+ fileName, (err) => {
+            if(err) {
+              console.log(err); 
+            }
+          });
+          foundUser.image = fileName;
       }else{
         foundUser.image = foundUser.image;
       }

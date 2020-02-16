@@ -1,0 +1,32 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+
+           <br>
+           <h1 class="display-2">Positions</h1>
+           <table class="table table-hover table-dark desplay" id="example">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="row">Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% positions.forEach(pos => { %> 
+                    <tr>
+                        <td><%= pos.title %></td>
+                        <td><%= pos.date %></td>
+                        <td><a href="/admin/editPosition/<%= pos._id %>""><i class="fas fa-edit"></i></a></td>
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+<!-- Bottom component -->
+<%- include('hub/bottom'); -%>
