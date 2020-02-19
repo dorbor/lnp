@@ -184,7 +184,6 @@ app.get("/admin", userAuthenticated,(req, res) =>{
         nimba: nimba,
         lofa: lofa,
         margibi: margibi,
-
       });
     });
   });
@@ -456,7 +455,8 @@ app.post("/admin/addOfficer",  userAuthenticated, (req, res) => {
 
 
 app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
-
+  // Officer.find({agency: 'LRA'}).sort( {id: 'desc'} ).toArray( (err, off) => {
+  //   if (err) throw err;
   Officer.find({agency: 'LRA'}).then(off => {
     Comment.find({agency: 'LRA'}).then(comments => {
         var complains = [];
@@ -472,12 +472,11 @@ app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
           }
         });
 
-      res.render('admin/allOfficers', 
-      {
+      res.render('admin/allOfficers', {
         officers: off, 
         comments: comments, 
         complains: complains,
-        applauds: applauds
+        applauds: applauds,
       });
     });
   });
@@ -989,6 +988,7 @@ app.route('/api/comment')
     county: req.body.county,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
   comment.save((err) => {
