@@ -99,7 +99,7 @@
             <!-- TABLE: LATEST ORDERS -->
             <div class="card">
               <div class="card-header border-transparent">
-                <h3 class="card-title">Latest Orders</h3>
+                <h3 class="card-title">All Comments</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -119,7 +119,7 @@
                       <th>Officer ID</th>
                       <th>Author</th>
                       <th>Content</th>
-                      <th>reserved</th>
+                      <th>Date</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -130,7 +130,7 @@
                             <td><%= comment.fullName %></td>
                             <td><span class="badge badge-danger"><%= comment.content %></span></td>
                             <td>
-                              <div class="sparkbar" data-color="#00a65a" data-height="20">coming soon</div>
+                              <div class="sparkbar" data-color="#00a65a" data-height="20"><%= comment.date %></div>
                             </td>
                           </tr>
                         <% }else{ %> 
@@ -139,7 +139,7 @@
                             <td><%= comment.fullName %></td>
                             <td><span class="badge badge-success"><%= comment.content %></span></td>
                             <td>
-                              <div class="sparkbar" data-color="#00a65a" data-height="20">coming soon</div>
+                              <div class="sparkbar" data-color="#00a65a" data-height="20"><%= comment.date %></div>
                             </td>
                           </tr>
                         <% } %> 
@@ -151,11 +151,7 @@
                 <!-- /.table-responsive -->
               </div>
               <!-- /.card-body -->
-              <!-- <div class="card-footer clearfix">
-                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
-              </div> -->
-              <!-- /.card-footer -->
+   
             </div>
             <!-- /.card -->
           </div>
@@ -164,7 +160,7 @@
           <div class="col-md-5">
             <div class="card">
               <div class="card-header border-transparent">
-                <h3 class="card-title">Officers by Position</h3>
+                <h3 class="card-title">Officers by County</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -186,6 +182,36 @@
           </div>
           <!-- /.col -->
         </div>
+
+
+
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> Applauds </h5>
+                <div id="applaud" style="width: 100%; height: 350px;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Complaints</h5>
+                <div id="" style="width: 100%; height: 350px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
         <!-- /.row -->
       </div><!--/. container-fluid -->
     </section>
@@ -196,9 +222,13 @@
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
+
+
+
+
+  <!-- charts -->
   <script>
     let myChart = document.getElementById('myChart').getContext('2d');
-
     // Global Options
     Chart.defaults.global.defaultFontFamily = 'Lato';
     Chart.defaults.global.defaultFontSize = 18;
@@ -256,6 +286,40 @@
       }
     });
     
+    // officers by counties chart
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(applaudChart);
+    function applaudChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Task', 'Hours per Day'],
+        ['Montserrado',     <%= montserrado.length %>],
+        ['Bomi',      <%= bomi.length %>],
+        ['Nimba',  <%= nimba.length %>],
+        ['Lofa', <%= lofa.length %>],
+        ['Margibi',    <%= margibi.length %>],
+        ['Cape Mount',    <%= capemount.length %>],
+        ['Gbarpolu',    <%= gbarpolu.length %>],
+        ['Grand Bassa',    <%= grandBassa.length %>],
+        ['Rivergee',    <%= rivergee.length %>],
+        ['Rivercess',    <%= rivercess.length %>],
+        ['Grand Kru',    <%= grandkru.length %>],
+        ['Grand Gedeh',    <%= grandgedeh.length %>],
+        ['MaryLand',    <%= maryland.length %>],
+   
+      ]);
+
+      var options = {
+        title: 'Officers Assignments',
+        is3D: true,
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+      chart.draw(data, options);
+    }
+
+
+    // applaud by county chart
+    // officers by counties chart
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -273,7 +337,7 @@
         is3D: true,
       };
 
-      var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+      var chart = new google.visualization.PieChart(document.getElementById('applaud'));
       chart.draw(data, options);
     }
   </script>

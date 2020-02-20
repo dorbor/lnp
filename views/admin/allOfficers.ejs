@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | DataTables</title>
+  <title>Admin : LRA | Officers Listing </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -64,7 +64,7 @@
                   <th>Id#</th>
                   <th>Full Name</th>
                   <th>Position</th>
-                  <th>Email</th>
+                  <th>Date</th>
                   <th>Image</th>
                 </tr>
                 </thead>
@@ -82,7 +82,7 @@
                         <th scope="row"><%= officer.id %></th>
                         <td><%= officer.firstName %> <%= officer.lastName %></td>
                         <td><%= officer.position %></td>
-                        <td><%= officer.email %></td>
+                        <td><%= officer.date %></td>
                         <td><img src="/images/officers/<%= officer.image %>" alt="" style="width: 50px"></td>
                         <td><%= officer.status.toUpperCase(); %></td>
                         <td><a href="/admin/editOfficer/<%= officer._id %>"><i class="fas fa-edit"></i></a></td>

@@ -133,6 +133,7 @@ app.get("/admin", userAuthenticated,(req, res) =>{
     Comment.find({agency: 'LRA'}).then(comments => {
         var complains = [];
         var applauds = [];
+        // counties 
         var montserrado = [];
         var bong = [];
         var nimba = [];
@@ -140,6 +141,13 @@ app.get("/admin", userAuthenticated,(req, res) =>{
         var lofa = [];
         var margibi = [];
         var capemount = [];
+        var gbarpolu = [];
+        var grandBassa = [];
+        var rivergee = [];
+        var rivercess = [];
+        var grandkru = [];
+        var grandgedeh = [];
+        var maryland = [];
         comments.forEach(com =>{
             if(com.type == 'Complain'){
               complains.push(com);
@@ -150,6 +158,8 @@ app.get("/admin", userAuthenticated,(req, res) =>{
             applauds.push(com);
           }
         });
+        
+        // officers by counties
         off.forEach(offco =>{
           if(offco.assignment == 'Montserrado'){
             montserrado.push(offco);
@@ -169,6 +179,24 @@ app.get("/admin", userAuthenticated,(req, res) =>{
           if(offco.assignment == 'Margibi'){
             margibi.push(offco);
           }
+          if(offco.assignment == 'Grand Cape Mount'){
+            capemount.push(offco);
+          }if(offco.assignment == 'Gbarpolu'){
+            gbarpolu.push(offco);
+          }if(offco.assignment == 'Grand Bassa'){
+            grandBassa.push(offco);
+          }if(offco.assignment == 'River Gee'){
+            rivergee.push(offco);
+          }if(offco.assignment == 'Rivercess'){
+            rivercess.push(offco);
+          }if(offco.assignment == 'Grand Kru'){
+            grandkru.push(offco);
+          }if(offco.assignment == 'Grand Gedeh'){
+            grandgedeh.push(offco);
+          }if(offco.assignment == 'Maryland'){
+            maryland.push(offco);
+          }
+
         });
         
 
@@ -183,7 +211,15 @@ app.get("/admin", userAuthenticated,(req, res) =>{
         bomi: bomi,
         nimba: nimba,
         lofa: lofa,
-        margibi: margibi,
+        margibi: margibi,       
+        capemount: capemount,
+        gbarpolu : gbarpolu,
+        grandBassa : grandBassa,
+        rivergee : rivergee,
+        rivercess : rivercess,
+        grandkru : grandkru,
+        grandgedeh : grandgedeh,
+        maryland : maryland,
       });
     });
   });
