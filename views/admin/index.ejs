@@ -160,7 +160,7 @@
           <div class="col-md-5">
             <div class="card">
               <div class="card-header border-transparent">
-                <h3 class="card-title">Officers by County</h3>
+                <h3 class="card-title">Officers by Counties</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -187,22 +187,29 @@
 
 
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <div class="card">
+              <div class="card-header border-transparent">
+                <h3 class="card-title">Applauds and complaints by Counties</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <!-- <button type="button" class="btn btn-tool" data-card-widget="espand">
+                    <i class="fas fa-plus"></i>
+                  </button> -->
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
               <div class="card-body">
-                <h5 class="card-title"> Applauds </h5>
-                <div id="applaud" style="width: 100%; height: 350px;"></div>
+                <div id="comments" style="width: 100%; height: 450px;"></div>
               </div>
             </div>
           </div>
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Complaints</h5>
-                <div id="" style="width: 100%; height: 350px;"></div>
-              </div>
-            </div>
-          </div>
+          
         </div>
 
 
@@ -318,28 +325,38 @@
     }
 
 
-    // applaud by county chart
-    // officers by counties chart
-    google.charts.load("current", {packages:["corechart"]});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
-        ['Montserrado',     <%= montserrado.length %>],
-        ['Bomi',      <%= bomi.length %>],
-        ['Nimba',  <%= nimba.length %>],
-        ['Lofa', <%= lofa.length %>],
-        ['Margibi',    <%= margibi.length %>]
-      ]);
+    // applauds and complaints by counties chart
+    google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(commentsChart);
 
-      var options = {
-        title: 'Officers Assignments',
-        is3D: true,
-      };
+      function commentsChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Applauds', 'Complaints'],
+          ['Bomi',  <%= appBomi.length %>,      <%= comBomi.length %>],
+          ['Montserrado',  <%= appMontserrado.length %>,      <%= comMontserrado.length %>],
+          ['Nimba',  <%= appNimba.length %>,      <%= comNimba.length %>],
+          ['Lofa',  <%= appLofa.length %>,      <%= comLofa.length %>],
+          ['Margibi',  <%= appMargibi.length %>,      <%= comMargibi.length %>],
+          ['Cape Mount',  <%= appCapemount.length %>,      <%= comCapemount.length %>],
+          ['Gbarpolu',  <%= appGbarpolu.length %>,      <%= comGbarpolu.length %>],
+          ['Grand Bassa',  <%= appGrandBassa.length %>,      <%= comGrandBassa.length %>],
+          ['Rivergee',  <%= appRivergee.length %>,      <%= comRivergee.length %>],
+          ['Rivercess',  <%= appRivercess.length %>,      <%= comRivercess.length %>],
+          ['Grand Kru',  <%= appGrandkru.length %>,      <%= comGrandkru.length %>],
+          ['Bomi',  <%= appBomi.length %>,      <%= comBomi.length %>],
+          ['MaryLand',  <%= appMaryland.length %>,      <%= comMaryland.length %>],
+        ]);
 
-      var chart = new google.visualization.PieChart(document.getElementById('applaud'));
-      chart.draw(data, options);
-    }
+        var options = {
+          title: 'Statistics',
+          hAxis: {title: 'Counties',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('comments'));
+        chart.draw(data, options);
+      }
+
   </script>
   <!-- /.control-sidebar -->
   <%- include('hub/bottom'); -%>

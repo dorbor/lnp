@@ -133,7 +133,7 @@ app.get("/admin", userAuthenticated,(req, res) =>{
     Comment.find({agency: 'LRA'}).then(comments => {
         var complains = [];
         var applauds = [];
-        // counties 
+        // officers by counties counties 
         var montserrado = [];
         var bong = [];
         var nimba = [];
@@ -148,38 +148,123 @@ app.get("/admin", userAuthenticated,(req, res) =>{
         var grandkru = [];
         var grandgedeh = [];
         var maryland = [];
+        // comments by officers
+        var comMontserrado = [];
+        var comBong = [];
+        var comNimba = [];
+        var comBomi = [];
+        var comLofa = [];
+        var comMargibi = [];
+        var comCapemount = [];
+        var comGbarpolu = [];
+        var comGrandBassa = [];
+        var comRivergee = [];
+        var comRivercess = [];
+        var comGrandkru = [];
+        var comGrandgedeh = [];
+        var comMaryland = [];
+        // Applauds by officers
+        var appMontserrado = [];
+        var appBong = [];
+        var appNimba = [];
+        var appBomi = [];
+        var appLofa = [];
+        var appMargibi = [];
+        var appCapemount = [];
+        var appGbarpolu = [];
+        var appGrandBassa = [];
+        var appRivergee = [];
+        var appRivercess = [];
+        var appGrandkru = [];
+        var appGrandgedeh = [];
+        var appMaryland = [];
+
         comments.forEach(com =>{
             if(com.type == 'Complain'){
               complains.push(com);
+                if(com.county == 'Montserrado'){
+                  comMontserrado.push(com);
+                }if(com.county == 'Bong'){
+                  comBong.push(com);
+                }if(com.county == 'Bomi'){
+                  comBomi.push(com);
+                }if(com.county == 'Nimba'){
+                  comNimba.push(com);
+                }if(com.county == 'lofa'){
+                  comLofa.push(com);
+                }if(com.county == 'Margibi'){
+                  comMargibi.push(com);
+                }if(com.county == 'Grand Cape Mount'){
+                  comCapemount.push(com);
+                }if(com.county == 'Gbarpolu'){
+                  comGbarpolu.push(com);
+                }if(com.county == 'Grand Bassa'){
+                  comGrandBassa.push(com);
+                }if(com.county == 'River Gee'){
+                  comRivergee.push(com);
+                }if(com.county == 'Rivercess'){
+                  comRivercess.push(com);
+                }if(com.county == 'Grand Kru'){
+                  comGrandkru.push(com);
+                }if(com.county == 'Grand Gedeh'){
+                  comGrandgedeh.push(com);
+                }if(com.county == 'Maryland'){
+                  comMaryland.push(com);
+                }
             }
         });
+
+
         comments.forEach(com =>{
           if(com.type == 'Applaud'){
             applauds.push(com);
+            if(com.county == 'Montserrado'){
+                  appMontserrado.push(com);
+                }if(com.county == 'Bong'){
+                  appBong.push(com);
+                }if(com.county == 'Bomi'){
+                  appBomi.push(com);
+                }if(com.county == 'Nimba'){
+                  appNimba.push(com);
+                }if(com.county == 'lofa'){
+                  appLofa.push(com);
+                }if(com.county == 'Margibi'){
+                  appMargibi.push(com);
+                }if(com.county == 'Grand Cape Mount'){
+                  appCapemount.push(com);
+                }if(com.county == 'Gbarpolu'){
+                  appGbarpolu.push(com);
+                }if(com.county == 'Grand Bassa'){
+                  appGrandBassa.push(com);
+                }if(com.county == 'River Gee'){
+                  appRivergee.push(com);
+                }if(com.county == 'Rivercess'){
+                  appRivercess.push(com);
+                }if(com.county == 'Grand Kru'){
+                  appGrandkru.push(com);
+                }if(com.county == 'Grand Gedeh'){
+                  appGrandgedeh.push(com);
+                }if(com.county == 'Maryland'){
+                  appMaryland.push(com);
+                }
           }
         });
-        
+
         // officers by counties
         off.forEach(offco =>{
           if(offco.assignment == 'Montserrado'){
             montserrado.push(offco);
-          }
-          if(offco.assignment == 'Bong'){
+          }if(offco.assignment == 'Bong'){
             bong.push(offco);
-          }
-          if(offco.assignment == 'Bomi'){
+          }if(offco.assignment == 'Bomi'){
             bomi.push(offco);
-          }
-          if(offco.assignment == 'Nimba'){
+          }if(offco.assignment == 'Nimba'){
             nimba.push(offco);
-          }
-          if(offco.assignment == 'Lofa'){
+          }if(offco.assignment == 'Lofa'){
             lofa.push(offco);
-          }
-          if(offco.assignment == 'Margibi'){
+          }if(offco.assignment == 'Margibi'){
             margibi.push(offco);
-          }
-          if(offco.assignment == 'Grand Cape Mount'){
+          }if(offco.assignment == 'Grand Cape Mount'){
             capemount.push(offco);
           }if(offco.assignment == 'Gbarpolu'){
             gbarpolu.push(offco);
@@ -196,17 +281,15 @@ app.get("/admin", userAuthenticated,(req, res) =>{
           }if(offco.assignment == 'Maryland'){
             maryland.push(offco);
           }
-
         });
         
 
-      res.render('admin/index', 
-      {
+      res.render('admin/index', {
         officers: off, 
         comments: comments, 
         complains: complains,
         applauds: applauds,
-        // counties chart
+        // officers counties chart
         montserrado: montserrado,
         bomi: bomi,
         nimba: nimba,
@@ -220,6 +303,36 @@ app.get("/admin", userAuthenticated,(req, res) =>{
         grandkru : grandkru,
         grandgedeh : grandgedeh,
         maryland : maryland,
+        // comments by counties
+        comMontserrado : comMontserrado,
+        comBong : comBong,
+        comNimba : comNimba,
+        comBomi : comBomi,
+        comLofa : comLofa,
+        comMargibi : comMargibi,
+        comCapemount : comCapemount,
+        comGbarpolu : comGbarpolu,
+        comGrandBassa : comGrandBassa,
+        comRivergee : comRivergee,
+        comRivercess : comRivercess,
+        comGrandkru : comGrandkru,
+        comGrandgedeh : comGrandgedeh,
+        comMaryland : comMaryland,
+        // Applauds by counties
+        appMontserrado : appMontserrado,
+        appBong : appBong,
+        appNimba : appNimba,
+        appBomi : appBomi,
+        appLofa : appLofa,
+        appMargibi : appMargibi,
+        appCapemount : appCapemount,
+        appGbarpolu : appGbarpolu,
+        appGrandBassa : appGrandBassa,
+        appRivergee : appRivergee,
+        appRivercess : appRivercess,
+        appGrandkru : appGrandkru,
+        appGrandgedeh : appGrandgedeh,
+        appMaryland : appMaryland,
       });
     });
   });
