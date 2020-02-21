@@ -23,8 +23,8 @@
                     <tr>
                         <td><%= cat.title %></td>
                         <td><%= cat.desc %></td>
-                        <td><%= cat.created %></td>
-                        <!-- <td><a href="/admin/editCategory/<%= //cat._id %>"><i class="fas fa-edit"></i></a></td> -->
+                        <td><%= cat.createdAt %></td>
+                        <td><a href="/admin/editCategory/<%= cat._id %>"><i class="fas fa-edit"></i></a></td>
                     </tr>
                 <% }); %>
                 </tbody>

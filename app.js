@@ -38,6 +38,7 @@ app.use(express.static((__dirname, 'public')));
 app.use('/admin', express.static((__dirname, 'public')));
 app.use('/admin/editOfficer', express.static((__dirname, 'public')));
 app.use('/admin/editPosition', express.static((__dirname, 'public')));
+app.use('/admin/editCategory', express.static((__dirname, 'public')));
 app.use('/admin/editUser', express.static((__dirname, 'public')));
 app.use('/admin/map', express.static((__dirname, 'public')));
 app.use('/admin/details', express.static((__dirname, 'public')));
@@ -374,6 +375,7 @@ app.post("/admin/addCategory",  userAuthenticated, (req, res) => {
       agency: 'LRA',
       title: req.body.title,
       desc: req.body.desc,
+      createdAt : dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
     });
 
     setCategory.save((err) => {
@@ -412,6 +414,52 @@ app.get("/admin/allCategories", userAuthenticated, (req, res) => {
       });
     });
 });
+
+app.get("/admin/editCategory/:id",  userAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Comment.find({agency: 'LRA'}).then(comments => {
+      Category.findOne({agency: 'LRA', _id : id }).then(cat => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach(com =>{
+            if(com.type == 'Complain'){
+              complains.push(com);
+            }
+        });
+        comments.forEach(com =>{
+          if(com.type == 'Applaud'){
+            applauds.push(com);
+          }
+        });
+  
+        res.render('admin/editCategory', 
+        {
+          comments: comments, 
+          complains: complains,
+          applauds: applauds, 
+          category: cat,
+        });
+      });
+    });
+  });
+
+  app.post("/admin/editCategory/:id",  userAuthenticated, (req, res) => {
+    const id = req.params.id;
+      Category.findOne({agency: 'LRA', _id : id }).then(cat => {
+        cat.agency = 'LRA';
+        cat.title = req.body.title;
+        cat.desc = req.body.desc;
+        cat.createdAt = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+        
+        cat.save((err) => {
+          if(err){
+            console.log(err);
+          }else{
+            res.redirect("/admin/allCategories");
+          }
+        });
+      });
+  });
 
 ///Category ends 
 
