@@ -1,4 +1,31 @@
-<%- include('hub/top'); -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>Admin: LRA</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+  <!-- chart  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+   <div class="content-wrapper">
+    <section class="content ">
 
 <!-- Navbar -->
 <%- include('hub/nav'); -%>
@@ -111,19 +138,28 @@
                 </div>
               </div>
               <!-- /.card-header -->
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table m-0">
-                    <thead>
-                    <tr>
-                      <th>Officer ID</th>
-                      <th>Author</th>
-                      <th>Content</th>
-                      <th>Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                      <% comments.forEach(comment => { %> 
+
+
+
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID#</th>
+                  <th>Author</th>
+                  <th>Content</th>
+                  <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr>
+                  <td>342000</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr> -->
+
+                <% comments.forEach(comment => { %> 
                         <% if (comment.type == 'Complain') { %>
                           <tr>
                             <td><%= comment.officerId %> </td>
@@ -144,13 +180,16 @@
                           </tr>
                         <% } %> 
                     <% }); %>
-
-                    </tbody>
-                  </table>
-                </div>
-                <!-- /.table-responsive -->
-              </div>
-              <!-- /.card-body -->
+           
+                <!-- <tr>
+                  <td>8743</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr> -->
+                </tbody>
+              </table>
    
             </div>
             <!-- /.card -->
@@ -359,4 +398,46 @@
 
   </script>
   <!-- /.control-sidebar -->
-  <%- include('hub/bottom'); -%>
+
+
+
+
+ </section>
+  </div><!-- Main Footer -->
+  <footer class="main-footer">
+    <strong>Copyright &copy;2019 <a href="http://roviagatetechnology.com">RoviaGate Technology</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 2.o
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- AdminLTE App -->
+<script src="js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+</body>
+</html>

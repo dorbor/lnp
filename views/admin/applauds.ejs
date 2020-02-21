@@ -15,10 +15,10 @@
                 <tr>
                     <th scope="col">Officer Id</th>
                     <th scope="col">Author</th>
-                    <th scope="col">Email</th>
                     <th scope="col">Cell #</th>
                     <th scope="col">County</th>
                     <th scope="col">Message</th>
+                    <th scope="col">Date</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +31,7 @@
                                 <td><%= comment.number %></td>
                                 <td><%= comment.county %></td>
                                 <td><%= comment.content %></td>
+                                <td><%= comment.date %></td>
                                 <td><a href="/admin/details/<%= comment._id %>"><i class="fas fa-search"></i></a></td>
                                 <td><a href="/admin/map/<%= comment._id %>"><i class="fas fa-map"></i></a></td>
                             </tr>
