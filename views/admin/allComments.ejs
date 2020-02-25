@@ -3,42 +3,59 @@
 <!-- Navbar -->
 <%- include('hub/nav'); -%>
 
-
 <!-- left side bar component  -->
 <%- include('hub/sidebar'); -%>
 
-        
-           <br>
-                  
-            <table class="table table-hover table-dark desplay" id="example">
-                <thead>
-                <tr>
-                    <th scope="col">Officer Id</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Cell #</th>
-                    <th scope="col">County</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Date</th>
+<br />
 
-                </tr>
-                </thead>
-                <tbody>
-                <% comments.forEach(comment => { %> 
-                    <% if (comment.type == 'Complain') { %>
-                        <tr>
-                            <th scope="row"><%= comment.officerId %></th>
-                            <td><%= comment.fullName %></td>
-                            <td><%= comment.number %></td>
-                            <td><%= comment.county %></td>
-                            <td><%= comment.content %></td>
-                            <td><%= comment.date %></td>
-                            <td><a href="/admin/details/<%= comment._id %>"><i class="fas fa-search"></i></a></td>
-                            <td><a href="/admin/map/<%= comment._id %>"><i class="fas fa-map"></i></a></td>
-                        </tr>
-                    <% } %> 
-                <% }); %>
-                </tbody>
-            </table>
+<table class="table table-hover table-dark desplay" id="example">
+  <thead>
+    <tr>
+      <th scope="col">Officer Id</th>
+      <th scope="col">Author</th>
+      <th scope="col">Cell #</th>
+      <th scope="col">Status</th>
+      <th scope="col">County</th>
+      <th scope="col">Message</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% comments.forEach(comment => { %> <% if (comment.type == 'Complain') { %>
+    <tr>
+      <th scope="row"><%= comment.officerId %></th>
+      <td><%= comment.fullName %></td>
+      <td><%= comment.number %></td>
+      <td>
+        <% if (comment.status == 'resolved'){ %>
+        <div class="progress">
+          <div class="progress-bar" style="width:100%"></div>
+        </div>
+        <% }else if(comment.status == 'inProgress'){ %>
+        <div class="progress">
+          <div class="progress-bar" style="width:50%"></div>
+        </div>
+        <% }else{ %>
+        <div class="progress">
+          <div class="progress-bar" style="width:0%"></div>
+        </div>
+        <% } %>
+      </td>
+      <td><%= comment.county %></td>
+      <td><%= comment.content %></td>
+      <td><%= comment.date %></td>
+      <td>
+        <a href="/admin/details/<%= comment._id %>"
+          ><i class="fas fa-search"></i
+        ></a>
+      </td>
+      <td>
+        <a href="/admin/map/<%= comment._id %>"><i class="fas fa-map"></i></a>
+      </td>
+    </tr>
+    <% } %> <% }); %>
+  </tbody>
+</table>
 
 <!-- Bottom component -->
 <%- include('hub/bottom'); -%>

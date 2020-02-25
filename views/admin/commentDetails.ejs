@@ -3,129 +3,197 @@
 <!-- Navbar -->
 <%- include('hub/nav'); -%>
 
-
 <!-- left side bar component  -->
 <%- include('hub/sidebar'); -%>
-<br>
-<style type="text/css">#map{width: 100%;height: 400px;}</style>
+<br />
+<style type="text/css">
+  #map {
+    width: 100%;
+    height: 400px;
+  }
+</style>
 
-<div class="card" >
-    <h1 class="card-title display-2 text-center">  Author: <%= comment.fullName %> | Phone Number <%= comment.number %> | <%= comment.latitude %> | <%= comment.longitude %>  </h1>
-    <% //}); %>
-    <div class="card-body">
+<div class="card">
+  <h1 class="card-title display-2 text-center">
+    Author: <%= comment.fullName %> | Phone Number <%= comment.number %> | <%=
+    comment.latitude %> | <%= comment.longitude %>
+  </h1>
+  <% //}); %>
+  <div class="card-body">
     <div id="map"></div>
-    </div>
+  </div>
 </div>
 <div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="col-8">
-                <form>
-                    <fieldset disabled>
-                    <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Full Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail3" value="<%= comment.fullName %>">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="<%= comment.email %>">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="<%= comment.category %>">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputPassword3" class="col-sm-2 col-form-label">Content</label>
-                        <div class="col-sm-10">
-                          <textarea name="" id="" cols="30" rows="10" class="form-control"><%= comment.content %></textarea>
-                        </div>
-                    </div>
-                </fieldset>
-                </form>
-                <form action="/admin/comment/<%= comment._id %>" method="POST">
-                    <div class="form-group row">
-                        <label for="inputPassword3" class="col-sm-2 col-form-label">Category</label>
-                        <div class="col-sm-10">
-                            <select name="category" id="" class="form-control">
-                                <option value="">Some category</option>
-                                <% categories.forEach(cat => { %> 
-                                  <option value="<%= cat.title %>"><%= cat.title %></option>
-                                <% }); %> 
-                            </select>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputPassword3" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
-                          <button class="btn btn-warning btn-xl">Save Changes</button>
-                        </div>
-                    </div>
-                </form>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-8">
+        <form
+          action="/admin/comment/<%= comment._id %>"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label"
+              >Full Name</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                value="<%= comment.fullName %>"
+                disabled
+              />
             </div>
-        </div>
-    </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label"
+              >Email</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="email"
+                class="form-control"
+                id="inputEmail3"
+                value="<%= comment.email %>"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label"
+              >Category</label
+            >
+            <div class="col-sm-5">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                value="<%= comment.category %>"
+                disabled
+              />
+            </div>
+            <div class="col-sm-5">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                value="<%= comment.status %>"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label"
+              >Content</label
+            >
+            <div class="col-sm-10">
+              <textarea
+                name=""
+                id=""
+                cols="30"
+                rows="10"
+                class="form-control"
+                disabled
+              >
+<%= comment.content %></textarea
+              >
+            </div>
+          </div>
 
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label"
+              >Category</label
+            >
+            <div class="col-sm-10">
+              <select name="category" id="" class="form-control">
+                <option value="<%= comment.category %>"
+                  ><%= comment.category %></option
+                >
+                <% categories.forEach(cat => { %>
+                <option value="<%= cat.title %>"><%= cat.title %></option>
+                <% }); %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label"
+              >Status</label
+            >
+            <div class="col-sm-10">
+              <select name="status" id="" class="form-control">
+                <option value="<%= comment.status %>"
+                  ><%= comment.status %></option
+                >
+                <option value="pending">Pending</option>
+                <option value="inProgress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+              <button class="btn btn-warning btn-xl">Save Changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
-
-
 <script>
-    function initMap() {
-  
-        var options = {
-          zoom:18,
-          center:{
-            lat: <%= comment.latitude %>,
-            lng:<%= comment.longitude %>
-          }
+  function initMap() {
+
+      var options = {
+        zoom:18,
+        center:{
+          lat: <%= comment.latitude %>,
+          lng:<%= comment.longitude %>
         }
-  
-        // New map
-        var map = new google.maps.Map(document.getElementById('map'), options);
-  
-        // Listen for click on map
-        google.maps.event.addListener(map, 'click', function(event){
-          // Add marker
-          addMarker({coords:event.latLng});
-        });
-  
-        
+      }
+
+      // New map
+      var map = new google.maps.Map(document.getElementById('map'), options);
+
+      // Listen for click on map
+      google.maps.event.addListener(map, 'click', function(event){
         // Add marker
-        var marker = new google.maps.Marker({
-          position:{
-            lat: <%= comment.latitude %>,
-            lng:<%= comment.longitude %>
-          },
-          map:map,
-          icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
-        });
-  
-        var infoWindow = new google.maps.InfoWindow({
-          content:'<h2 style=\'text-align: center\'><%= comment.fullName %></h2> <p style=\'font-weight: bold\'> <%= comment.content %></p>'
-        });
-  
-        marker.addListener('click', function(){
-          infoWindow.open(map, marker);
-        });
-  
-  
-  
-  
-  
-  
-    }
-  </script>
-  <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClE7RtHQ-zWz_qNaWZ8stMI7cpDAahyM8&callback=initMap">
-      </script>
+        addMarker({coords:event.latLng});
+      });
+
+
+      // Add marker
+      var marker = new google.maps.Marker({
+        position:{
+          lat: <%= comment.latitude %>,
+          lng:<%= comment.longitude %>
+        },
+        map:map,
+        // icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+      });
+
+      var infoWindow = new google.maps.InfoWindow({
+        content:'<h2 style=\'text-align: center\'><%= comment.fullName %></h2> <p style=\'font-weight: bold\'> <%= comment.content %></p>'
+      });
+
+      marker.addListener('click', function(){
+        infoWindow.open(map, marker);
+      });
+
+
+
+
+
+
+  }
+</script>
+<script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClE7RtHQ-zWz_qNaWZ8stMI7cpDAahyM8&callback=initMap"
+></script>
 <!-- Bottom component -->
 <%- include('hub/bottom'); -%>
