@@ -5,17 +5,24 @@
 
 <!-- left side bar component  -->
 <%- include('hub/sidebar'); -%>
-    <style type="text/css">#map{width: 100%;height: 600px;}</style>
-           <br>
-           	
-      <div class="card" >
-            	<h1 class="card-title display-2 text-center">  Author: <%= comment.fullName %> | Phone Number <%= comment.number %> | <%= comment.latitude %> | <%= comment.longitude %>  </h1>
-            	<% //}); %>
-			  <div class="card-body">
-			    <div id="map"></div>
-			  </div>
-			</div>
+<style type="text/css">
+  #map {
+    width: 100%;
+    height: 600px;
+  }
+</style>
+<br />
 
+<div class="card">
+  <h1 class="card-title display-2 text-center">
+    Author: <%= comment.fullName %> | Phone Number <%= comment.number %> | <%=
+    comment.latitude %> | <%= comment.longitude %>
+  </h1>
+  <% //}); %>
+  <div class="card-body">
+    <div id="map"></div>
+  </div>
+</div>
 
 <script>
   function initMap() {
@@ -37,7 +44,7 @@
         addMarker({coords:event.latLng});
       });
 
-      
+
       // Add marker
       var marker = new google.maps.Marker({
         position:{
@@ -45,7 +52,7 @@
           lng:<%= comment.longitude %>
         },
         map:map,
-        icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+        // icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
       });
 
       var infoWindow = new google.maps.InfoWindow({
@@ -63,8 +70,10 @@
 
   }
 </script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClE7RtHQ-zWz_qNaWZ8stMI7cpDAahyM8&callback=initMap">
-    </script>
+<script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClE7RtHQ-zWz_qNaWZ8stMI7cpDAahyM8&callback=initMap"
+></script>
 <!-- Bottom component -->
 <%- include('hub/bottom'); -%>

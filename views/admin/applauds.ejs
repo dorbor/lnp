@@ -27,22 +27,7 @@
       <td><%= comment.fullName %></td>
       <td><%= comment.number %></td>
       <td><%= comment.county %></td>
-      <td>
-        <% if (comment.status == 'resolved'){ %>
-        <div class="progress">
-          <div class="progress-bar" style="width:100%"></div>
-        </div>
-        <% }else if(comment.status == 'inProgress'){ %>
-        <div class="progress">
-          <div class="progress-bar" style="width:50%"></div>
-        </div>
-        <% }else{ %>
-        <div class="progress">
-          <div class="progress-bar" style="width:0%"></div>
-        </div>
-        <% } %>
-      </td>
-
+      <td><%= comment.status %></td>
       <td><%= comment.content %></td>
       <td><%= comment.date %></td>
       <td>
