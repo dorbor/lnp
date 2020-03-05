@@ -1,165 +1,183 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="index3.html" class="brand-link bg-light">
+    <img
+      src="img/lraLogo.png"
+      alt="AdminLTE Logo"
+      style="opacity: .8"
+      width="100%"
+      height="40"
+    />
+    <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
+  </a>
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link bg-light">
-      <img src="img/lraLogo.png" alt="AdminLTE Logo"
-           style="opacity: .8" width="100%" height="40">
-      <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          
-          <% if(user.image == ''){ %> 
-						<img src="./images/users/placeHolder.png" class="img-circle elevation-2" alt="User Image">
-					<% }else{ %> 
-						<img src="./images/users/<%= user.image %> " class="img-circle elevation-2" alt="User Image">
-					<% } %> 
-        </div>
-        <div class="info">
-          <a href="#" class="d-block"><%= user.fullName %></a>
-        </div>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <% if(user.image == ''){ %>
+        <img
+          src="./images/users/placeHolder.png"
+          class="img-circle elevation-2"
+          alt="User Image"
+        />
+        <% }else{ %>
+        <img
+          src="./images/users/<%= user.image %> "
+          class="img-circle elevation-2"
+          alt="User Image"
+        />
+        <% } %>
       </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="/admin" class="nav-link ">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-      
-          </li>
-          <li class="nav-item">
-            <a href="/admin/applauds" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Applauds
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/admin/allComments" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Complaints
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/admin/map" class="nav-link">
-              <i class="nav-icon fas fa-map"></i>
-              <p>Info Map</p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Positions
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/admin/addPosition" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Position</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/allPositions" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Position</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Categories
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/admin/addCategory" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Category</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/allCategories" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Categories</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-     
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Officers
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/admin/addOfficer" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Officer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/allOfficers" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Officers</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Users
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/admin/addUser" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add User</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/allUsers" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Users</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+      <div class="info">
+        <a href="#" class="d-block"><%= user.fullName %></a>
+      </div>
     </div>
-    <!-- /.sidebar -->
-  </aside>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        data-accordion="false"
+      >
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <li class="nav-item has-treeview menu-open">
+          <a href="/admin" class="nav-link ">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/applauds" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Applauds
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/allComments" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Complaints
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/map" class="nav-link">
+            <i class="nav-icon fas fa-map"></i>
+            <p>Info Map</p>
+          </a>
+        </li>
+
+        <% if(user.role === 'admin') { %>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              Positions
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/admin/addPosition" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add Position</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/allPositions" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>All Position</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              Categories
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/admin/addCategory" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add Category</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/allCategories" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>All Categories</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <% } %>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              Officers
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <% if(user.role === 'admin') { %>
+            <li class="nav-item">
+              <a href="/admin/addOfficer" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add Officer</p>
+              </a>
+            </li>
+            <% } %>
+            <li class="nav-item">
+              <a href="/admin/allOfficers" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>All Officers</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <% if(user.role === 'super') { %>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              Users
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/admin/addUser" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add User</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/allUsers" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>All Users</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <% } %>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

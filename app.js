@@ -101,6 +101,7 @@ const userSchema = {
   email: String,
   image: String,
   password: String,
+  role: String,
   status: String
 };
 const categorySchema = {
@@ -496,7 +497,6 @@ app.post("/admin/editCategory/:id", userAuthenticated, (req, res) => {
 ///Category ends
 
 //Position section
-
 app.get("/admin/addPosition", userAuthenticated, (req, res) => {
   Comment.find({ agency: "LRA" }).then(comments => {
     var complains = [];
@@ -604,7 +604,6 @@ app.get("/admin/allPositions", userAuthenticated, (req, res) => {
     });
   });
 });
-
 ///Position ends
 
 app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
@@ -675,8 +674,6 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
-  // Officer.find({agency: 'LRA'}).sort( {id: 'desc'} ).toArray( (err, off) => {
-  //   if (err) throw err;
   Officer.find({ agency: "LRA" }).then(off => {
     Comment.find({ agency: "LRA" }).then(comments => {
       var complains = [];
@@ -1015,6 +1012,7 @@ app.post("/admin/addUser", userAuthenticated, (req, res) => {
       fullName: req.body.fullName,
       email: req.body.email,
       image: fileName,
+      role: req.body.role,
       password: hash,
       status: req.body.status
     });
@@ -1107,6 +1105,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
       } else {
         foundUser.image = foundUser.image;
       }
+      foundUser.role = req.body.role;
       foundUser.password = hash;
       foundUser.status = req.body.status;
 
