@@ -126,7 +126,7 @@
     "overlayscrollbars": "^1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "pdfmake": "^0.1.62",
+    "pdfmake": "^0.1.65",
     "popper.js": "^1.16.0",
     "python": "0.0.4",
     "raphael": "^2.3.0",

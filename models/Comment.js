@@ -1,17 +1,24 @@
-//jshint esversion:7
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const Comment = mongoose.model('Comment', {
-    officerId: { type: String, required: true, trim: true },
+const CommentSchema = new Schema({
+  officerId: {
     type: String,
-    agency: String,
-    fullName: String,
-    number: String,
-    email: String,
-    content: String,
-    county: String,
-    latitude: String,
-    longitude: String,
+    default: "LNP"
+  },
+  type: String,
+  agency: String,
+  fullName: String,
+  number: String,
+  email: String,
+  content: String,
+  county: String,
+  latitude: String,
+  longitude: String,
+  category: String,
+  status: String,
+  date: String,
+  updatedBy: String
 });
 
-module.exports = Comment;
+module.exports = mongoose.model("comment", CommentSchema);

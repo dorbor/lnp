@@ -1,21 +1,17 @@
 //jshint esversion:7
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const Officer = mongoose.model('Officer', {
-agency: {
+const OfficerSchema = new Schema({
+  agency: {
     type: String,
-    required: true,
-    trim: true
-},
-  id: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true
-    },
+    default: "LNP"
+  },
+  id: String,
   firstName: String,
   lastName: String,
   image: String,
+  assignment: String,
   middleName: String,
   email: String,
   gender: String,
@@ -23,7 +19,7 @@ agency: {
   division: String,
   position: String,
   section: String,
-  status: String,
+  status: String
 });
 
-module.exports = Officer;
+module.exports = mongoose.model("Officer", OfficerSchema);

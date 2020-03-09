@@ -1,5 +1,4 @@
 //jshint esversion:7
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -22,6 +21,13 @@ const isEmpty = obj => {
   }
   return true;
 };
+
+// model includes
+const Comment = require("./models/Comment");
+const User = require("./models/User");
+const Officer = require("./models/Officer");
+const Category = require("./models/Category");
+const Position = require("./models/Position");
 
 mongoose.Promise = global.Promise;
 const bcrypt = require("bcrypt");
@@ -58,68 +64,6 @@ mongoose.connect(
   "mongodb+srv://dorbor:Dorbor123@cluster0-8idgt.mongodb.net/findofficer",
   { useNewUrlParser: true }
 );
-var db = mongoose.connection;
-
-const officerSchema = {
-  agency: String,
-  id: String,
-  firstName: String,
-  lastName: String,
-  image: String,
-  assignment: String,
-  middleName: String,
-  email: String,
-  gender: String,
-  department: String,
-  division: String,
-  position: String,
-  section: String,
-  status: String
-};
-
-const commentSchema = {
-  officerId: String,
-  type: String,
-  agency: String,
-  fullName: String,
-  number: String,
-  email: String,
-  content: String,
-  county: String,
-  latitude: String,
-  category: String,
-  status: String,
-  longitude: String,
-  date: String,
-  updatedBy: String
-};
-
-// users section
-const userSchema = {
-  agency: String,
-  fullName: String,
-  email: String,
-  image: String,
-  password: String,
-  role: String,
-  status: String
-};
-const categorySchema = {
-  agency: String,
-  title: String,
-  desc: String,
-  createdAt: String
-};
-const positionSchema = {
-  agency: String,
-  title: String,
-  date: String
-};
-const User = mongoose.model("User", userSchema);
-const Category = mongoose.model("Category", categorySchema);
-const Position = mongoose.model("Position", positionSchema);
-const Officer = mongoose.model("Officer", officerSchema);
-const Comment = mongoose.model("Comment", commentSchema);
 
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
@@ -134,8 +78,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/admin", userAuthenticated, (req, res) => {
-  Officer.find({ agency: "LRA" }).then(off => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+  Officer.find({ agency: "LNP" }).then(off => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       // officers by counties counties
@@ -381,9 +325,8 @@ app.get("/admin", userAuthenticated, (req, res) => {
 });
 
 //Categories section
-
 app.get("/admin/addCategory", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LRA" }).then(comments => {
+  Comment.find({ agency: "LNP" }).then(comments => {
     var complains = [];
     var applauds = [];
     comments.forEach(com => {
@@ -407,7 +350,7 @@ app.get("/admin/addCategory", userAuthenticated, (req, res) => {
 
 app.post("/admin/addCategory", userAuthenticated, (req, res) => {
   const setCategory = new Category({
-    agency: "LRA",
+    agency: "LNP",
     title: req.body.title,
     desc: req.body.desc,
     createdAt: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
@@ -424,8 +367,8 @@ app.post("/admin/addCategory", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allCategories", userAuthenticated, (req, res) => {
-  Category.find({ agency: "LRA" }).then(cat => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+  Category.find({ agency: "LNP" }).then(cat => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -451,8 +394,8 @@ app.get("/admin/allCategories", userAuthenticated, (req, res) => {
 
 app.get("/admin/editCategory/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Comment.find({ agency: "LRA" }).then(comments => {
-    Category.findOne({ agency: "LRA", _id: id }).then(cat => {
+  Comment.find({ agency: "LNP" }).then(comments => {
+    Category.findOne({ agency: "LNP", _id: id }).then(cat => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -478,8 +421,8 @@ app.get("/admin/editCategory/:id", userAuthenticated, (req, res) => {
 
 app.post("/admin/editCategory/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Category.findOne({ agency: "LRA", _id: id }).then(cat => {
-    cat.agency = "LRA";
+  Category.findOne({ agency: "LNP", _id: id }).then(cat => {
+    cat.agency = "LNP";
     cat.title = req.body.title;
     cat.desc = req.body.desc;
     cat.createdAt = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
@@ -498,7 +441,7 @@ app.post("/admin/editCategory/:id", userAuthenticated, (req, res) => {
 
 //Position section
 app.get("/admin/addPosition", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LRA" }).then(comments => {
+  Comment.find({ agency: "LNP" }).then(comments => {
     var complains = [];
     var applauds = [];
     comments.forEach(com => {
@@ -522,7 +465,7 @@ app.get("/admin/addPosition", userAuthenticated, (req, res) => {
 
 app.post("/admin/addPosition", userAuthenticated, (req, res) => {
   const setPosition = new Position({
-    agency: "LRA",
+    agency: "LNP",
     title: req.body.title,
     date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
   });
@@ -537,8 +480,8 @@ app.post("/admin/addPosition", userAuthenticated, (req, res) => {
 
 app.get("/admin/editPosition/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Comment.find({ agency: "LRA" }).then(comments => {
-    Position.findOne({ agency: "LRA", _id: id }).then(pos => {
+  Comment.find({ agency: "LNP" }).then(comments => {
+    Position.findOne({ agency: "LNP", _id: id }).then(pos => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -564,8 +507,8 @@ app.get("/admin/editPosition/:id", userAuthenticated, (req, res) => {
 
 app.post("/admin/editPosition/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Position.findOne({ agency: "LRA", _id: id }).then(pos => {
-    pos.agency = "LRA";
+  Position.findOne({ agency: "LNP", _id: id }).then(pos => {
+    pos.agency = "LNP";
     pos.title = req.body.title;
     pos.date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 
@@ -580,8 +523,8 @@ app.post("/admin/editPosition/:id", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allPositions", userAuthenticated, (req, res) => {
-  Position.find({ agency: "LRA" }).then(pos => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+  Position.find({ agency: "LNP" }).then(pos => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -607,8 +550,8 @@ app.get("/admin/allPositions", userAuthenticated, (req, res) => {
 ///Position ends
 
 app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LRA" }).then(comments => {
-    Position.find({ agency: "LRA" }).then(pos => {
+  Comment.find({ agency: "LNP" }).then(comments => {
+    Position.find({ agency: "LNP" }).then(pos => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -647,7 +590,7 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
 
   const setOfficr = new Officer({
     id: req.body.id,
-    agency: "LRA",
+    agency: "LNP",
     firstName: req.body.firstName,
     middleName: req.body.middleName,
     lastName: req.body.lastName,
@@ -674,8 +617,8 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
-  Officer.find({ agency: "LRA" }).then(off => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+  Officer.find({ agency: "LNP" }).then(off => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -702,9 +645,9 @@ app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
 app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
 
-  Officer.findOne({ _id: id }).then(foundOff => {
-    Comment.find({ agency: "LRA" }).then(comments => {
-      Position.find({ agency: "LRA" }).then(pos => {
+  Officer.findOne({ _id: id, agency: "LNP" }).then(foundOff => {
+    Comment.find({ agency: "LNP" }).then(comments => {
+      Position.find({ agency: "LNP" }).then(pos => {
         var complains = [];
         var applauds = [];
         comments.forEach(com => {
@@ -732,10 +675,10 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
 ///// update officer information
 app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
-  Officer.findOne({ _id: req.params.id }).then(foundOff => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+  Officer.findOne({ _id: req.params.id, agency: "LNP" }).then(foundOff => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       foundOff.id = req.body.id;
-      agency = "LRA";
+      agency = "LNP";
       foundOff.firstName = req.body.firstName;
       foundOff.middleName = req.body.middleName;
       foundOff.lastName = req.body.lastName;
@@ -792,7 +735,7 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 //Delete user method
 app.get("/admin/deleteOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Officer.findByIdAndRemove({ _id: id }).then(foundUser => {
+  Officer.findByIdAndRemove({ _id: id, agency: "LNP" }).then(foundUser => {
     res.redirect("/admin/allOfficers");
   });
 });
@@ -800,8 +743,8 @@ app.get("/admin/deleteOfficer/:id", userAuthenticated, (req, res) => {
 // apploud and complain section
 
 app.get("/admin/allComments", userAuthenticated, (req, res) => {
-  Officer.find({}).then(off => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+  Officer.find({ agency: "LNP" }).then(off => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -827,7 +770,7 @@ app.get("/admin/allComments", userAuthenticated, (req, res) => {
 
 app.get("/admin/applauds", userAuthenticated, (req, res) => {
   Officer.find({}).then(off => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -855,8 +798,8 @@ app.get("/admin/applauds", userAuthenticated, (req, res) => {
 app.get("/admin/details/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
   Category.find({}).then(cat => {
-    Comment.find({ agency: "LRA" }).then(comments => {
-      Comment.findOne({ _id: id }).then(foundCom => {
+    Comment.find({ agency: "LNP" }).then(comments => {
+      Comment.findOne({ _id: id, agency: "LNP" }).then(foundCom => {
         var complains = [];
         var applauds = [];
         comments.forEach(com => {
@@ -885,8 +828,8 @@ app.get("/admin/details/:id", userAuthenticated, (req, res) => {
 //updating comments category
 app.post("/admin/comment/:id", userAuthenticated, (req, res) => {
   var id = req.params.id;
-  Comment.findOne({ agency: "LRA", _id: id }).then(com => {
-    com.agency = "LRA";
+  Comment.findOne({ agency: "LNP", _id: id }).then(com => {
+    com.agency = "LNP";
     com.type = com.type;
     com.officerId = com.officerId;
     com.fullName = com.fullName;
@@ -916,7 +859,7 @@ app.get("/admin/map/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
 
   Officer.find({}).then(off => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       Comment.findOne({ _id: id }).then(foundCom => {
         var complains = [];
         var applauds = [];
@@ -945,7 +888,7 @@ app.get("/admin/map/:id", userAuthenticated, (req, res) => {
 
 app.get("/admin/map", userAuthenticated, (req, res) => {
   Officer.find({}).then(off => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -970,7 +913,7 @@ app.get("/admin/map", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/addUser", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LRA" }).then(comments => {
+  Comment.find({ agency: "LNP" }).then(comments => {
     var complains = [];
     var applauds = [];
     comments.forEach(com => {
@@ -1006,9 +949,8 @@ app.post("/admin/addUser", userAuthenticated, (req, res) => {
   }
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     // Store hash in your password DB.
-
     const setUser = new User({
-      agency: "LRA",
+      agency: "LNP",
       fullName: req.body.fullName,
       email: req.body.email,
       image: fileName,
@@ -1030,7 +972,7 @@ app.post("/admin/addUser", userAuthenticated, (req, res) => {
 app.get("/admin/allUsers", userAuthenticated, (req, res) => {
   User.find({}).then(user => {
     Officer.find({}).then(off => {
-      Comment.find({ agency: "LRA" }).then(comments => {
+      Comment.find({ agency: "LNP" }).then(comments => {
         var complains = [];
         var applauds = [];
         comments.forEach(com => {
@@ -1059,7 +1001,7 @@ app.get("/admin/allUsers", userAuthenticated, (req, res) => {
 app.get("/admin/editUser/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
   User.findOne({ _id: id }).then(foundUser => {
-    Comment.find({ agency: "LRA" }).then(comments => {
+    Comment.find({ agency: "LNP" }).then(comments => {
       var complains = [];
       var applauds = [];
       comments.forEach(com => {
@@ -1089,7 +1031,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     // Store hash in your password DB.
     User.findOne({ _id: id }).then(foundUser => {
-      foundUser.agency = "LRA";
+      foundUser.agency = "LNP";
       foundUser.fullName = req.body.fullName;
       foundUser.email = req.body.email;
       if (!isEmpty(req.files)) {
@@ -1123,7 +1065,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
 //Delete user method
 app.get("/admin/user/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  User.findByIdAndRemove({ _id: id }).then(foundUser => {
+  User.findByIdAndRemove({ _id: id, agency: "LNP" }).then(foundUser => {
     res.redirect("/admin/allUsers");
   });
 });
@@ -1170,8 +1112,8 @@ app.get("/logout", (req, res) => {
 //  apis section
 
 ///request for all officers ///////////
-app.route("/api/lra/officers").get((req, res) => {
-  Officer.find((err, foundOff) => {
+app.route("/api/officers").get((req, res) => {
+  Officer.find({ agency: "LNP" }, (err, foundOff) => {
     if (!err) {
       res.send(foundOff);
     } else {
@@ -1181,47 +1123,45 @@ app.route("/api/lra/officers").get((req, res) => {
 });
 
 /////request for all articles ///////////
-app
-  .route("/api/comment")
-
-  .post((req, res) => {
-    const comment = new Comment({
-      officerId: req.body.officerId,
-      type: req.body.type,
-      agency: req.body.agency,
-      fullName: req.body.fullName,
-      number: req.body.number,
-      email: req.body.email,
-      content: req.body.content,
-      county: req.body.county,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
-      date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
-    });
-
-    comment.save(err => {
-      if (!err) {
-        res.send(" send Successfully");
-      } else {
-        res.send(err);
-      }
-    });
+app.route("/api/comment").post((req, res) => {
+  const comment = new Comment({
+    officerId: req.body.officerId,
+    type: req.body.type,
+    agency: req.body.agency,
+    fullName: req.body.fullName,
+    number: req.body.number,
+    email: req.body.email,
+    content: req.body.content,
+    county: req.body.county,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
   });
 
+  comment.save(err => {
+    if (!err) {
+      res.send(" send Successfully");
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 app
-  .route("/api/lra/officers/:id")
+  .route("/api/officers/:id")
 
   .get((req, res) => {
-    Officer.findOne({ id: req.params.id }, (err, foundOfficer) => {
-      if (foundOfficer) {
-        res.send(foundOfficer);
-      } else {
-        res.send("No matched found");
+    Officer.findOne(
+      { id: req.params.id, agency: "LNP" },
+      (err, foundOfficer) => {
+        if (foundOfficer) {
+          res.send(foundOfficer);
+        } else {
+          res.send("No matched found");
+        }
       }
-    });
+    );
   });
-
-// eslint-disable-next-line no-magic-numbers
 
 let port = process.env.PORT;
 if (port == null || port == "") {
