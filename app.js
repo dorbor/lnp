@@ -970,8 +970,8 @@ app.post("/admin/addUser", (req, res) => {
 });
 
 app.get("/admin/allUsers", userAuthenticated, (req, res) => {
-  User.find({}).then(user => {
-    Officer.find({}).then(off => {
+  User.find({ agency: "LNP" }).then(user => {
+    Officer.find({ agency: "LNP" }).then(off => {
       Comment.find({ agency: "LNP" }).then(comments => {
         var complains = [];
         var applauds = [];
