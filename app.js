@@ -912,7 +912,7 @@ app.get("/admin/map", userAuthenticated, (req, res) => {
   });
 });
 
-app.get("/admin/addUser", userAuthenticated, (req, res) => {
+app.get("/admin/addUser", (req, res) => {
   Comment.find({ agency: "LNP" }).then(comments => {
     var complains = [];
     var applauds = [];
@@ -935,7 +935,7 @@ app.get("/admin/addUser", userAuthenticated, (req, res) => {
   });
 });
 
-app.post("/admin/addUser", userAuthenticated, (req, res) => {
+app.post("/admin/addUser", (req, res) => {
   let fileName = "placeHolder.png";
   if (!isEmpty(req.files)) {
     const file = req.files.userImage;

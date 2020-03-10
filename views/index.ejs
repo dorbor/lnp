@@ -1,16 +1,14 @@
-<%- include('hub/top'); -%>
-<% var message; %>
-<% if (message != '' && message != null) { %>
-  <div class="alert alert-dark" role="alert" data-dismiss="alert">
-    <%= message %> 
-  </div>
+<%- include('hub/top'); -%> <% var message; %> <% if (message != '' && message
+!= null) { %>
+<div class="alert alert-dark" role="alert" data-dismiss="alert">
+  <%= message %>
+</div>
 <%} %>
 <div class="login-box">
-
-    <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
-      <a href="/">
-        <img src="img/lraLogo.png" width="100%">
-      </a>
+  <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
+  <a href="/">
+    <img src="img/lnpLogo.jfif" width="100%" />
+  </a>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
@@ -18,7 +16,12 @@
 
       <form action="/login" method="POST">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="email">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Email"
+            name="email"
+          />
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -26,7 +29,12 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            name="password"
+          />
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -44,7 +52,9 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">
+              Sign In
+            </button>
           </div>
           <!-- /.col -->
         </div>
@@ -73,7 +83,7 @@
 </div>
 <!-- /.login-box -->
 <script>
-$(alert).alert('close');
+  $(alert).alert("close");
 </script>
 
 <%- include('hub/bottom'); -%>
