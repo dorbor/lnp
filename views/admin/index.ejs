@@ -1,157 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
-  <title>Admin: LRA</title>
+    <title>Admin: LNP</title>
 
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.css">
-  <!-- chart  -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  
-</head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-<div class="wrapper">
-   <div class="content-wrapper">
-    <section class="content ">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <!-- overlayScrollbars -->
+    <link
+      rel="stylesheet"
+      href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css"
+    />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="css/adminlte.min.css" />
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      rel="stylesheet"
+    />
+    <!-- DataTables -->
+    <link
+      rel="stylesheet"
+      href="plugins/datatables-bs4/css/dataTables.bootstrap4.css"
+    />
+    <!-- chart  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+  </head>
+  <body
+    class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed"
+  >
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <section class="content ">
+          <!-- Navbar -->
+          <%- include('hub/nav'); -%>
 
-<!-- Navbar -->
-<%- include('hub/nav'); -%>
+          <!-- left side bar  -->
+          <%- include('hub/sidebar'); -%>
+          <!-- left side bar  -->
 
-
-<!-- left side bar  -->
-<%- include('hub/sidebar'); -%>
-<!-- left side bar  -->
-
-
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">FindOfficer v2</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active">Dashboard </li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Info boxes -->
-        <%- include('hub/infoBox'); -%>
-        <!-- /.row -->
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-title">Monthly Recap Report</h5>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                      <i class="fas fa-wrench"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" role="menu">
-                      <a href="#" class="dropdown-item">Action</a>
-                      <a href="#" class="dropdown-item">Another action</a>
-                      <a href="#" class="dropdown-item">Something else here</a>
-                      <a class="dropdown-divider"></a>
-                      <a href="#" class="dropdown-item">Separated link</a>
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+          <!-- Content Header (Page header) -->
+          <div class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h1 class="m-0 text-dark">FindOfficer v2</h1>
                 </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">Dashboard</li>
+                  </ol>
+                </div>
+                <!-- /.col -->
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-8">
-                    <!-- <p class="text-center">
+              <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+          </div>
+          <!-- /.content-header -->
+
+          <!-- Main content -->
+          <section class="content">
+            <div class="container-fluid">
+              <!-- Info boxes -->
+              <%- include('hub/infoBox'); -%>
+              <!-- /.row -->
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="card-title">Monthly Recap Report</h5>
+
+                      <div class="card-tools">
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="collapse"
+                        >
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                          <button
+                            type="button"
+                            class="btn btn-tool dropdown-toggle"
+                            data-toggle="dropdown"
+                          >
+                            <i class="fas fa-wrench"></i>
+                          </button>
+                          <div
+                            class="dropdown-menu dropdown-menu-right"
+                            role="menu"
+                          >
+                            <a href="#" class="dropdown-item">Action</a>
+                            <a href="#" class="dropdown-item">Another action</a>
+                            <a href="#" class="dropdown-item"
+                              >Something else here</a
+                            >
+                            <a class="dropdown-divider"></a>
+                            <a href="#" class="dropdown-item">Separated link</a>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="remove"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <!-- <p class="text-center">
                       <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
                     </p> -->
 
-                    <div class="card">
-                      <canvas id="myChart" height="180px" style="height: 380px;"></canvas>
+                          <div class="card">
+                            <canvas
+                              id="myChart"
+                              height="180px"
+                              style="height: 380px;"
+                            ></canvas>
+                          </div>
+                          <!-- /.chart-responsive -->
+                        </div>
+                        <!-- /.col -->
+                        <!-- ==================Statistics Bar ===============================-->
+                        <%- include('hub/statisticProgress'); -%>
+                        <!-- ==================Statistics Bar ===============================-->
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
                     </div>
-                    <!-- /.chart-responsive -->
+                    <!-- ./card-body -->
+
+                    <!-- /.card-footer -->
                   </div>
-                  <!-- /.col -->
-                  <!-- ==================Statistics Bar ===============================-->
-                    <%- include('hub/statisticProgress'); -%>
-                  <!-- ==================Statistics Bar ===============================-->
-                  <!-- /.col -->
+                  <!-- /.card -->
                 </div>
-                <!-- /.row -->
+                <!-- /.col -->
               </div>
-              <!-- ./card-body -->
-          
-              <!-- /.card-footer -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
+              <!-- /.row -->
 
-        <!-- Main row -->
-        <div class="row">
-          <!-- Left col -->
-          <div class="col-md-7">
+              <!-- Main row -->
+              <div class="row">
+                <!-- Left col -->
+                <div class="col-md-7">
+                  <!-- TABLE: LATEST ORDERS -->
+                  <div class="card">
+                    <div class="card-header border-transparent">
+                      <h3 class="card-title">All Comments</h3>
 
-            <!-- TABLE: LATEST ORDERS -->
-            <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">All Comments</h3>
+                      <div class="card-tools">
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="collapse"
+                        >
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="remove"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.card-header -->
 
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-
-
-
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>ID#</th>
-                  <th>Author</th>
-                  <th>Content</th>
-                  <th>Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- <tr>
+                    <table
+                      id="example1"
+                      class="table table-bordered table-striped"
+                    >
+                      <thead>
+                        <tr>
+                          <th>ID#</th>
+                          <th>Author</th>
+                          <th>Content</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- <tr>
                   <td>342000</td>
                   <td></td>
                   <td></td>
@@ -159,285 +202,313 @@
                   <td></td>
                 </tr> -->
 
-                <% comments.forEach(comment => { %> 
-                        <% if (comment.type == 'Complain') { %>
-                          <tr>
-                            <td><%= comment.officerId %> </td>
-                            <td><%= comment.fullName %></td>
-                            <td><span class="badge badge-danger"><%= comment.content %></span></td>
-                            <td>
-                              <div class="sparkbar" data-color="#00a65a" data-height="20"><%= comment.date %></div>
-                            </td>
-                          </tr>
-                        <% }else{ %> 
-                          <tr>
-                            <td><%= comment.officerId %> </td>
-                            <td><%= comment.fullName %></td>
-                            <td><span class="badge badge-success"><%= comment.content %></span></td>
-                            <td>
-                              <div class="sparkbar" data-color="#00a65a" data-height="20"><%= comment.date %></div>
-                            </td>
-                          </tr>
-                        <% } %> 
-                    <% }); %>
-           
-                <!-- <tr>
+                        <% comments.forEach(comment => { %> <% if (comment.type
+                        == 'Complain') { %>
+                        <tr>
+                          <td><%= comment.officerId %></td>
+                          <td><%= comment.fullName %></td>
+                          <td>
+                            <span class="badge badge-danger"
+                              ><%= comment.content %></span
+                            >
+                          </td>
+                          <td>
+                            <div
+                              class="sparkbar"
+                              data-color="#00a65a"
+                              data-height="20"
+                            >
+                              <%= comment.date %>
+                            </div>
+                          </td>
+                        </tr>
+                        <% }else{ %>
+                        <tr>
+                          <td><%= comment.officerId %></td>
+                          <td><%= comment.fullName %></td>
+                          <td>
+                            <span class="badge badge-success"
+                              ><%= comment.content %></span
+                            >
+                          </td>
+                          <td>
+                            <div
+                              class="sparkbar"
+                              data-color="#00a65a"
+                              data-height="20"
+                            >
+                              <%= comment.date %>
+                            </div>
+                          </td>
+                        </tr>
+                        <% } %> <% }); %>
+
+                        <!-- <tr>
                   <td>8743</td>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
                 </tr> -->
-                </tbody>
-              </table>
-   
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
 
-          <div class="col-md-5">
-            <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">Officers by Counties</h3>
+                <div class="col-md-5">
+                  <div class="card">
+                    <div class="card-header border-transparent">
+                      <h3 class="card-title">Officers by Counties</h3>
 
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <!-- <button type="button" class="btn btn-tool" data-card-widget="espand">
+                      <div class="card-tools">
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="collapse"
+                        >
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <!-- <button type="button" class="btn btn-tool" data-card-widget="espand">
                     <i class="fas fa-plus"></i>
                   </button> -->
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="remove"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                      <div
+                        id="piechart_3d"
+                        style="width: 100%; height: 350px;"
+                      ></div>
+                    </div>
+                  </div>
                 </div>
+                <!-- /.col -->
               </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <div id="piechart_3d" style="width: 100%; height: 350px;"></div>
-              </div>
-            </div>
-          </div>
-          <!-- /.col -->
-        </div>
 
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card">
+                    <div class="card-header border-transparent">
+                      <h3 class="card-title">
+                        Applauds and complaints by Counties
+                      </h3>
 
-
-
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">Applauds and complaints by Counties</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <!-- <button type="button" class="btn btn-tool" data-card-widget="espand">
+                      <div class="card-tools">
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="collapse"
+                        >
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <!-- <button type="button" class="btn btn-tool" data-card-widget="espand">
                     <i class="fas fa-plus"></i>
                   </button> -->
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                        <button
+                          type="button"
+                          class="btn btn-tool"
+                          data-card-widget="remove"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div
+                        id="comments"
+                        style="width: 100%; height: 450px;"
+                      ></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="card-body">
-                <div id="comments" style="width: 100%; height: 450px;"></div>
-              </div>
+
+              <!-- /.row -->
             </div>
-          </div>
-          
+            <!--/. container-fluid -->
+          </section>
+          <!-- /.content -->
+
+          <!-- Control Sidebar -->
+          <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+          </aside>
+
+          <!-- charts -->
+          <script>
+            let myChart = document.getElementById('myChart').getContext('2d');
+            // Global Options
+            Chart.defaults.global.defaultFontFamily = 'Lato';
+            Chart.defaults.global.defaultFontSize = 18;
+            Chart.defaults.global.defaultFontColor = '#777';
+
+            let massPopChart = new Chart(myChart, {
+              type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+              data:{
+                labels:['Officers', 'Comments', 'Applauds', 'Complaints'],
+                datasets:[{
+                  label:'Data',
+                  data:[
+                    <%= officers.length %>,
+                    <%= comments.length %>,
+                    <%= applauds.length %>,
+                    <%= complains.length %>
+                  ],
+                  //backgroundColor:'green',
+                  backgroundColor:[
+                    'rgba(0, 0, 255)',
+                    'rgba(255,165,0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(255, 0, 0)'
+                  ],
+                  borderWidth:1,
+                  borderColor:'#777',
+                  hoverBorderWidth:3,
+                  hoverBorderColor:'#000'
+                }]
+              },
+              options:{
+                title:{
+                  display:true,
+                  text:'RealTime Statistic',
+                  fontSize:25
+                },
+                legend:{
+                  display:true,
+                  position:'right',
+                  labels:{
+                    fontColor:'#000'
+                  }
+                },
+                layout:{
+                  padding:{
+                    left:50,
+                    right:0,
+                    bottom:0,
+                    top:0
+                  }
+                },
+                tooltips:{
+                  enabled:true
+                }
+              }
+            });
+
+            // officers by counties chart
+            google.charts.load("current", {packages:["corechart"]});
+            google.charts.setOnLoadCallback(applaudChart);
+            function applaudChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Montserrado',     <%= montserrado.length %>],
+                ['Bomi',      <%= bomi.length %>],
+                ['Nimba',  <%= nimba.length %>],
+                ['Lofa', <%= lofa.length %>],
+                ['Margibi',    <%= margibi.length %>],
+                ['Cape Mount',    <%= capemount.length %>],
+                ['Gbarpolu',    <%= gbarpolu.length %>],
+                ['Grand Bassa',    <%= grandBassa.length %>],
+                ['Rivergee',    <%= rivergee.length %>],
+                ['Rivercess',    <%= rivercess.length %>],
+                ['Grand Kru',    <%= grandkru.length %>],
+                ['Grand Gedeh',    <%= grandgedeh.length %>],
+                ['MaryLand',    <%= maryland.length %>],
+
+              ]);
+
+              var options = {
+                title: 'Officers Assignments',
+                is3D: true,
+              };
+
+              var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+              chart.draw(data, options);
+            }
+
+
+            // applauds and complaints by counties chart
+            google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(commentsChart);
+
+              function commentsChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Year', 'Applauds', 'Complaints'],
+                  ['Bomi',  <%= appBomi.length %>,      <%= comBomi.length %>],
+                  ['Montserrado',  <%= appMontserrado.length %>,      <%= comMontserrado.length %>],
+                  ['Nimba',  <%= appNimba.length %>,      <%= comNimba.length %>],
+                  ['Lofa',  <%= appLofa.length %>,      <%= comLofa.length %>],
+                  ['Margibi',  <%= appMargibi.length %>,      <%= comMargibi.length %>],
+                  ['Cape Mount',  <%= appCapemount.length %>,      <%= comCapemount.length %>],
+                  ['Gbarpolu',  <%= appGbarpolu.length %>,      <%= comGbarpolu.length %>],
+                  ['Grand Bassa',  <%= appGrandBassa.length %>,      <%= comGrandBassa.length %>],
+                  ['Rivergee',  <%= appRivergee.length %>,      <%= comRivergee.length %>],
+                  ['Rivercess',  <%= appRivercess.length %>,      <%= comRivercess.length %>],
+                  ['Grand Kru',  <%= appGrandkru.length %>,      <%= comGrandkru.length %>],
+                  ['Bomi',  <%= appBomi.length %>,      <%= comBomi.length %>],
+                  ['MaryLand',  <%= appMaryland.length %>,      <%= comMaryland.length %>],
+                ]);
+
+                var options = {
+                  title: 'Statistics',
+                  hAxis: {title: 'Counties',  titleTextStyle: {color: '#333'}},
+                  vAxis: {minValue: 0}
+                };
+
+                var chart = new google.visualization.AreaChart(document.getElementById('comments'));
+                chart.draw(data, options);
+              }
+          </script>
+          <!-- /.control-sidebar -->
+        </section>
+      </div>
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy;2019
+          <a href="http://roviagatetechnology.com">RoviaGate Technology</a
+          >.</strong
+        >
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 2.o
         </div>
-
-
-
-
-
-
-
-
-        <!-- /.row -->
-      </div><!--/. container-fluid -->
-    </section>
-    <!-- /.content -->
-
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-
-
-
-
-  <!-- charts -->
-  <script>
-    let myChart = document.getElementById('myChart').getContext('2d');
-    // Global Options
-    Chart.defaults.global.defaultFontFamily = 'Lato';
-    Chart.defaults.global.defaultFontSize = 18;
-    Chart.defaults.global.defaultFontColor = '#777';
-
-    let massPopChart = new Chart(myChart, {
-      type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
-      data:{
-        labels:['Officers', 'Comments', 'Applauds', 'Complaints'],
-        datasets:[{
-          label:'Data',
-          data:[
-            <%= officers.length %>,
-            <%= comments.length %>,
-            <%= applauds.length %>,
-            <%= complains.length %>
-          ],
-          //backgroundColor:'green',
-          backgroundColor:[
-            'rgba(0, 0, 255)',
-            'rgba(255,165,0)',
-            'rgba(0, 255, 0)',
-            'rgba(255, 0, 0)'
-          ],
-          borderWidth:1,
-          borderColor:'#777',
-          hoverBorderWidth:3,
-          hoverBorderColor:'#000'
-        }]
-      },
-      options:{
-        title:{
-          display:true,
-          text:'RealTime Statistic',
-          fontSize:25
-        },
-        legend:{
-          display:true,
-          position:'right',
-          labels:{
-            fontColor:'#000'
-          }
-        },
-        layout:{
-          padding:{
-            left:50,
-            right:0,
-            bottom:0,
-            top:0
-          }
-        },
-        tooltips:{
-          enabled:true
-        }
-      }
-    });
-    
-    // officers by counties chart
-    google.charts.load("current", {packages:["corechart"]});
-    google.charts.setOnLoadCallback(applaudChart);
-    function applaudChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
-        ['Montserrado',     <%= montserrado.length %>],
-        ['Bomi',      <%= bomi.length %>],
-        ['Nimba',  <%= nimba.length %>],
-        ['Lofa', <%= lofa.length %>],
-        ['Margibi',    <%= margibi.length %>],
-        ['Cape Mount',    <%= capemount.length %>],
-        ['Gbarpolu',    <%= gbarpolu.length %>],
-        ['Grand Bassa',    <%= grandBassa.length %>],
-        ['Rivergee',    <%= rivergee.length %>],
-        ['Rivercess',    <%= rivercess.length %>],
-        ['Grand Kru',    <%= grandkru.length %>],
-        ['Grand Gedeh',    <%= grandgedeh.length %>],
-        ['MaryLand',    <%= maryland.length %>],
-   
-      ]);
-
-      var options = {
-        title: 'Officers Assignments',
-        is3D: true,
-      };
-
-      var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-      chart.draw(data, options);
-    }
-
-
-    // applauds and complaints by counties chart
-    google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(commentsChart);
-
-      function commentsChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Applauds', 'Complaints'],
-          ['Bomi',  <%= appBomi.length %>,      <%= comBomi.length %>],
-          ['Montserrado',  <%= appMontserrado.length %>,      <%= comMontserrado.length %>],
-          ['Nimba',  <%= appNimba.length %>,      <%= comNimba.length %>],
-          ['Lofa',  <%= appLofa.length %>,      <%= comLofa.length %>],
-          ['Margibi',  <%= appMargibi.length %>,      <%= comMargibi.length %>],
-          ['Cape Mount',  <%= appCapemount.length %>,      <%= comCapemount.length %>],
-          ['Gbarpolu',  <%= appGbarpolu.length %>,      <%= comGbarpolu.length %>],
-          ['Grand Bassa',  <%= appGrandBassa.length %>,      <%= comGrandBassa.length %>],
-          ['Rivergee',  <%= appRivergee.length %>,      <%= comRivergee.length %>],
-          ['Rivercess',  <%= appRivercess.length %>,      <%= comRivercess.length %>],
-          ['Grand Kru',  <%= appGrandkru.length %>,      <%= comGrandkru.length %>],
-          ['Bomi',  <%= appBomi.length %>,      <%= comBomi.length %>],
-          ['MaryLand',  <%= appMaryland.length %>,      <%= comMaryland.length %>],
-        ]);
-
-        var options = {
-          title: 'Statistics',
-          hAxis: {title: 'Counties',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('comments'));
-        chart.draw(data, options);
-      }
-
-  </script>
-  <!-- /.control-sidebar -->
-
-
-
-
- </section>
-  </div><!-- Main Footer -->
-  <footer class="main-footer">
-    <strong>Copyright &copy;2019 <a href="http://roviagatetechnology.com">RoviaGate Technology</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 2.o
+      </footer>
     </div>
-  </footer>
-</div>
-<!-- ./wrapper -->
+    <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
-<!-- AdminLTE App -->
-<script src="js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="js/demo.js"></script>
-<!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-    });
-  });
-</script>
-</body>
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables -->
+    <script src="plugins/datatables/jquery.dataTables.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <!-- AdminLTE App -->
+    <script src="js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="js/demo.js"></script>
+    <!-- page script -->
+    <script>
+      $(function() {
+        $("#example1").DataTable();
+        $("#example2").DataTable({
+          paging: true,
+          lengthChange: false,
+          searching: false,
+          ordering: true,
+          info: true,
+          autoWidth: false
+        });
+      });
+    </script>
+  </body>
 </html>
