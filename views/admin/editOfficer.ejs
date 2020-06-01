@@ -199,13 +199,14 @@
               >Division</label
             >
             <div class="col-lg-9">
-              <input
-                class="form-control"
-                type="text"
-                name="division"
-                value="<%= officer.division %>"
-                required
-              />
+              <select name="division" class="form-control">
+                <option value="<%= officer.division %>"
+                  ><%= officer.division %></option
+                >
+                <% divisions.forEach(div => { %>
+                <option value="<%= div.title %>"><%= div.title %></option>
+                <% }); %>
+              </select>
             </div>
           </div>
           <div class="form-group row">

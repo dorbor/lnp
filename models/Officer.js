@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const OfficerSchema = new Schema({
   agency: {
     type: String,
-    default: "LNP"
+    default: "LNP",
   },
   id: String,
   firstName: String,
@@ -14,12 +14,13 @@ const OfficerSchema = new Schema({
   assignment: String,
   middleName: String,
   email: String,
+  phone: Number,
   gender: String,
   department: String,
   division: String,
   position: String,
   section: String,
-  status: String
+  status: String,
 });
 
 module.exports = mongoose.model("Officer", OfficerSchema);

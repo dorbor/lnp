@@ -1,0 +1,35 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+
+        
+           <br>
+           <h1 class="display-2">Division/Unit</h1>
+           <table class="table table-hover table-dark desplay" id="example">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="row">Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% divisions.forEach(div => { %> 
+                    <tr>
+                        <td><%= div.title %></td>
+                        <td><%= div.desc %></td>
+                        <td><%= div.createdAt %></td>
+                        <td><a href="/admin/editDivision/<%= div._id %>"><i class="fas fa-edit"></i></a></td>
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+<!-- Bottom component -->
+<%- include('hub/bottom'); -%>

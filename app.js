@@ -13,7 +13,7 @@ const upload = require("express-fileupload");
 const dateFormat = require("dateformat");
 const now = new Date();
 
-const isEmpty = obj => {
+const isEmpty = (obj) => {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       return false;
@@ -27,6 +27,7 @@ const Comment = require("./models/Comment");
 const User = require("./models/User");
 const Officer = require("./models/Officer");
 const Category = require("./models/Category");
+const Division = require("./models/Division");
 const Position = require("./models/Position");
 
 mongoose.Promise = global.Promise;
@@ -44,6 +45,7 @@ app.use(express.static((__dirname, "public")));
 app.use("/admin", express.static((__dirname, "public")));
 app.use("/admin/editOfficer", express.static((__dirname, "public")));
 app.use("/admin/editPosition", express.static((__dirname, "public")));
+app.use("/admin/editDivision", express.static((__dirname, "public")));
 app.use("/admin/editCategory", express.static((__dirname, "public")));
 app.use("/admin/editUser", express.static((__dirname, "public")));
 app.use("/admin/map", express.static((__dirname, "public")));
@@ -54,7 +56,7 @@ app.use(
   session({
     secret: "max",
     saveUninitialized: false,
-    resave: false
+    resave: false,
   })
 );
 
@@ -78,8 +80,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/admin", userAuthenticated, (req, res) => {
-  Officer.find({ agency: "LNP" }).then(off => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Officer.find({ agency: "LNP" }).then((off) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
       // officers by counties counties
@@ -128,7 +130,7 @@ app.get("/admin", userAuthenticated, (req, res) => {
       var appGrandgedeh = [];
       var appMaryland = [];
 
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
           if (com.county == "Montserrado") {
@@ -176,7 +178,7 @@ app.get("/admin", userAuthenticated, (req, res) => {
         }
       });
 
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
           if (com.county == "Montserrado") {
@@ -225,7 +227,7 @@ app.get("/admin", userAuthenticated, (req, res) => {
       });
 
       // officers by counties
-      off.forEach(offco => {
+      off.forEach((offco) => {
         if (offco.assignment == "Montserrado") {
           montserrado.push(offco);
         }
@@ -318,7 +320,7 @@ app.get("/admin", userAuthenticated, (req, res) => {
         appRivercess: appRivercess,
         appGrandkru: appGrandkru,
         appGrandgedeh: appGrandgedeh,
-        appMaryland: appMaryland
+        appMaryland: appMaryland,
       });
     });
   });
@@ -326,15 +328,15 @@ app.get("/admin", userAuthenticated, (req, res) => {
 
 //Categories section
 app.get("/admin/addCategory", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LNP" }).then(comments => {
+  Comment.find({ agency: "LNP" }).then((comments) => {
     var complains = [];
     var applauds = [];
-    comments.forEach(com => {
+    comments.forEach((com) => {
       if (com.type == "Complain") {
         complains.push(com);
       }
     });
-    comments.forEach(com => {
+    comments.forEach((com) => {
       if (com.type == "Applaud") {
         applauds.push(com);
       }
@@ -343,7 +345,7 @@ app.get("/admin/addCategory", userAuthenticated, (req, res) => {
     res.render("admin/addCategory", {
       comments: comments,
       complains: complains,
-      applauds: applauds
+      applauds: applauds,
     });
   });
 });
@@ -353,10 +355,10 @@ app.post("/admin/addCategory", userAuthenticated, (req, res) => {
     agency: "LNP",
     title: req.body.title,
     desc: req.body.desc,
-    createdAt: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+    createdAt: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
-  setCategory.save(err => {
+  setCategory.save((err) => {
     if (err) {
       console.log(err);
     } else {
@@ -367,16 +369,16 @@ app.post("/admin/addCategory", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allCategories", userAuthenticated, (req, res) => {
-  Category.find({ agency: "LNP" }).then(cat => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Category.find({ agency: "LNP" }).then((cat) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -386,7 +388,7 @@ app.get("/admin/allCategories", userAuthenticated, (req, res) => {
         comments: comments,
         complains: complains,
         applauds: applauds,
-        categories: cat
+        categories: cat,
       });
     });
   });
@@ -394,16 +396,16 @@ app.get("/admin/allCategories", userAuthenticated, (req, res) => {
 
 app.get("/admin/editCategory/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Comment.find({ agency: "LNP" }).then(comments => {
-    Category.findOne({ agency: "LNP", _id: id }).then(cat => {
+  Comment.find({ agency: "LNP" }).then((comments) => {
+    Category.findOne({ agency: "LNP", _id: id }).then((cat) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -413,7 +415,7 @@ app.get("/admin/editCategory/:id", userAuthenticated, (req, res) => {
         comments: comments,
         complains: complains,
         applauds: applauds,
-        category: cat
+        category: cat,
       });
     });
   });
@@ -421,13 +423,13 @@ app.get("/admin/editCategory/:id", userAuthenticated, (req, res) => {
 
 app.post("/admin/editCategory/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Category.findOne({ agency: "LNP", _id: id }).then(cat => {
+  Category.findOne({ agency: "LNP", _id: id }).then((cat) => {
     cat.agency = "LNP";
     cat.title = req.body.title;
     cat.desc = req.body.desc;
     cat.createdAt = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 
-    cat.save(err => {
+    cat.save((err) => {
       if (err) {
         console.log(err);
       } else {
@@ -439,17 +441,132 @@ app.post("/admin/editCategory/:id", userAuthenticated, (req, res) => {
 
 ///Category ends
 
-//Position section
-app.get("/admin/addPosition", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LNP" }).then(comments => {
+//Division section
+app.get("/admin/addDivision", userAuthenticated, (req, res) => {
+  Comment.find({ agency: "LNP" }).then((comments) => {
     var complains = [];
     var applauds = [];
-    comments.forEach(com => {
+    comments.forEach((com) => {
       if (com.type == "Complain") {
         complains.push(com);
       }
     });
-    comments.forEach(com => {
+    comments.forEach((com) => {
+      if (com.type == "Applaud") {
+        applauds.push(com);
+      }
+    });
+
+    res.render("admin/addDivision", {
+      comments: comments,
+      complains: complains,
+      applauds: applauds,
+    });
+  });
+});
+
+app.post("/admin/addDivision", userAuthenticated, (req, res) => {
+  const setDivision = new Division({
+    agency: "LNP",
+    title: req.body.title,
+    desc: req.body.desc,
+    createdAt: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+  });
+
+  setDivision.save((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Division save");
+    }
+  });
+  res.redirect("/admin/allDivisions");
+});
+
+app.get("/admin/allDivisions", userAuthenticated, (req, res) => {
+  Division.find({ agency: "LNP" }).then((div) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
+      var complains = [];
+      var applauds = [];
+      comments.forEach((com) => {
+        if (com.type == "Complain") {
+          complains.push(com);
+        }
+      });
+      comments.forEach((com) => {
+        if (com.type == "Applaud") {
+          applauds.push(com);
+        }
+      });
+
+      res.render("admin/allDivisions", {
+        comments: comments,
+        complains: complains,
+        applauds: applauds,
+        divisions: div,
+      });
+    });
+  });
+});
+
+app.get("/admin/editDivision/:id", userAuthenticated, (req, res) => {
+  const id = req.params.id;
+  Comment.find({ agency: "LNP" }).then((comments) => {
+    Division.findOne({ agency: "LNP", _id: id }).then((div) => {
+      var complains = [];
+      var applauds = [];
+      comments.forEach((com) => {
+        if (com.type == "Complain") {
+          complains.push(com);
+        }
+      });
+      comments.forEach((com) => {
+        if (com.type == "Applaud") {
+          applauds.push(com);
+        }
+      });
+
+      res.render("admin/editDivision", {
+        comments: comments,
+        complains: complains,
+        applauds: applauds,
+        division: div,
+      });
+    });
+  });
+});
+
+app.post("/admin/editDivision/:id", userAuthenticated, (req, res) => {
+  const id = req.params.id;
+  Division.findOne({ agency: "LNP", _id: id }).then((div) => {
+    div.agency = "LNP";
+    div.title = req.body.title;
+    div.desc = req.body.desc;
+    div.createdAt = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+
+    div.save((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("/admin/allDivisions");
+      }
+    });
+  });
+});
+
+///Division ends
+
+//Position section
+app.get("/admin/addPosition", userAuthenticated, (req, res) => {
+  Comment.find({ agency: "LNP" }).then((comments) => {
+    var complains = [];
+    var applauds = [];
+    comments.forEach((com) => {
+      if (com.type == "Complain") {
+        complains.push(com);
+      }
+    });
+    comments.forEach((com) => {
       if (com.type == "Applaud") {
         applauds.push(com);
       }
@@ -458,7 +575,7 @@ app.get("/admin/addPosition", userAuthenticated, (req, res) => {
     res.render("admin/addPosition", {
       comments: comments,
       complains: complains,
-      applauds: applauds
+      applauds: applauds,
     });
   });
 });
@@ -467,10 +584,10 @@ app.post("/admin/addPosition", userAuthenticated, (req, res) => {
   const setPosition = new Position({
     agency: "LNP",
     title: req.body.title,
-    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
-  setPosition.save(err => {
+  setPosition.save((err) => {
     if (err) {
       console.log("Position save error" + err);
     }
@@ -480,16 +597,16 @@ app.post("/admin/addPosition", userAuthenticated, (req, res) => {
 
 app.get("/admin/editPosition/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Comment.find({ agency: "LNP" }).then(comments => {
-    Position.findOne({ agency: "LNP", _id: id }).then(pos => {
+  Comment.find({ agency: "LNP" }).then((comments) => {
+    Position.findOne({ agency: "LNP", _id: id }).then((pos) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -499,7 +616,7 @@ app.get("/admin/editPosition/:id", userAuthenticated, (req, res) => {
         comments: comments,
         complains: complains,
         applauds: applauds,
-        position: pos
+        position: pos,
       });
     });
   });
@@ -507,12 +624,12 @@ app.get("/admin/editPosition/:id", userAuthenticated, (req, res) => {
 
 app.post("/admin/editPosition/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Position.findOne({ agency: "LNP", _id: id }).then(pos => {
+  Position.findOne({ agency: "LNP", _id: id }).then((pos) => {
     pos.agency = "LNP";
     pos.title = req.body.title;
     pos.date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 
-    pos.save(err => {
+    pos.save((err) => {
       if (err) {
         console.log(err);
       } else {
@@ -523,16 +640,16 @@ app.post("/admin/editPosition/:id", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allPositions", userAuthenticated, (req, res) => {
-  Position.find({ agency: "LNP" }).then(pos => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Position.find({ agency: "LNP" }).then((pos) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -542,7 +659,7 @@ app.get("/admin/allPositions", userAuthenticated, (req, res) => {
         comments: comments,
         complains: complains,
         applauds: applauds,
-        positions: pos
+        positions: pos,
       });
     });
   });
@@ -550,26 +667,29 @@ app.get("/admin/allPositions", userAuthenticated, (req, res) => {
 ///Position ends
 
 app.get("/admin/addOfficer", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LNP" }).then(comments => {
-    Position.find({ agency: "LNP" }).then(pos => {
-      var complains = [];
-      var applauds = [];
-      comments.forEach(com => {
-        if (com.type == "Complain") {
-          complains.push(com);
-        }
-      });
-      comments.forEach(com => {
-        if (com.type == "Applaud") {
-          applauds.push(com);
-        }
-      });
+  Comment.find({ agency: "LNP" }).then((comments) => {
+    Position.find({ agency: "LNP" }).then((pos) => {
+      Division.find({ agency: "LNP" }).then((div) => {
+        var complains = [];
+        var applauds = [];
+        comments.forEach((com) => {
+          if (com.type == "Complain") {
+            complains.push(com);
+          }
+        });
+        comments.forEach((com) => {
+          if (com.type == "Applaud") {
+            applauds.push(com);
+          }
+        });
 
-      res.render("admin/addOfficer", {
-        comments: comments,
-        complains: complains,
-        applauds: applauds,
-        positions: pos
+        res.render("admin/addOfficer", {
+          comments: comments,
+          complains: complains,
+          applauds: applauds,
+          positions: pos,
+          divisions: div,
+        });
       });
     });
   });
@@ -581,7 +701,7 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
     const file = req.files.officerImage;
     fileName = file.name;
 
-    file.mv("./public/images/officers/" + fileName, err => {
+    file.mv("./public/images/officers/" + fileName, (err) => {
       if (err) {
         console.log(err);
       }
@@ -602,10 +722,10 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
     division: req.body.division,
     position: req.body.position,
     section: req.body.section,
-    status: req.body.status
+    status: req.body.status,
   });
 
-  setOfficr.save(err => {
+  setOfficr.save((err) => {
     if (err) {
       console.log(err);
     } else {
@@ -617,16 +737,16 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
-  Officer.find({ agency: "LNP" }).then(off => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Officer.find({ agency: "LNP" }).then((off) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -636,7 +756,7 @@ app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
         officers: off,
         comments: comments,
         complains: complains,
-        applauds: applauds
+        applauds: applauds,
       });
     });
   });
@@ -645,28 +765,31 @@ app.get("/admin/allOfficers", userAuthenticated, (req, res) => {
 app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
 
-  Officer.findOne({ _id: id, agency: "LNP" }).then(foundOff => {
-    Comment.find({ agency: "LNP" }).then(comments => {
-      Position.find({ agency: "LNP" }).then(pos => {
-        var complains = [];
-        var applauds = [];
-        comments.forEach(com => {
-          if (com.type == "Complain") {
-            complains.push(com);
-          }
-        });
-        comments.forEach(com => {
-          if (com.type == "Applaud") {
-            applauds.push(com);
-          }
-        });
+  Officer.findOne({ _id: id, agency: "LNP" }).then((foundOff) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
+      Position.find({ agency: "LNP" }).then((pos) => {
+        Division.find({ agency: "LNP" }).then((div) => {
+          var complains = [];
+          var applauds = [];
+          comments.forEach((com) => {
+            if (com.type == "Complain") {
+              complains.push(com);
+            }
+          });
+          comments.forEach((com) => {
+            if (com.type == "Applaud") {
+              applauds.push(com);
+            }
+          });
 
-        res.render("admin/editOfficer", {
-          comments: comments,
-          complains: complains,
-          applauds: applauds,
-          officer: foundOff,
-          positions: pos
+          res.render("admin/editOfficer", {
+            comments: comments,
+            complains: complains,
+            applauds: applauds,
+            officer: foundOff,
+            positions: pos,
+            divisions: div,
+          });
         });
       });
     });
@@ -675,8 +798,8 @@ app.get("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
 ///// update officer information
 app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
-  Officer.findOne({ _id: req.params.id, agency: "LNP" }).then(foundOff => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Officer.findOne({ _id: req.params.id, agency: "LNP" }).then((foundOff) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       foundOff.id = req.body.id;
       agency = "LNP";
       foundOff.firstName = req.body.firstName;
@@ -687,7 +810,7 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
         const file = req.files.officerImage;
         let fileName = file.name;
 
-        file.mv("./public/images/officers/" + fileName, err => {
+        file.mv("./public/images/officers/" + fileName, (err) => {
           if (err) {
             console.log(err);
           }
@@ -708,18 +831,18 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
       });
 
-      foundOff.save(err => {
+      foundOff.save((err) => {
         if (err) {
           console.log(err);
         } else {
@@ -735,7 +858,7 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 //Delete user method
 app.get("/admin/deleteOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Officer.findByIdAndRemove({ _id: id, agency: "LNP" }).then(foundUser => {
+  Officer.findByIdAndRemove({ _id: id, agency: "LNP" }).then((foundUser) => {
     res.redirect("/admin/allOfficers");
   });
 });
@@ -743,16 +866,16 @@ app.get("/admin/deleteOfficer/:id", userAuthenticated, (req, res) => {
 // apploud and complain section
 
 app.get("/admin/allComments", userAuthenticated, (req, res) => {
-  Officer.find({ agency: "LNP" }).then(off => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Officer.find({ agency: "LNP" }).then((off) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -762,23 +885,23 @@ app.get("/admin/allComments", userAuthenticated, (req, res) => {
         officers: off,
         comments: comments,
         complains: complains,
-        applauds: applauds
+        applauds: applauds,
       });
     });
   });
 });
 
 app.get("/admin/applauds", userAuthenticated, (req, res) => {
-  Officer.find({}).then(off => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Officer.find({}).then((off) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -788,7 +911,7 @@ app.get("/admin/applauds", userAuthenticated, (req, res) => {
         officers: off,
         comments: comments,
         complains: complains,
-        applauds: applauds
+        applauds: applauds,
       });
     });
   });
@@ -797,17 +920,17 @@ app.get("/admin/applauds", userAuthenticated, (req, res) => {
 // google map routes
 app.get("/admin/details/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Category.find({}).then(cat => {
-    Comment.find({ agency: "LNP" }).then(comments => {
-      Comment.findOne({ _id: id, agency: "LNP" }).then(foundCom => {
+  Category.find({}).then((cat) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
+      Comment.findOne({ _id: id, agency: "LNP" }).then((foundCom) => {
         var complains = [];
         var applauds = [];
-        comments.forEach(com => {
+        comments.forEach((com) => {
           if (com.type == "Complain") {
             complains.push(com);
           }
         });
-        comments.forEach(com => {
+        comments.forEach((com) => {
           if (com.type == "Applaud") {
             applauds.push(com);
           }
@@ -818,7 +941,7 @@ app.get("/admin/details/:id", userAuthenticated, (req, res) => {
           comments: comments,
           complains: complains,
           applauds: applauds,
-          comment: foundCom
+          comment: foundCom,
         });
       });
     });
@@ -828,7 +951,7 @@ app.get("/admin/details/:id", userAuthenticated, (req, res) => {
 //updating comments category
 app.post("/admin/comment/:id", userAuthenticated, (req, res) => {
   var id = req.params.id;
-  Comment.findOne({ agency: "LNP", _id: id }).then(com => {
+  Comment.findOne({ agency: "LNP", _id: id }).then((com) => {
     com.agency = "LNP";
     com.type = com.type;
     com.officerId = com.officerId;
@@ -844,7 +967,7 @@ app.post("/admin/comment/:id", userAuthenticated, (req, res) => {
     com.status = req.body.status;
     com.date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 
-    com.save(err => {
+    com.save((err) => {
       if (err) {
         console.log(err);
       } else {
@@ -858,17 +981,17 @@ app.post("/admin/comment/:id", userAuthenticated, (req, res) => {
 app.get("/admin/map/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
 
-  Officer.find({}).then(off => {
-    Comment.find({ agency: "LNP" }).then(comments => {
-      Comment.findOne({ _id: id }).then(foundCom => {
+  Officer.find({}).then((off) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
+      Comment.findOne({ _id: id }).then((foundCom) => {
         var complains = [];
         var applauds = [];
-        comments.forEach(com => {
+        comments.forEach((com) => {
           if (com.type == "Complain") {
             complains.push(com);
           }
         });
-        comments.forEach(com => {
+        comments.forEach((com) => {
           if (com.type == "Applaud") {
             applauds.push(com);
           }
@@ -879,7 +1002,7 @@ app.get("/admin/map/:id", userAuthenticated, (req, res) => {
           comments: comments,
           complains: complains,
           applauds: applauds,
-          comment: foundCom
+          comment: foundCom,
         });
       });
     });
@@ -887,16 +1010,16 @@ app.get("/admin/map/:id", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/map", userAuthenticated, (req, res) => {
-  Officer.find({}).then(off => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  Officer.find({}).then((off) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -906,22 +1029,22 @@ app.get("/admin/map", userAuthenticated, (req, res) => {
         officers: off,
         comments: comments,
         complains: complains,
-        applauds: applauds
+        applauds: applauds,
       });
     });
   });
 });
 
 app.get("/admin/addUser", userAuthenticated, (req, res) => {
-  Comment.find({ agency: "LNP" }).then(comments => {
+  Comment.find({ agency: "LNP" }).then((comments) => {
     var complains = [];
     var applauds = [];
-    comments.forEach(com => {
+    comments.forEach((com) => {
       if (com.type == "Complain") {
         complains.push(com);
       }
     });
-    comments.forEach(com => {
+    comments.forEach((com) => {
       if (com.type == "Applaud") {
         applauds.push(com);
       }
@@ -930,7 +1053,7 @@ app.get("/admin/addUser", userAuthenticated, (req, res) => {
     res.render("admin/addUser", {
       comments: comments,
       complains: complains,
-      applauds: applauds
+      applauds: applauds,
     });
   });
 });
@@ -941,7 +1064,7 @@ app.post("/admin/addUser", userAuthenticated, (req, res) => {
     const file = req.files.userImage;
     fileName = file.name;
 
-    file.mv("./public/images/users/" + fileName, err => {
+    file.mv("./public/images/users/" + fileName, (err) => {
       if (err) {
         console.log(err);
       }
@@ -956,10 +1079,10 @@ app.post("/admin/addUser", userAuthenticated, (req, res) => {
       image: fileName,
       role: req.body.role,
       password: hash,
-      status: req.body.status
+      status: req.body.status,
     });
 
-    setUser.save(err => {
+    setUser.save((err) => {
       if (err) {
         console.log(err);
       } else {
@@ -970,17 +1093,17 @@ app.post("/admin/addUser", userAuthenticated, (req, res) => {
 });
 
 app.get("/admin/allUsers", userAuthenticated, (req, res) => {
-  User.find({ agency: "LNP" }).then(user => {
-    Officer.find({ agency: "LNP" }).then(off => {
-      Comment.find({ agency: "LNP" }).then(comments => {
+  User.find({ agency: "LNP" }).then((user) => {
+    Officer.find({ agency: "LNP" }).then((off) => {
+      Comment.find({ agency: "LNP" }).then((comments) => {
         var complains = [];
         var applauds = [];
-        comments.forEach(com => {
+        comments.forEach((com) => {
           if (com.type == "Complain") {
             complains.push(com);
           }
         });
-        comments.forEach(com => {
+        comments.forEach((com) => {
           if (com.type == "Applaud") {
             applauds.push(com);
           }
@@ -991,7 +1114,7 @@ app.get("/admin/allUsers", userAuthenticated, (req, res) => {
           comments: comments,
           complains: complains,
           applauds: applauds,
-          users: user
+          users: user,
         });
       });
     });
@@ -1000,16 +1123,16 @@ app.get("/admin/allUsers", userAuthenticated, (req, res) => {
 
 app.get("/admin/editUser/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  User.findOne({ _id: id }).then(foundUser => {
-    Comment.find({ agency: "LNP" }).then(comments => {
+  User.findOne({ _id: id }).then((foundUser) => {
+    Comment.find({ agency: "LNP" }).then((comments) => {
       var complains = [];
       var applauds = [];
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Complain") {
           complains.push(com);
         }
       });
-      comments.forEach(com => {
+      comments.forEach((com) => {
         if (com.type == "Applaud") {
           applauds.push(com);
         }
@@ -1019,7 +1142,7 @@ app.get("/admin/editUser/:id", userAuthenticated, (req, res) => {
         comments: comments,
         complains: complains,
         applauds: applauds,
-        foundUser: foundUser
+        foundUser: foundUser,
       });
     });
   });
@@ -1030,7 +1153,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     // Store hash in your password DB.
-    User.findOne({ _id: id }).then(foundUser => {
+    User.findOne({ _id: id }).then((foundUser) => {
       foundUser.agency = "LNP";
       foundUser.fullName = req.body.fullName;
       foundUser.email = req.body.email;
@@ -1038,7 +1161,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
         const file = req.files.userImage;
         let fileName = file.name;
 
-        file.mv("./public/images/users/" + fileName, err => {
+        file.mv("./public/images/users/" + fileName, (err) => {
           if (err) {
             console.log(err);
           }
@@ -1051,7 +1174,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
       foundUser.password = hash;
       foundUser.status = req.body.status;
 
-      foundUser.save(err => {
+      foundUser.save((err) => {
         if (err) {
           console.log(err);
         } else {
@@ -1065,14 +1188,14 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
 //Delete user method
 app.get("/admin/user/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  User.findByIdAndRemove({ _id: id, agency: "LNP" }).then(foundUser => {
+  User.findByIdAndRemove({ _id: id, agency: "LNP" }).then((foundUser) => {
     res.redirect("/admin/allUsers");
   });
 });
 
 passport.use(
   new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-    User.findOne({ email: email }).then(user => {
+    User.findOne({ email: email }).then((user) => {
       if (!user) return done(null, false, { message: "Incorrect username." });
 
       bcrypt.compare(password, user.password, (err, matched) => {
@@ -1099,7 +1222,7 @@ passport.deserializeUser((id, done) => {
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", {
     successRedirect: "/admin",
-    failureRedirect: "/"
+    failureRedirect: "/",
     // failureFlash: true
   })(req, res, next);
 });
@@ -1135,10 +1258,10 @@ app.route("/api/comment").post((req, res) => {
     county: req.body.county,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
-    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
-  comment.save(err => {
+  comment.save((err) => {
     if (!err) {
       res.send(" send Successfully");
     } else {
