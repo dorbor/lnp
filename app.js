@@ -855,7 +855,7 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
   });
 });
 
-//Delete user method
+//Delete Officer method
 app.get("/admin/deleteOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
   Officer.findByIdAndRemove({ _id: id, agency: "LNP" }).then((foundUser) => {
@@ -1151,38 +1151,43 @@ app.get("/admin/editUser/:id", userAuthenticated, (req, res) => {
 // Edit user
 app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-    // Store hash in your password DB.
-    User.findOne({ _id: id }).then((foundUser) => {
-      foundUser.agency = "LNP";
-      foundUser.fullName = req.body.fullName;
-      foundUser.email = req.body.email;
-      if (!isEmpty(req.files)) {
-        const file = req.files.userImage;
-        let fileName = file.name;
+  // bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+  // Store hash in your password DB.
+  User.findOne({ _id: id }).then((foundUser) => {
+    foundUser.agency = "LNP";
+    foundUser.fullName = req.body.fullName;
+    foundUser.email = req.body.email;
+    if (!isEmpty(req.files)) {
+      const file = req.files.userImage;
+      let fileName = file.name;
 
-        file.mv("./public/images/users/" + fileName, (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
-        foundUser.image = fileName;
-      } else {
-        foundUser.image = foundUser.image;
-      }
-      foundUser.role = req.body.role;
-      foundUser.password = hash;
-      foundUser.status = req.body.status;
-
-      foundUser.save((err) => {
+      file.mv("./public/images/users/" + fileName, (err) => {
         if (err) {
           console.log(err);
-        } else {
-          res.redirect("/admin/allUsers");
         }
       });
+      foundUser.image = fileName;
+    } else {
+      foundUser.image = foundUser.image;
+    }
+    if (foundUser.role === "") {
+      foundUser.role = foundUser.role;
+    } else {
+      foundUser.role = req.body.role;
+    }
+
+    foundUser.password = req.body.password;
+    foundUser.status = req.body.status;
+
+    foundUser.save((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("/admin/allUsers");
+      }
     });
   });
+  // });
 });
 
 //Delete user method
