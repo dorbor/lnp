@@ -1171,7 +1171,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
         foundUser.image = foundUser.image;
       }
       // user role check
-      if (foundUser.role === "") {
+      if (req.body.role === "" || req.body.role) {
         foundUser.role = foundUser.role;
       } else {
         foundUser.role = req.body.role;
@@ -1180,7 +1180,6 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
       // user password check
       if (foundUser.password !== foundUser.password) {
         foundUser.password = hash;
-      } else {
       }
 
       foundUser.status = req.body.status;
