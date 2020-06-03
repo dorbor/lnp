@@ -1151,43 +1151,49 @@ app.get("/admin/editUser/:id", userAuthenticated, (req, res) => {
 // Edit user
 app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  // bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-  // Store hash in your password DB.
-  User.findOne({ _id: id }).then((foundUser) => {
-    foundUser.agency = "LNP";
-    foundUser.fullName = req.body.fullName;
-    foundUser.email = req.body.email;
-    if (!isEmpty(req.files)) {
-      const file = req.files.userImage;
-      let fileName = file.name;
+  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+    // Store hash in your password DB.
+    User.findOne({ _id: id }).then((foundUser) => {
+      foundUser.agency = "LNP";
+      foundUser.fullName = req.body.fullName;
+      foundUser.email = req.body.email;
+      if (!isEmpty(req.files)) {
+        const file = req.files.userImage;
+        let fileName = file.name;
 
-      file.mv("./public/images/users/" + fileName, (err) => {
+        file.mv("./public/images/users/" + fileName, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+        foundUser.image = fileName;
+      } else {
+        foundUser.image = foundUser.image;
+      }
+      // user role check
+      if (foundUser.role === "") {
+        foundUser.role = foundUser.role;
+      } else {
+        foundUser.role = req.body.role;
+      }
+
+      // user password check
+      if (foundUser.password !== foundUser.password) {
+        foundUser.password = hash;
+      } else {
+      }
+
+      foundUser.status = req.body.status;
+
+      foundUser.save((err) => {
         if (err) {
           console.log(err);
+        } else {
+          res.redirect("/admin/allUsers");
         }
       });
-      foundUser.image = fileName;
-    } else {
-      foundUser.image = foundUser.image;
-    }
-    if (foundUser.role === "") {
-      foundUser.role = foundUser.role;
-    } else {
-      foundUser.role = req.body.role;
-    }
-
-    foundUser.password = req.body.password;
-    foundUser.status = req.body.status;
-
-    foundUser.save((err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.redirect("/admin/allUsers");
-      }
     });
   });
-  // });
 });
 
 //Delete user method
