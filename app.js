@@ -553,7 +553,6 @@ app.post("/admin/editDivision/:id", userAuthenticated, (req, res) => {
     });
   });
 });
-
 ///Division ends
 
 //Position section
@@ -717,6 +716,8 @@ app.post("/admin/addOfficer", userAuthenticated, (req, res) => {
     image: fileName,
     assignment: req.body.assignment,
     email: req.body.email,
+    phone: req.body.phone,
+    phone1: req.body.phone1,
     gender: req.body.gender,
     department: req.body.department,
     division: req.body.division,
@@ -822,6 +823,8 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 
       foundOff.assignment = req.body.assignment;
       foundOff.email = req.body.email;
+      foundOff.phone = req.body.phone;
+      foundOff.phone1 = req.body.phone1;
       foundOff.gender = req.body.gender;
       foundOff.department = req.body.department;
       foundOff.division = req.body.division;
@@ -1171,7 +1174,7 @@ app.post("/admin/editUser/:id", userAuthenticated, (req, res) => {
         foundUser.image = foundUser.image;
       }
       // user role check
-      if (req.body.role === "" || req.body.role) {
+      if (req.body.role === "" || req.body.role === foundUser.role) {
         foundUser.role = foundUser.role;
       } else {
         foundUser.role = req.body.role;
@@ -1223,6 +1226,7 @@ passport.use(
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
+
 passport.deserializeUser((id, done) => {
   User.findById(id, (err, user) => {
     done(err, user);
