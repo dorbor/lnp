@@ -1,50 +1,33 @@
-<%- include('hub/top'); -%> <% var message; %> <% if (message != '' && message
-!= null) { %>
-<div class="alert alert-dark" role="alert" data-dismiss="alert">
-  <%= message %>
-</div>
+<%- include('hub/top'); -%>
+<% var message; %>
+<% if (message != '' && message != null) { %>
+  <div class="alert alert-dark" role="alert" data-dismiss="alert">
+    <%= message %> 
+  </div>
 <%} %>
 <div class="login-box">
-  <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
-  <a href="/">
-    <div class="text-center">
-      <img src="img/lnplogo.png" height="300px" />
-    </div>
-  </a>
+
+    <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
+      <a href="/">
+        <img src="img/lraLogo.png" width="100%">
+      </a>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Enter Officer Id</p>
 
-      <form action="/login" method="POST">
+      <form action="/findOfficer" method="GET">
         <div class="input-group mb-3">
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Email"
-            name="email"
-          />
+          <input type="text" class="form-control form-control-lg text-center" placeholder="00001" name="id">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-number"></span>
             </div>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Password"
-            name="password"
-          />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
+        
         <div class="row">
-          <div class="col-8">
+          <div class="col-4">
             <!-- <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
@@ -53,11 +36,11 @@
             </div> -->
           </div>
           <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">
-              Sign In
-            </button>
+          <div class="col-4 text-center">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Search</button>
           </div>
+          <div class="col-4 text-center">
+            </div>
           <!-- /.col -->
         </div>
       </form>
@@ -85,21 +68,7 @@
 </div>
 <!-- /.login-box -->
 <script>
-  $(alert).alert("close");
+$(alert).alert('close');
 </script>
-
-<footer
-  class="footer"
-  style="bottom: 0; position: fixed; padding-bottom: 20px;"
->
-  <div class="container text-center">
-    <span class="text-muted"
-      >Powered By
-      <a href="https://www.roviagatetechnology.com" target="_blank"
-        >RoviaGate Technlology LLC.</a
-      ></span
-    >
-  </div>
-</footer>
 
 <%- include('hub/bottom'); -%>

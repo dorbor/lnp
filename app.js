@@ -50,6 +50,9 @@ app.use("/admin/editCategory", express.static((__dirname, "public")));
 app.use("/admin/editUser", express.static((__dirname, "public")));
 app.use("/admin/map", express.static((__dirname, "public")));
 app.use("/admin/details", express.static((__dirname, "public")));
+app.use("/officerDetails", express.static((__dirname, "public")));
+app.use("/complain", express.static((__dirname, "public")));
+app.use("/applaud", express.static((__dirname, "public")));
 app.use("/static", express.static((__dirname, "public/images/officers")));
 
 app.use(
@@ -77,6 +80,52 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.render("index");
+});
+
+app.get("/findOfficer", (req, res) => {
+  if(req.query.id === ''){
+    res.redirect('/');
+  }
+    Officer.findOne({ agency: "LNP", id: req.query.id }).then(off => {
+      // console.log(off);
+      // console.log(req.query.id);
+      if(req.query.id === ''){
+        res.redirect('/');
+      }else{
+        res.render("officerDetails", { officer: off});
+      }
+    
+  });
+});
+
+app.get("/applaud/:id", (req, res) => {
+    Officer.findOne({ agency: "LNP", _id: req.params.id }).then(off => {
+      // console.log(off);
+      // console.log(req.query.id);
+      if(req.query.id === ''){
+        res.redirect('/');
+      }else{
+        res.render("applaud", { officer: off});
+      }
+    
+  });
+});
+
+app.get("/complain/:id", (req, res) => {
+  Officer.findOne({ agency: "LNP", _id: req.params.id }).then(off => {
+      // console.log(off);
+      // console.log(req.query.id);
+      if(req.query.id === ''){
+        res.redirect('/');
+      }else{
+        res.render("complain", { officer: off});
+      }
+    
+  });
+});
+
+app.get("/adminlogin", (req, res) => {
+  res.render("login");
 });
 
 app.get("/admin", userAuthenticated, (req, res) => {
@@ -1244,6 +1293,33 @@ app.post("/login", (req, res, next) => {
 app.get("/logout", (req, res) => {
   req.logOut();
   res.redirect("/");
+});
+
+
+
+//front end complain and applaud
+app.post("/newComment", (req, res) => {
+  const comment = new Comment({
+    officerId: req.body.officerId,
+    type: req.body.type,
+    agency: 'LNP', 
+    fullName: req.body.fullName,
+    number: req.body.number,
+    email: req.body.email,
+    content: req.body.content,
+    county: req.body.county,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+  });
+
+  comment.save(err => {
+    if (!err) {
+      res.redirect("/");
+    } else {
+      res.send(err);
+    }
+  });
 });
 
 //  apis section
