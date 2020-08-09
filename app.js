@@ -82,20 +82,35 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/findOfficer", (req, res) => {
-  if(req.query.id === ''){
-    res.redirect('/');
-  }
-    Officer.findOne({ agency: "LNP", id: req.query.id }).then(off => {
-      // console.log(off);
-      // console.log(req.query.id);
-      if(req.query.id === ''){
-        res.redirect('/');
-      }else{
-        res.render("officerDetails", { officer: off});
-      }
+// app.get("/findOfficer", (req, res) => {
+//   if(req.query.id === ''){
+//     res.redirect('/');
+//   }
+//     Officer.findOne({ agency: "LNP", id: req.query.id }).then(off => {
+//       // console.log(off);
+//       // console.log(req.query.id);
+//       if(req.query.id === ''){
+//         res.redirect('/');
+//       }else{
+//         res.render("officerDetails", { officer: off});
+//       }
     
+//   });
+// });
+
+app.get("/findOfficer", (req, res) => {
+  const findId = req.query.id; 
+  if(findId === '' || !findId){
+    Officer.findOne({ agency: "LNP", id: '0000' }).then(off => {
+      res.render("officerDetails", { officer: off});
   });
+  }else if(findId.length < 4 || findId.length > 4){
+    res.render('index', { message: 'Officer Id must be 4 digits'});
+  }else {
+    Officer.findOne({ agency: "LNP", id: findId }).then(off => {
+        res.render("officerDetails", { officer: off});
+    });
+  }
 });
 
 app.get("/applaud/:id", (req, res) => {
