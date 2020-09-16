@@ -12,6 +12,26 @@ const mongoose = require("mongoose");
 const upload = require("express-fileupload");
 const dateFormat = require("dateformat");
 const now = new Date();
+const nodemailer = require("nodemailer");
+
+//nodemiler configuration
+// const transporter = nodemailer.createTransport({
+//   service: "roviagatetechnology",
+//   auth: {
+//     user: "drichards@roviagatetechnology.com",
+//     pass: "Only@roviagate",
+//   },
+// });
+
+var smtpConfig = {
+  host: "roviagatetechnology.com",
+  port: 465,
+  secure: true, // use SSL
+  auth: {
+    user: "dorbor.richards@roviagatetechnology.com",
+    pass: "Dorbor@roviagate",
+  },
+};
 
 const isEmpty = (obj) => {
   for (let key in obj) {
@@ -123,6 +143,46 @@ app.get("/applaud/:id", (req, res) => {
       res.redirect("/");
     } else {
       res.render("applaud", { officer: off });
+
+      //=========================
+
+      //     const output = `
+      //   <p>thanks for the effort we will get back to you as soon as possible</p>
+      // `;
+
+      //     let transporter = nodemailer.createTransport({
+      //       host: "mail.findofficer.com",
+      //       port: 587,
+      //       secure: false, // true for 465, false for other ports
+      //       auth: {
+      //         user: "lnp@findofficer.com", // generated ethereal user
+      //         pass: "letshavefun", // generated ethereal password
+      //       },
+      //       tls: {
+      //         rejectUnauthorized: false,
+      //       },
+      //     });
+
+      //     // setup email data with unicode symbols
+      //     let mailOptions = {
+      //       from: '"Nodemailer Contact" <lnp@findofficer.com>', // sender address
+      //       to: "dorborr94@gmail.com", // list of receivers
+      //       subject: "Node Contact Request", // Subject line
+      //       text: "Hello world?", // plain text body
+      //       html: output, // html body
+      //     };
+
+      //     // send mail with defined transport object
+      //     transporter.sendMail(mailOptions, (error, info) => {
+      //       if (error) {
+      //         return console.log(error);
+      //       }
+      //       console.log("Message sent: %s", info.messageId);
+
+      //       // res.render("contact", { msg: "Email has been sent" });
+      //     });
+
+      //--------------------------------------
     }
   });
 });
@@ -1370,6 +1430,42 @@ app.route("/api/comment").post((req, res) => {
     } else {
       res.send(err);
     }
+  });
+
+  const output = `
+    <p>thanks for submitting a case to the Liberia National Police, we will get back to you as soon as possible</p>
+  `;
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.findofficer.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "lnp@findofficer.com", // generated ethereal user
+      pass: "letshavefun", // generated ethereal password
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"Liberia National Police" <lnp@findofficer.com>', // sender address
+    to: req.body.email, // list of receivers
+    subject: "LNP FindOfficer", // Subject line
+    text: "Hi".req.body.fullName, // plain text body
+    html: output, // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message sent: %s", info.messageId);
+
+    // res.render("contact", { msg: "Email has been sent" });
   });
 });
 
