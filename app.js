@@ -1452,9 +1452,17 @@ app.route("/api/comment").post((req, res) => {
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"Liberia National Police" <lnp@findofficer.com>', // sender address
-    to: req.body.email, // list of receivers
+    to: req.body.email.trim(), // list of receivers
     subject: "LNP FindOfficer", // Subject line
     text: "Hi".req.body.fullName, // plain text body
+    html: output, // html body
+  };
+
+  let mailOptions2 = {
+    from: '"Liberia National Police" <lnp@findofficer.com>', // sender address
+    to: "info@lnp.gov.lr", // list of receivers
+    subject: "LNP FindOfficer", // Subject line
+    text: "Hi there, new case have been submited by ".req.body.fullName, // plain text body
     html: output, // html body
   };
 
@@ -1464,7 +1472,14 @@ app.route("/api/comment").post((req, res) => {
       return console.log(error);
     }
     console.log("Message sent: %s", info.messageId);
+    // res.render("contact", { msg: "Email has been sent" });
+  });
 
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message sent: %s", info.messageId);
     // res.render("contact", { msg: "Email has been sent" });
   });
 });
