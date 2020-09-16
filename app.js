@@ -1446,7 +1446,7 @@ app.route("/api/comment").post((req, res) => {
     from: '"Liberia National Police" <lnp@findofficer.com>', // sender address
     to: req.body.email.trim(), // list of receivers
     subject: "LNP FindOfficer", // Subject line
-    text: "Hi".req.body.fullName, // plain text body
+    text: "Hi theree", // plain text body
     html: output, // html body
   };
 
@@ -1454,7 +1454,7 @@ app.route("/api/comment").post((req, res) => {
     from: '"Liberia National Police" <lnp@findofficer.com>', // sender address
     to: "info@lnp.gov.lr", // list of receivers
     subject: "LNP FindOfficer", // Subject line
-    text: "Hi there, new case have been submited by ".req.body.fullName, // plain text body
+    text: "Hi there, new case have been submited by {comment.fullName}", // plain text body
     html: output, // html body
   };
 
@@ -1467,7 +1467,7 @@ app.route("/api/comment").post((req, res) => {
     // res.render("contact", { msg: "Email has been sent" });
   });
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions2, (error, info) => {
     if (error) {
       return console.log(error);
     }
