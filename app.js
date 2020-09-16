@@ -1424,14 +1424,6 @@ app.route("/api/comment").post((req, res) => {
     date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
-  comment.save((err) => {
-    if (!err) {
-      res.send(" send Successfully");
-    } else {
-      res.send(err);
-    }
-  });
-
   const output = `
     <p>thanks for submitting a case to the Liberia National Police, we will get back to you as soon as possible</p>
   `;
@@ -1481,6 +1473,14 @@ app.route("/api/comment").post((req, res) => {
     }
     console.log("Message sent: %s", info.messageId);
     // res.render("contact", { msg: "Email has been sent" });
+  });
+
+  comment.save((err) => {
+    if (!err) {
+      res.send(" send Successfully");
+    } else {
+      res.send(err);
+    }
   });
 });
 
