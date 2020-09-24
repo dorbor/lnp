@@ -118,9 +118,9 @@ app.get("/", (req, res) => {
 // });
 
 app.get("/findOfficer", (req, res) => {
-  const findId = req.query.id;
-  if (findId === "") {
-    findId = 0000;
+  let findId = req.query.id;
+  if (findId === "" || isEmpty(findId)) {
+    findId = "0000";
   } else if (findId.length < 4 || findId.length > 4) {
     res.render("index", { message: "Officer Id must be 4 digits" });
   }
@@ -143,54 +143,12 @@ app.get("/applaud/:id", (req, res) => {
       res.redirect("/");
     } else {
       res.render("applaud", { officer: off });
-
-      //=========================
-
-      //     const output = `
-      //   <p>thanks for the effort we will get back to you as soon as possible</p>
-      // `;
-
-      //     let transporter = nodemailer.createTransport({
-      //       host: "mail.findofficer.com",
-      //       port: 587,
-      //       secure: false, // true for 465, false for other ports
-      //       auth: {
-      //         user: "lnp@findofficer.com", // generated ethereal user
-      //         pass: "letshavefun", // generated ethereal password
-      //       },
-      //       tls: {
-      //         rejectUnauthorized: false,
-      //       },
-      //     });
-
-      //     // setup email data with unicode symbols
-      //     let mailOptions = {
-      //       from: '"Nodemailer Contact" <lnp@findofficer.com>', // sender address
-      //       to: "dorborr94@gmail.com", // list of receivers
-      //       subject: "Node Contact Request", // Subject line
-      //       text: "Hello world?", // plain text body
-      //       html: output, // html body
-      //     };
-
-      //     // send mail with defined transport object
-      //     transporter.sendMail(mailOptions, (error, info) => {
-      //       if (error) {
-      //         return console.log(error);
-      //       }
-      //       console.log("Message sent: %s", info.messageId);
-
-      //       // res.render("contact", { msg: "Email has been sent" });
-      //     });
-
-      //--------------------------------------
     }
   });
 });
 
 app.get("/complain/:id", (req, res) => {
   Officer.findOne({ agency: "LNP", _id: req.params.id }).then((off) => {
-    // console.log(off);
-    // console.log(req.query.id);
     if (req.query.id === "") {
       res.redirect("/");
     } else {
@@ -1372,7 +1330,9 @@ app.get("/logout", (req, res) => {
 
 //front end complain and applaud
 app.post("/newComment", (req, res) => {
+  const newId = req.body.id;
   const comment = new Comment({
+    id: req.body.id,
     officerId: req.body.officerId,
     type: req.body.type,
     agency: "LNP",
@@ -1388,7 +1348,7 @@ app.post("/newComment", (req, res) => {
 
   comment.save((err) => {
     if (!err) {
-      res.redirect("/");
+      res.render("index", { message: "Message Sucessefully Sent" });
     } else {
       res.send(err);
     }

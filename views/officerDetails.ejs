@@ -1,40 +1,67 @@
 <%- include('hub/top'); -%>
 
-
 <div class="container">
-    <div class="row">
-        <div class="col-sm-3"></div>
-    <div class="col-sm-6 " style="margin: auto;">
-        <div class="card" style="width: 100%;">
-            <% if(officer.image === '' || officer.image){ %>
-                <img
-                  src="images/place.png"
-                  class="mx-auto img-fluid img-circle d-block"
-                  alt="avatar"
-                />
-                <% }else{ %>
-                    <img class="card-img-top" src="images/officers/<%= officer.image %>" alt='<%= officer.image %>'>
-                <% } %>
-            
-            <div class="card-body">
-              <!-- <h5 class="card-title">Card title</h5> -->
-              <p class="card-text" style="float: left;">ID#: <%= officer.id %></p> <a href="/" class="btn btn-primary" style="float: right;"> Go Home</a>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Name : <p style="float: right;"><%= officer.firstName + ' ' + officer.middleName+ ' ' + officer.lastName %></p></li>
-              <li class="list-group-item">Position: <p style="float: right;"><%= officer.position %></p></li>
-              <li class="list-group-item">Dept. <p style="float: right;"><%= officer.department %></p></li>
-              <li class="list-group-item">Status: <p style="float: right;"><%= officer.status %></p> </li>
-            </ul>
-            <div class="card-body">
-              <a href="/complain/<%= officer._id %>" class="card-link btn btn-danger">Complain</a>
-              <a href="/applaud/<%= officer._id %>" class="card-link btn btn-success" style="float: right;">Applaud</a>
-            </div>
-          </div>
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6" style="margin: auto">
+      <div class="card" style="width: 100%">
+        <% if(!officer.image){ %>
+        <img
+          src="images/place.png"
+          class="mx-auto img-fluid img-circle d-block"
+          alt="avatar"
+        />
+        <% }else{ %>
+        <img
+          class="card-img-top"
+          src="images/officers/<%= officer.image %>"
+          alt="<%= officer.image %>"
+        />
+        <% } %>
+
+        <div class="card-body">
+          <!-- <h5 class="card-title">Card title</h5> -->
+          <p class="card-text" style="float: left">ID#: <%= officer.id %></p>
+          <a href="/" class="btn btn-primary" style="float: right"> Go Home</a>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Name :
+            <p style="float: right">
+              <%= officer.firstName + ' ' + officer.middleName+ ' ' +
+              officer.lastName %>
+            </p>
+          </li>
+          <li class="list-group-item">
+            Position:
+            <p style="float: right"><%= officer.position %></p>
+          </li>
+          <li class="list-group-item">
+            Dept.
+            <p style="float: right"><%= officer.department %></p>
+          </li>
+          <li class="list-group-item">
+            Status:
+            <p style="float: right"><%= officer.status %></p>
+          </li>
+        </ul>
+        <div class="card-body">
+          <a
+            href="/complain/<%= officer._id %>"
+            class="card-link btn btn-danger"
+            >Complain</a
+          >
+          <a
+            href="/applaud/<%= officer._id %>"
+            class="card-link btn btn-success"
+            style="float: right"
+            >Applaud</a
+          >
+        </div>
+      </div>
     </div>
     <div class="col-sm-3"></div>
-    </div>
+  </div>
 </div>
-
 
 <%- include('hub/bottom'); -%>
