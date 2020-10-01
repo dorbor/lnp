@@ -1341,6 +1341,7 @@ app.post("/newComment", (req, res) => {
     email: req.body.email,
     content: req.body.content,
     county: req.body.county,
+    incidentDate: req.body.incidentDate,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
     date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
@@ -1368,7 +1369,7 @@ app.route("/api/officers").get((req, res) => {
   });
 });
 
-/////request for all articles ///////////
+///// post request comment ///////////
 app.route("/api/comment").post((req, res) => {
   const comment = new Comment({
     officerId: req.body.officerId,
@@ -1379,8 +1380,9 @@ app.route("/api/comment").post((req, res) => {
     email: req.body.email,
     content: req.body.content,
     county: req.body.county,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
+    incidentDate: req.body.incidentDate,
+    // latitude: req.body.latitude,
+    // longitude: req.body.longitude,
     date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
