@@ -1,16 +1,14 @@
-<%- include('hub/top'); -%>
-<% var message; %>
-<% if (message != '' && message != null) { %>
-  <div class="alert alert-dark" role="alert" data-dismiss="alert">
-    <%= message %> 
-  </div>
+<%- include('hub/top'); -%> <% var message; %> <% if (message != '' && message
+!= null) { %>
+<div class="alert alert-dark" role="alert" data-dismiss="alert">
+  <%= message %>
+</div>
 <%} %>
 <div class="login-box">
-
-    <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
-      <a href="/">
-        <img src="img/lnplogo.png" width="100%">
-      </a>
+  <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
+  <a href="/">
+    <img src="img/lnplogo.png" width="100%" />
+  </a>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
@@ -18,14 +16,24 @@
 
       <form action="/findOfficer" method="GET">
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg text-center" placeholder="0001" name="id">
+          <input
+            type="text"
+            class="form-control form-control-lg text-center"
+            placeholder="0001"
+            name="id"
+          />
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-number"></span>
             </div>
           </div>
         </div>
-        
+        <div class="input-group mb-3">
+          <small style="text-align: center"
+            >If unknown, hit search button to continue</small
+          >
+        </div>
+
         <div class="row">
           <div class="col-4">
             <!-- <div class="icheck-primary">
@@ -37,10 +45,11 @@
           </div>
           <!-- /.col -->
           <div class="col-4 text-center">
-            <button type="submit" class="btn btn-primary btn-block btn-lg">Search</button>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              Search
+            </button>
           </div>
-          <div class="col-4 text-center">
-            </div>
+          <div class="col-4 text-center"></div>
           <!-- /.col -->
         </div>
       </form>
@@ -67,15 +76,20 @@
   </div>
 </div>
 <!-- /.login-box -->
-<br><br><br>
-<footer class="footer" style="margin-bottom: 0px;">
+<br /><br /><br />
+<footer class="footer" style="margin-bottom: 0px">
   <div class="container">
-    <span class="text-muted">Powered By <a href="https://www.roviagatetechnology.com" target="__blank" >RoviaGate Technology LLC</a></span>
+    <span class="text-muted"
+      >Powered By
+      <a href="https://www.roviagatetechnology.com" target="__blank"
+        >RoviaGate Technology LLC</a
+      ></span
+    >
   </div>
 </footer>
 
 <script>
-$(alert).alert('close');
+  $(alert).alert("close");
 </script>
 
 <%- include('hub/bottom'); -%>

@@ -61,7 +61,7 @@
               />
             </li>
             <li class="list-group-item">
-              <label for=""><small>County of incident</small></label>
+              <label for=""><small>Select County of incident</small></label>
               <select name="county" id="" class="form-control">
                 <option value="">Select County</option>
                 <option value="Bomi">Bomi</option>
@@ -81,6 +81,15 @@
                 <option value="Sinoe">Sinoe</option>
               </select>
             </li>
+
+            <li class="list-group-item">
+              <input
+                type="date"
+                name="incidentDate"
+                id=""
+                class="form-control"
+              />
+            </li>
             <li class="list-group-item">
               <textarea
                 name="content"
@@ -88,7 +97,7 @@
                 cols="20"
                 rows="10"
                 class="form-control"
-                placeholder="Please enter as much information as possible."
+                placeholder="Please provide detailed information about the location of incident (city, community, village, building, etc.), what happened, and description of officer if name/ID unknown"
               ></textarea>
             </li>
           </ul>
