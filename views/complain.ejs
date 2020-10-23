@@ -40,6 +40,7 @@
           <input type="hidden" name="id" value="<%= officer._id %>" />
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
+              <label for=""><small>Please Full Name</small></label>
               <input
                 type="text"
                 name="fullName"
@@ -49,6 +50,7 @@
               />
             </li>
             <li class="list-group-item">
+              <label for=""><small> Enter Email</small></label>
               <input
                 type="email"
                 name="email"
@@ -58,6 +60,7 @@
               />
             </li>
             <li class="list-group-item">
+              <label for=""><small>Enter Phone Number</small></label>
               <input
                 type="number"
                 name="number"
@@ -89,6 +92,7 @@
             </li>
 
             <li class="list-group-item">
+              <label for=""><small>Select County of incident</small></label>
               <input
                 type="date"
                 name="incidentDate"
@@ -103,7 +107,7 @@
                 cols="20"
                 rows="10"
                 class="form-control"
-                placeholder="Please provide detailed information about the location of incident (city, community, village, building, etc.), what happened, and description of officer if name/ID unknown"
+                placeholder="Please provide detailed information about the location of incident (City, Community, Village, Building, Name etc.), what happened, and description of officer if ID unknown"
               ></textarea>
             </li>
           </ul>

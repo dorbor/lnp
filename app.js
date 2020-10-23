@@ -1359,7 +1359,7 @@ app.post("/newComment", (req, res) => {
 //  apis section
 
 ///request for all officers ///////////
-app.route("/api/officers").get((req, res) => {
+app.route("/api/officers/lnp").get((req, res) => {
   Officer.find({ agency: "LNP" }, (err, foundOff) => {
     if (!err) {
       res.send(foundOff);
