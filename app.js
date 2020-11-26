@@ -60,7 +60,7 @@ app.use("/static", express.static((__dirname, "public/images/officers")));
 
 
 //routes list
-const audit = require('./routes/admin/audit');
+const audit = require('./routes/Admin/audit');
 const front = require('./routes/Home/index');
 
 app.use(
