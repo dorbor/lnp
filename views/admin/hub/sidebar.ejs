@@ -4,8 +4,8 @@
   <a href="/admin" class="brand-link bg-light">
     <img
       src="img/lnpName.png"
-      alt="AdminLTE Logo"
-      style="opacity: 0.8;"
+      alt="LNP Logo"
+      style="opacity: 0.8"
       width="100%"
       height="40"
     />
@@ -50,33 +50,27 @@
         <li class="nav-item has-treeview menu-open">
           <a href="/admin" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-            </p>
+            <p>Dashboard</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="/admin/applauds" class="nav-link">
             <i class="nav-icon fas fa-th"></i>
-            <p>
-              Applauds
-            </p>
+            <p>Applauds</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="/admin/allComments" class="nav-link">
             <i class="nav-icon fas fa-th"></i>
-            <p>
-              Complaints
-            </p>
+            <p>Complaints</p>
           </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="/admin/map" class="nav-link">
             <i class="nav-icon fas fa-map"></i>
             <p>Info Map</p>
           </a>
-        </li>
+        </li> -->
 
         <% if(user.role === 'admin') { %>
         <li class="nav-item has-treeview">
@@ -153,6 +147,7 @@
         </li>
 
         <% } %>
+        <% if(user.role === 'admin') { %>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
@@ -161,8 +156,10 @@
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
+
+          
           <ul class="nav nav-treeview">
-            <% if(user.role === 'admin') { %>
+            <% if(user.role === 'hr') { %>
             <li class="nav-item">
               <a href="/admin/addOfficer" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
@@ -170,6 +167,7 @@
               </a>
             </li>
             <% } %>
+            
             <li class="nav-item">
               <a href="/admin/allOfficers" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
@@ -178,7 +176,9 @@
             </li>
           </ul>
         </li>
-        <% if(user.role === 'super') { %>
+        <% } %>
+
+        <% if(user.role === 'tech') { %>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
@@ -201,6 +201,15 @@
               </a>
             </li>
           </ul>
+        </li>
+        <% } %>
+
+        <% if(user.role === 'super' || user.role === 'tech') { %>
+        <li class="nav-item">
+          <a href="/admin/audit" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>Audit Trail</p>
+          </a>
         </li>
         <% } %>
       </ul>

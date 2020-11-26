@@ -1,146 +1,81 @@
-//jshint esversion:7
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
+const {isEmpty} = require('../../helper/uploadhelper');
+
+
+
+
+// include models 
+const Audit = require("../../models/Audit");
+const Position = require("../../models/Position");
+const Officer = require("../../models/Officer");
+const Comment = require("../../models/Comment");
+
 
 router.get("/", (req, res) => {
-  Officer.find({}, (err, off) => {
-    if (err) {
-      console.log(err);
-    } else {
-      var leng = off.length;
-      res.render("admin/index", {
-        officers: off,
-        offCount: leng
-      });
-    }
+    res.render("index");
   });
-});
 
-router.get("/allOfficers", (req, res) => {
-  Officer.find({}, (err, off) => {
-    if (err) {
-      console.log(err);
-    } else {
-      var leng = off.length;
-      res.render("admin/allOfficers", {
-        officers: off,
-        offCount: leng
-      });
+
+
+  router.get("/findOfficer", (req, res) => {
+    let findId = req.query.id;
+    if (findId === "" || isEmpty(findId)) {
+      findId = "0000";
+    } else if (findId.length < 4 || findId.length > 4) {
+      res.render("index", { message: "Officer Id must be 4 digits" });
     }
-  });
-});
-
-// apploud and complain section
-
-router.get("/allComments", (req, res) => {
-  Comment.find({}, (err, co) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("admin/allComments", {
-        comments: co
-      });
-    }
-  });
-});
-
-router.get("/applauds", (req, res) => {
-  Comment.find({}, (err, co) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("admin/applauds", {
-        comments: co
-      });
-    }
-  });
-});
-
-// google map routes
-router.get("/map/:id", (req, res) => {
-  const id = req.params.id;
-
-  Comment.findOne({ _id: id }, (err, foundCom) => {
-    if (err) {
-      console.log(err);
-    } else {
-      //show an existing listm
-      res.render("admin/map", { comment: foundCom });
-    }
-  });
-});
-
-router.get("/admin/map", (req, res) => {
-  Comment.findOne((err, foundCom) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("admin/completeMap", { comments: foundCom });
-    }
-  });
-});
-
-router.get("/admin/addUser", (req, res) => {
-  res.render("admin/addUser");
-});
-
-app.post("/admin/addUser", upload.single("image"), (req, res) => {
-  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-    // Store hash in your password DB.
-    const setUser = new User({
-      agency: "LRA",
-      fullName: req.body.fullName,
-      email: req.body.email,
-      password: hash,
-      status: req.body.status
+  
+    Officer.findOne({ agency: "LNP", id: findId }).then((off) => {
+      if (!off) {
+        res.render("index", {
+          message: "Officer not found \n Please enter a valid Officer id",
+        });
+      }
+      res.render("officerDetails", { officer: off });
     });
+  });
 
-    setUser.save(err => {
-      if (err) {
-        console.log(err);
+
+  router.get("/applaud/:id", (req, res) => {
+    Officer.findOne({ agency: "LNP", _id: req.params.id }).then((off) => {
+      // console.log(off);
+      // console.log(req.query.id);
+      if (req.query.id === "") {
+        res.redirect("/");
       } else {
-        res.redirect("/admin/allUsers");
+        res.render("applaud", { officer: off });
       }
     });
   });
-});
+  
+  router.get("/complain/:id", (req, res) => {
+    Officer.findOne({ agency: "LNP", _id: req.params.id }).then((off) => {
+      // console.log(off);
+      // console.log(req.query.id);
+      if (req.query.id === "") {
+        res.redirect("/");
+      } else {
+        res.render("complain", { officer: off });
+      }
+    });
+  });
 
-router.get("/admin/allUsers", (req, res) => {
-  User.find({}, (err, user) => {
-    if (err) {
-      console.log(err);
-    } else {
-      var leng = user.length;
-      res.render("admin/allUsers", {
-        users: user,
-        userCount: leng
-      });
-    }
+
+
+
+
+
+
+
+
+
+// temporary route for adding new officer via mobile app
+router.get("/addOfficer", (req, res) => {
+  Position.find({ agency: "LNP" }).then((pos) => {
+    res.render("addOfficer", { positions: pos });
   });
 });
 
-router.get("/admin/editUser/:id", (req, res) => {
-  const id = req.params.id;
-  User.findOne({ _id: id }, (err, foundUser) => {
-    if (err) {
-      console.log(err);
-    } else {
-      //show an existing listm
-      res.render("admin/editUser", { user: foundUser });
-    }
-  });
-});
-
-router.get("/admin/user/:id", (req, res) => {
-  const id = req.params.id;
-  User.findByIdAndRemove({ _id: id }, (err, foundUser) => {
-    if (err) {
-      console.log(err);
-    } else {
-      //show an existing listm
-      res.redirect("/admin/allUsers");
-    }
-  });
-});
-
-module.exports = router;
+  module.exports = router;

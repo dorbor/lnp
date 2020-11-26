@@ -1,136 +1,62 @@
 <%- include('hub/top'); -%>
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6" style="margin: auto">
-      <div class="card" style="width: 100%">
-        <% if(!officer.image){ %>
-        <img
-          src="images/place.png"
-          class="mx-auto img-fluid img-circle d-block"
-          alt="avatar"
-        />
-        <% }else{ %>
-        <img
-          class="card-img-top"
-          src="images/officers/<%= officer.image %>"
-          alt="<%= officer.image %>"
-        />
-        <% } %>
-        <div class="card-body">
-          <!-- <h5 class="card-title">Card title</h5> -->
-          <p class="card-text" style="float: left">ID#: <%= officer.id %></p>
-          <a href="/" class="btn btn-primary" style="float: right"> Go Home</a>
-        </div>
-        <form
-          name="myForm"
-          action="/newComment"
-          method="POST"
-          onsubmit="return validateForm()"
-          enctype="multipart/form-data"
-        >
-          <input type="hidden" name="type" value="Applaud" />
-          <input type="hidden" name="officerId" value="<%= officer.id %>" />
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <label for="fullName"><small>Enter Full Name</small></label>
-              <input
-                type="text"
-                name="fullName"
-                id=""
-                class="form-control"
-                placeholder="Eg: John Flomo"
-              />
-            </li>
-            <li class="list-group-item">
-              <label for="email"><small>Enter Email</small></label>
-              <input
-                type="email"
-                name="email"
-                id=""
-                class="form-control"
-                placeholder="Eg: jflomo@gmail.com"
-              />
-            </li>
-            <li class="list-group-item">
-              <label for="number"><small>Enter Phone Number</small></label>
-              <input
-                type="number"
-                name="number"
-                id=""
-                class="form-control"
-                placeholder="0880000000"
-              />
-            </li>
-            <li class="list-group-item">
-              <label for=""><small>Select County of incident</small></label>
-              <select name="county" id="" class="form-control">
-                <option value="">Select County</option>
-                <option value="Bomi">Bomi</option>
-                <option value="Bong">Bong</option>
-                <option value="Gbarpolu">Gbarpolu</option>
-                <option value="Grand Bassa">Grand Bassa</option>
-                <option value="Grand Cape Mount">Grand Cape Mount</option>
-                <option value="Grand Gedeh">Grand Gedeh</option>
-                <option value="Grand Kru">Grand Kru</option>
-                <option value="Lofa">Lofa</option>
-                <option value="Margibi">Margibi</option>
-                <option value="Maryland">Maryland</option>
-                <option value="Montserrado">Montserrado</option>
-                <option value="Nimba">Nimba</option>
-                <option value="Rivercess">Rivercess</option>
-                <option value="River Gee">River Gee</option>
-                <option value="Sinoe">Sinoe</option>
-              </select>
-            </li>
 
-            <li class="list-group-item">
-              <label for="date"><small>Select incident Date</small></label>
-              <input
-                type="date"
-                name="incidentDate"
-                id=""
-                class="form-control"
-              />
-            </li>
-            <li class="list-group-item">
-              <textarea
-                name="content"
-                id=""
-                cols="20"
-                rows="10"
-                class="form-control"
-                placeholder="Please provide detailed information about the location of incident (city, community, village, building, etc.), what happened, and description of officer if name/ID unknown"
-              ></textarea>
-            </li>
-          </ul>
-          <div class="card-body">
-            <input
-              type="submit"
-              class="card-link btn btn-success"
-              style="float: right"
-              value="Send"
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+    <div class="col-sm-6 " style="padding-top: 400px;">
+        <div class="card" style="width: 100%;">
+          <% if(officer.image === '' || officer.image){ %>
+            <img
+              src="images/place.png"
+              class="mx-auto img-fluid img-circle d-block"
+              alt="avatar"
             />
+            <% }else{ %>
+                <img class="card-img-top" src="images/officers/<%= officer.image %>" alt='<%= officer.image %>'>
+            <% } %>
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title</h5> -->
+              <p class="card-text" style="float: left;">ID#: <%= officer.id %></p> <a href="/" class="btn btn-primary" style="float: right;"> Go Home</a>
+            </div>
+            <form action="/newComment" method="POST" enctype="multipart/form-data" >
+              <input type="hidden" name="type" value="Applaud">
+              <input type="hidden" name="officerId" value="<%= officer.id %>">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><input type="text" name="fullName" id="" class="form-control" placeholder="Eg: John Flomo"></li>
+              <li class="list-group-item"><input type="email" name="email" id="" class="form-control" placeholder="Eg: jflomo@gmail.com"></li>
+              <li class="list-group-item"><input type="text" name="number" id="" class="form-control" placeholder="0880000000"></li>
+              <li class="list-group-item">
+                <select name="county" id="" class="form-control">
+                  <option value="">Select County</option>
+                    <option value="Bomi">Bomi</option>
+                    <option value="Bong">Bong</option>
+                    <option value="Gbarpolu">Gbarpolu</option>
+                    <option value="Grand Bassa">Grand Bassa</option>
+                    <option value="Grand Cape Mount">Grand Cape Mount</option>
+                    <option value="Grand Gedeh">Grand Gedeh</option>
+                    <option value="Grand Kru">Grand Kru</option>
+                    <option value="Lofa">Lofa</option>
+                    <option value="Margibi">Margibi</option>
+                    <option value="Maryland">Maryland</option>
+                    <option value="Montserrado">Montserrado</option>
+                    <option value="Nimba">Nimba</option>
+                    <option value="Rivercess">Rivercess</option>
+                    <option value="River Gee">River Gee</option>
+                    <option value="Sinoe">Sinoe</option>
+                </select> 
+              </li>
+              <li class="list-group-item"><textarea name="content" id="" cols="20" rows="10" class="form-control"></textarea></li>
+            </ul>
+            <div class="card-body">
+              <input type="submit" class="card-link btn btn-success" style="float: right;" value="Send">
+            </div>
+            </form>
           </div>
-        </form>
-      </div>
     </div>
     <div class="col-sm-3"></div>
-  </div>
+    </div>
 </div>
 
-<script>
-  function validateForm() {
-    var email = document.forms["myForm"]["email"].value;
-    var number = document.forms["myForm"]["number"].value;
-    if (email == "" && number == "") {
-      alert("Email or Phone number is required");
-      return false;
-    } else {
-      return true;
-    }
-  }
-</script>
 
 <%- include('hub/bottom'); -%>

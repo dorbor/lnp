@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const CommentSchema = new Schema({
   officerId: {
     type: String,
-    default: "LNP",
+    default: "LNP"
   },
   type: String,
   agency: String,
@@ -15,11 +15,10 @@ const CommentSchema = new Schema({
   county: String,
   latitude: String,
   longitude: String,
-  incidentDate: String,
   category: String,
   status: String,
   date: String,
-  updatedBy: String,
+  updatedBy: String
 });
 
 module.exports = mongoose.model("comment", CommentSchema);

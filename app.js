@@ -7,31 +7,11 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const flash = require("connect-flash");
 const { userAuthenticated } = require("./helper/auth");
-// const {isEmpty} = require('./helper/uploadHelper');
+//const {isEmpty} = require('./helper/uploadHelper');
 const mongoose = require("mongoose");
 const upload = require("express-fileupload");
 const dateFormat = require("dateformat");
 const now = new Date();
-const nodemailer = require("nodemailer");
-
-//nodemiler configuration
-// const transporter = nodemailer.createTransport({
-//   service: "roviagatetechnology",
-//   auth: {
-//     user: "drichards@roviagatetechnology.com",
-//     pass: "Only@roviagate",
-//   },
-// });
-
-var smtpConfig = {
-  host: "roviagatetechnology.com",
-  port: 465,
-  secure: true, // use SSL
-  auth: {
-    user: "dorbor.richards@roviagatetechnology.com",
-    pass: "Dorbor@roviagate",
-  },
-};
 
 const isEmpty = (obj) => {
   for (let key in obj) {
@@ -49,6 +29,7 @@ const Officer = require("./models/Officer");
 const Category = require("./models/Category");
 const Division = require("./models/Division");
 const Position = require("./models/Position");
+const Audit = require("./models/Audit");
 
 mongoose.Promise = global.Promise;
 const bcrypt = require("bcrypt");
@@ -63,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(expressValidator());
 app.use(express.static((__dirname, "public")));
 app.use("/admin", express.static((__dirname, "public")));
+app.use("/", express.static((__dirname, "public")));
 app.use("/admin/editOfficer", express.static((__dirname, "public")));
 app.use("/admin/editPosition", express.static((__dirname, "public")));
 app.use("/admin/editDivision", express.static((__dirname, "public")));
@@ -74,6 +56,12 @@ app.use("/officerDetails", express.static((__dirname, "public")));
 app.use("/complain", express.static((__dirname, "public")));
 app.use("/applaud", express.static((__dirname, "public")));
 app.use("/static", express.static((__dirname, "public/images/officers")));
+
+
+
+//routes list
+const audit = require('./routes/admin/audit');
+const front = require('./routes/Home/index');
 
 app.use(
   session({
@@ -90,6 +78,7 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 
+
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
   // req.locals.success_message = req.flash('success_message');
@@ -98,69 +87,17 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
 
-// app.get("/findOfficer", (req, res) => {
-//   const findId = req.query.id;
-//   if(findId === '' || !findId){
-//     Officer.findOne({ agency: "LNP", id: '0000' }).then(off => {
-//       res.render("officerDetails", { officer: off});
-//   });
-//   }else if(findId.length < 4 || findId.length > 4){
-//     res.render('index', { message: 'Officer Id must be 4 digits'});
-//   }else {
-//     Officer.findOne({ agency: "LNP", id: findId }).then(off => {
-//         res.render("officerDetails", { officer: off});
-//     });
-//   }
-// });
 
-app.get("/findOfficer", (req, res) => {
-  let findId = req.query.id;
-  if (findId === "" || isEmpty(findId)) {
-    findId = "0000";
-  } else if (findId.length < 4 || findId.length > 4) {
-    res.render("index", { message: "Officer Id must be 4 digits" });
-  }
+//extended routes 
+app.use("/admin/audit", audit);
+app.use("/", front);
 
-  Officer.findOne({ agency: "LNP", id: findId }).then((off) => {
-    if (!off) {
-      res.render("index", {
-        message: "Officer not found \n Please enter a valid Officer id",
-      });
-    }
-    res.render("officerDetails", { officer: off });
-  });
-});
 
-app.get("/applaud/:id", (req, res) => {
-  Officer.findOne({ agency: "LNP", _id: req.params.id }).then((off) => {
-    // console.log(off);
-    // console.log(req.query.id);
-    if (req.query.id === "") {
-      res.redirect("/");
-    } else {
-      res.render("applaud", { officer: off });
-    }
-  });
-});
-
-app.get("/complain/:id", (req, res) => {
-  Officer.findOne({ agency: "LNP", _id: req.params.id }).then((off) => {
-    if (req.query.id === "") {
-      res.redirect("/");
-    } else {
-      res.render("complain", { officer: off });
-    }
-  });
-});
 
 app.get("/adminlogin", (req, res) => {
   res.render("login");
 });
-
 app.get("/admin", userAuthenticated, (req, res) => {
   Officer.find({ agency: "LNP" }).then((off) => {
     Comment.find({ agency: "LNP" }).then((comments) => {
@@ -440,6 +377,21 @@ app.post("/admin/addCategory", userAuthenticated, (req, res) => {
     createdAt: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
   });
 
+  const setAudit = new Audit({
+    agency: "LNP",
+    by: req.body.loginUser,
+    statement: 'new category  created '+ setCategory.title + ' by ' + req.body.loginUser,
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+  });
+
+setAudit.save((err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("audit save");
+  }
+});
+
   setCategory.save((err) => {
     if (err) {
       console.log(err);
@@ -510,6 +462,21 @@ app.post("/admin/editCategory/:id", userAuthenticated, (req, res) => {
     cat.title = req.body.title;
     cat.desc = req.body.desc;
     cat.createdAt = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+    
+    const setAudit = new Audit({
+      agency: "LNP",
+      by: req.body.loginUser,
+      statement: ' category '+ cat.title + 'edited by ' + req.body.loginUser,
+      date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+    });
+
+    setAudit.save((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("audit save");
+      }
+    });
 
     cat.save((err) => {
       if (err) {
@@ -553,6 +520,21 @@ app.post("/admin/addDivision", userAuthenticated, (req, res) => {
     title: req.body.title,
     desc: req.body.desc,
     createdAt: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+  });
+
+  const setAudit = new Audit({
+    agency: "LNP",
+    by: req.body.loginUser,
+    statement: 'new Division  created '+ setDivision.title + ' by ' + req.body.loginUser,
+    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+  });
+
+  setAudit.save((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("audit save");
+    }
   });
 
   setDivision.save((err) => {
@@ -625,6 +607,22 @@ app.post("/admin/editDivision/:id", userAuthenticated, (req, res) => {
     div.title = req.body.title;
     div.desc = req.body.desc;
     div.createdAt = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+
+
+    const setAudit = new Audit({
+      agency: "LNP",
+      by: req.body.loginUser,
+      statement: ' Division '+ div.title + 'edited by ' + req.body.loginUser,
+      date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+    });
+
+    setAudit.save((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("audit save");
+      }
+    });
 
     div.save((err) => {
       if (err) {
@@ -1325,7 +1323,7 @@ app.post("/login", (req, res, next) => {
 
 app.get("/logout", (req, res) => {
   req.logOut();
-  res.redirect("/");
+  res.redirect("/adminlogin");
 });
 
 //front end complain and applaud

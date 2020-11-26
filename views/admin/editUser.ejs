@@ -74,10 +74,12 @@
               >
               <div class="col-lg-9">
                 <input type="file" class="form-control" name="UserImage" />
+                
               </div>
             </div>
 
             <!-- user role  -->
+            <% if(user.role === 'tech'){  %>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"
                 >User Role</label
@@ -90,16 +92,25 @@
                   class="form-control"
                   name="role"
                 >
-                  <option value="<%= foundUser.role %>"
-                    ><%= foundUser.role === 'super' ? 'Super Administrator' :
-                    'Administrator'; %></option
-                  >
+                  <% if(foundUser.role === 'super'){  %>
+                    <option value="super">Super Admin</option>
+                  <% }else if(foundUser.role === 'admin') {%>
+                    <option value="admin">Administrator</option>
+                  <% }else if(foundUser.role === 'hr') {%>
+                    <option value="hr">Human Resource</option>
+                  <% }else if(foundUser.role === 'tech') {%>
+                    <option value="tech">IT Department</option>
+                  <% }else{%>
+                    <option value="admin">Administrator</option>
+                  <% } %>
                   <option value="admin">Administrator</option>
                   <option value="super">Super Administrator</option>
+                  <option value="hr">Human Resource</option>
+                  <option value="tech">IT Department</option>
                 </select>
               </div>
             </div>
-
+            <% }  %>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"
                 >Status</label

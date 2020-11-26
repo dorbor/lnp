@@ -18,6 +18,7 @@ const OfficerSchema = new Schema({
   phone1: String,
   gender: String,
   department: String,
+  education: String,
   division: String,
   position: String,
   section: String,

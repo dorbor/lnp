@@ -1,0 +1,34 @@
+<%- include('hub/top'); -%>
+
+<!-- Navbar -->
+<%- include('hub/nav'); -%>
+
+<!-- left side bar component  -->
+<%- include('hub/sidebar'); -%>
+
+<br />
+
+<h2 class="lead text-center display-2">Audit Tail</h1>
+
+<table class="table table-hover table-dark" id="dataTable">
+  <thead>
+    <tr>
+      
+      <th scope="col">Done By</th>
+      <th scope="col">Statement</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% audits.forEach(audit => { %> 
+      <tr>
+          <td><%= audit.by %></td>
+          <td><%= audit.statement %></td>
+          <td><%= audit.date %></td>
+      </tr>
+  <% }); %>
+  </tbody>
+</table>
+
+<!-- Bottom component -->
+<%- include('hub/bottom'); -%>
