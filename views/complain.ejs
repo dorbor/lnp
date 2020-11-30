@@ -24,10 +24,18 @@
               <input type="hidden" name="type" value="Complain">
               <input type="hidden" name="officerId" value="<%= officer.id %>">
               <ul class="list-group list-group-flush">
-                <li class="list-group-item"><input type="text" name="fullName" id="" class="form-control" placeholder="Eg: John Flomo"></li>
-                <li class="list-group-item"><input type="email" name="email" id="" class="form-control" placeholder="Eg: jflomo@gmail.com"></li>
-                <li class="list-group-item"><input type="text" name="number" id="" class="form-control" placeholder="0880000000"></li>
-                <li class="list-group-item"><select name="county" id="" class="form-control">
+                <li class="list-group-item">
+                  <label for="fullName">Please Enter your Full Name</label>
+                  <input type="text" name="fullName" id="" class="form-control" placeholder="Eg: John Flomo"></li>
+                <li class="list-group-item">
+                  <label for="email">Enter your Email Address</label>
+                  <input type="email" name="email" id="" class="form-control" placeholder="Eg: jflomo@gmail.com"></li>
+                <li class="list-group-item">
+                  <label for="number">Enter Phone Number</label>
+                  <input type="text" name="number" id="" class="form-control" placeholder="0880000000"></li>
+                <li class="list-group-item">
+                  <label for="county">Please Select County of incident</label>
+                  <select name="county" id="" class="form-control">
                     <option value="">Select County</option>
                     <option value="Bomi">Bomi</option>
                     <option value="Bong">Bong</option>
@@ -45,7 +53,15 @@
                     <option value="River Gee">River Gee</option>
                     <option value="Sinoe">Sinoe</option>
                 </select> </li>
-                <li class="list-group-item"><textarea name="content" id="" cols="20" rows="10" class="form-control"></textarea></li>
+                <li class="list-group-item">
+                  <label for="date">Select Date of incident </label>
+                  <input type="date" name="date" id="" class="form-control"></li>
+                <li class="list-group-item">
+                  <label for="evidance">Please upload evidance </label>
+                  <input type="file" name="evidance" id="" class="form-control"></li>
+
+
+                <li class="list-group-item"><textarea name="content" id="" cols="20" rows="10" class="form-control" placeholder="Please provide detailed information about the location (city, community, village, building, etc.), what happened, and description of officer if name/ID is unknown."></textarea></li>
               </ul>
               <div class="card-body">
                 <input type="submit" class="card-link btn btn-danger" style="float: right;" value="Send">

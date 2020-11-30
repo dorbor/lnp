@@ -1342,7 +1342,7 @@ app.post("/newComment", (req, res) => {
     incidentDate: req.body.incidentDate,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
-    date: dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+    date: req.body.date,
   });
 
   comment.save((err) => {
