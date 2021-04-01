@@ -72,7 +72,7 @@
           </a>
         </li> -->
 
-        <% if(user.role === 'admin') { %>
+        <% if(user.role === 'admin' || user.role === 'hr') { %>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
@@ -147,7 +147,7 @@
         </li>
 
         <% } %>
-        <% if(user.role === 'admin') { %>
+        <% if(user.role === 'hr' || user.role === 'tech') { %>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
@@ -167,7 +167,6 @@
               </a>
             </li>
             <% } %>
-            
             <li class="nav-item">
               <a href="/admin/allOfficers" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
@@ -188,12 +187,14 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            
             <li class="nav-item">
               <a href="/admin/addUser" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Add User</p>
               </a>
             </li>
+            
             <li class="nav-item">
               <a href="/admin/allUsers" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
