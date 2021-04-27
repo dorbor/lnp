@@ -142,29 +142,21 @@
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"
-                >Select Educational Level</label
+                > Educational Level</label
               >
               <div class="col-lg-9">
-                <select
-                  id="user_time_zone"
+                <input
                   class="form-control"
-                  size="0"
-                  class="form-control"
+                  type="text"
                   name="education"
-                >
-                  <option value="High School DropOut">High School DropOut</option>
-                  <option value="High School Graduate">High School Graduate</option>
-                  <option value="College DropOut">College DropOut</option>
-                  <option value="College Student">College Student</option>
-                  <option value="College Graduate">College Graduate</option>
-                  <option value="Master Degree">Master Degree</option>
-                  <option value="Dr. Degree">Dr. Degree</option>
-                </select>
-                </div>
+                  value="<%= officer.education %>"
+                  required
+                />
+              </div>
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"
-                >County of Assignment</label
+                >County of Deployment</label
               >
               <div class="col-lg-9">
                 <select
@@ -221,7 +213,7 @@
             </div>
             <div class="form-group row">
               <label class="col-lg-3 col-form-label form-control-label"
-                >Position</label
+                >Rank</label
               >
               <div class="col-lg-9">
                 <select name="position" class="form-control">
@@ -268,11 +260,19 @@
                   class="form-control"
                   size="0"
                   class="form-control"
-                  name="status"
-                >
+                  name="status">
                   <option value="">select Status</option>
                   <option value="active">Active</option>
-                  <option value="not-active">Not Active</option>
+                  <option value="Resigned">Resigned</option>
+                  <option value="Dismissed">Dismissed</option>
+                  <option value="Deceased">Deceased</option>
+                  <option value="Pension">Pension</option>
+                  <option value="Deserted">Deserted</option>
+                  <option value="On Leave">On Leave</option>
+                  <option value="Secondment">Secondment</option>
+                  <option value="Interdicted">Interdicted</option>
+                  <option value="Suspended Definitely">Suspended Definitely</option>
+                  <option value="Suspended Indefinitely">Suspended Indefinitely</option>
                 </select>
               </div>
             </div>
