@@ -6,8 +6,12 @@
   "engines": {
     "node": "12.13.1"
   },
-  "author": "Colorlib <http://colorlib.com>",
+  "author": "Dorbor H. Richards Jr",
   "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://git.heroku.com/lnp.git"
+  },
   "scripts": {
     "css": "npm-run-all --sequential css-compile css-prefix css-minify",
     "css-all": "npm-run-all --sequential css-compile css-compile-splits css-prefix css-minify css-minify-splits",
@@ -58,7 +62,6 @@
     "control-panel",
     "dashboard"
   ],
-  "homepage": "https://adminlte.io",
   "style": "dist/css/adminlte.css",
   "sass": "build/scss/AdminLTE.scss",
   "dependencies": {
