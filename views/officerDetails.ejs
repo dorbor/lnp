@@ -8,12 +8,12 @@
         <div class="card" style="width: 100%;">
             <% if(officer.image === '' || officer.image){ %>
                 <img
-                  src="images/place.png"
+                  src="img/place.png"
                   class="mx-auto img-fluid img-circle d-block"
                   alt="avatar"
                 />
                 <% }else{ %>
-                    <img class="card-img-top" src="images/officers/<%= officer.image %>" alt='<%= officer.image %>'>
+                    <img class="card-img-top" src="img/officers/<%= officer.image %>" alt='<%= officer.image %>'>
                 <% } %>
             
             <div class="card-body">
