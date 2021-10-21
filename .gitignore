@@ -20,7 +20,8 @@ node_modules/
 bower_components/
 .DS_Store
 /*.env
-
+.env
+/.env
 // Plugins
 /plugins/*/*.md
 /plugins/*/*.html
