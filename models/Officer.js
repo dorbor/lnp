@@ -7,7 +7,7 @@ const OfficerSchema = new Schema({
     type: String,
     default: "LNP",
   },
-  id: String,
+  id: Number,
   firstName: String,
   lastName: String,
   image: String,

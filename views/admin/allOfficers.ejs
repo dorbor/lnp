@@ -104,11 +104,13 @@
                           />
                         </td>
                         <td><%= officer.status.toUpperCase(); %></td>
+                        <% if(officer.id !== '0000') { %>
                         <td>
                           <a href="/admin/editOfficer/<%= officer._id %>"
                             ><i class="fas fa-edit"></i
                           ></a>
                         </td>
+                        <% } %>
                       </tr>
                       <% }); %>
 

@@ -941,7 +941,7 @@ app.post("/admin/editOfficer/:id", userAuthenticated, (req, res) => {
 //Delete Officer method
 app.get("/admin/deleteOfficer/:id", userAuthenticated, (req, res) => {
   const id = req.params.id;
-  Officer.findByIdAndRemove({ _id: id, agency: "LNP" }).then((foundUser) => {
+  Officer.findByIdAndRemove({ agency: "LNP" }).then((foundUser) => {
     res.redirect("/admin/allOfficers");
   });
 });
@@ -1469,6 +1469,6 @@ app
 //   console.log("Server started on port 3000");
 // });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('App listening on port 3000!');
+app.listen(process.env.PORT || 5000, () => {
+  console.log('App listening on port 5000!');
 });
