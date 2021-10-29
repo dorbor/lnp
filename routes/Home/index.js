@@ -23,21 +23,22 @@ router.get('/findOfficer', (req, res) => {
     res.render('index', {
       message: 'Officer Id must be 4 digits'
     })
-  }
-
-  Officer.findOne({
-    agency: 'LNP',
-    id: findId
-  }).then((off) => {
-    if (!off) {
-      res.render('index', {
-        message: 'Officer not found \n Please enter a valid Officer id'
-      })
-    }
-    res.render('officerDetails', {
-      officer: off
+  } else {
+    Officer.findOne({
+      agency: 'LNP',
+      id: findId
+    }).then((off) => {
+      if (!off) {
+        res.render('index', {
+          message: 'Officer not found \n Please enter a valid Officer id'
+        })
+      } else {
+        res.render('officerDetails', {
+          officer: off
+        })
+      }
     })
-  })
+  }
 })
 
 // router.get('/delete', (req, res) => {
